@@ -1,29 +1,29 @@
-import { Button } from "@Data-Visualization-Course-For-Product-Designers/ui/components/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@Data-Visualization-Course-For-Product-Designers/ui/components/dropdown-menu";
-import { Moon, Sun } from "lucide-react";
+import { DropdownMenu, DropdownMenuRadioGroup, DropdownMenuRadioItem } from "@astryxdesign/core/DropdownMenu";
+import { BookOpen, Moon, Sun } from "lucide-react";
 
-import { useTheme } from "@/components/theme-provider";
+import { useAppearance } from "@/components/theme-provider";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { appearance, setAppearance } = useAppearance();
+  const Icon = appearance === "dark" ? Moon : appearance === "sepia" ? BookOpen : Sun;
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline" size="icon" />}>
-        <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-        <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-        <span className="sr-only">Toggle theme</span>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
-      </DropdownMenuContent>
+    <DropdownMenu
+      button={{
+        label: "Appearance",
+        tooltip: "Appearance",
+        icon: <Icon size={17} aria-hidden="true" />,
+        isIconOnly: true,
+        variant: "ghost",
+      }}
+      hasChevron={false}
+      placement="above"
+    >
+      <DropdownMenuRadioGroup label="Appearance" value={appearance} onChange={setAppearance}>
+        <DropdownMenuRadioItem label="Default" value="light" />
+        <DropdownMenuRadioItem label="Sepia" value="sepia" />
+        <DropdownMenuRadioItem label="Dark" value="dark" />
+      </DropdownMenuRadioGroup>
     </DropdownMenu>
   );
 }

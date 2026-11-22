@@ -1,0 +1,15 @@
+signup_week,platform,eligible_signups,setup_completed_within_7d,rollout_context,data_status
+W1,Mobile,200,96,Pre-rollout,Complete
+W1,Desktop,100,54,Pre-rollout,Complete
+W2,Mobile,200,94,Pre-rollout,Complete
+W2,Desktop,100,55,Pre-rollout,Complete
+W3,Mobile,200,90,Pre-rollout,Complete
+W3,Desktop,100,54,Pre-rollout,Complete
+W4,Mobile,200,78,Pre-rollout,Complete
+W4,Desktop,100,53,Pre-rollout,Complete
+W5,Mobile,220,105,Rollout starts,Complete
+W5,Desktop,100,57,Rollout starts,Complete
+W6,Mobile,240,127,Post-start,Complete
+W6,Desktop,100,58,Post-start,Complete
+W7,Mobile,250,140,Post-start,Complete
+W7,Desktop,100,,Post-start,Completion data unavailable

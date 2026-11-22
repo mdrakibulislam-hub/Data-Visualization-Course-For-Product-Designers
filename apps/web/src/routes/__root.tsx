@@ -1,11 +1,10 @@
 import { Toaster } from "@Data-Visualization-Course-For-Product-Designers/ui/components/sonner";
 import type { QueryClient } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { HeadContent, Outlet, createRootRouteWithContext } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { HeadContent, Link, Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 
-import Header from "@/components/header";
-import { ThemeProvider } from "@/components/theme-provider";
+import { CourseShell } from "@/components/course-shell";
+import { ThemeProvider, useAppearance } from "@/components/theme-provider";
+import { ProgressProvider } from "@/course/progress";
 import type { trpc } from "@/utils/trpc";
 
 export interface RouterAppContext {
@@ -15,37 +14,37 @@ export interface RouterAppContext {
 
 export const Route = createRootRouteWithContext<RouterAppContext>()({
   component: RootComponent,
+  notFoundComponent: () => (
+    <section className="course-wrap course-simple-page">
+      <h1>Page unavailable</h1>
+      <Link to="/">Browse the course</Link>
+    </section>
+  ),
   head: () => ({
     meta: [
-      {
-        title: "Data Visualization Course for Product Designers",
-      },
-      {
-        name: "description",
-        content: "Data Visualization Course for Product Designers",
-      },
+      { title: "Data Viz Field Guide · Data visualization for product designers" },
+      { name: "description", content: "A self-paced data visualization course for product designers, with interactive charts, quizzes, and flashcards." },
     ],
   }),
 });
+
+function CourseToaster() {
+  const { appearance } = useAppearance();
+  return <Toaster richColors theme={appearance === "dark" ? "dark" : "light"} />;
+}
 
 function RootComponent() {
   return (
     <>
       <HeadContent />
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        disableTransitionOnChange
-        storageKey="vite-ui-theme"
-      >
-        <div className="grid grid-rows-[auto_1fr] h-svh">
-          <Header />
-          <Outlet />
-        </div>
-        <Toaster richColors />
+      <ThemeProvider>
+        <ProgressProvider>
+          <CourseShell>
+            <Outlet />
+          </CourseShell>
+        </ProgressProvider>
+        <CourseToaster />
       </ThemeProvider>
-      <TanStackRouterDevtools position="bottom-left" />
-      <ReactQueryDevtools position="bottom" buttonPosition="bottom-right" />
     </>
   );
 }

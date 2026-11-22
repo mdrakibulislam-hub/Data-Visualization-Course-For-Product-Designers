@@ -1,24 +1,34 @@
 # Data Visualization Course for Product Designers
 
-A TypeScript monorepo with React and TanStack Router on the web, Hono and tRPC on Bun, SQLite with Drizzle, and email/password authentication with Better Auth. Bun manages dependencies and Turborepo runs workspace tasks.
+Data Viz Field Guide is a self-paced course for product designers. Each lesson includes a chart exercise, two questions with feedback, and a way to apply the idea at work. The Practice section brings together the Chart Lab and its 49-entry chart atlas, flashcards, scored quiz rounds, and two capstone cases. The Studio examples contribute experiments and the fictional onboarding data.
 
 ## Local development
 
-Install Bun 1.4.2 or newer and run `bun install` from the project root. On a fresh checkout, create the local environment files and generate a secret for Better Auth.
+Install Bun 1.4.2 or newer. From the project root, run the web app.
+
+```bash
+bun install
+[ -f apps/web/.env ] || cp apps/web/.env.example apps/web/.env
+bun run dev:web
+```
+
+Open [the course](http://localhost:5173). Lesson progress, quiz answers and scores, flashcard progress, capstone drafts and checklists, and appearance are saved in the browser for this site address. The course is open to everyone. Clearing this site's data clears saved progress.
+
+### Run the starter API and authentication
+
+The Hono and Better Auth starter routes can run with the full workspace. Generate a local secret and apply the SQLite migration.
 
 ```bash
 [ -f apps/server/.env ] || sed "s/^BETTER_AUTH_SECRET=$/BETTER_AUTH_SECRET=$(openssl rand -hex 32)/" apps/server/.env.example > apps/server/.env
-[ -f apps/web/.env ] || cp apps/web/.env.example apps/web/.env
-```
-
-Apply the initial migration and start both apps.
-
-```bash
 bun run db:migrate
 bun run dev
 ```
 
-Open [the web app](http://localhost:5173). The home page checks the [Hono API](http://localhost:3000) via tRPC. Use the login page to create a local account and open the protected dashboard. SQLite stores data in `local.db` at the project root.
+The [Hono API](http://localhost:3000) uses SQLite at `local.db` in the project root. The starter sign-in screen is at `/login`.
+
+## Course content
+
+Lesson copy and questions live in `apps/web/src/course/curriculum.ts`. The original learning datasets and chart variants live in `apps/web/src/course/lab-data.ts`. Reading notes live in `apps/web/src/course/sources.ts` and appear on the Sources page. Lesson IDs also key browser progress, so keep them stable when revising content.
 
 ## Project layout
 
@@ -34,7 +44,7 @@ Open [the web app](http://localhost:5173). The home page checks the [Hono API](h
 
 ## Astryx design system
 
-The web app loads Astryx's Neutral theme. The header's appearance menu switches between light, dark, and system mode. The home page's API status card is a working example in `apps/web/src/routes/index.tsx`.
+The web app extends Astryx's Neutral theme with its expressive motion setting, Spectral for reading and controls, and Instrument Serif for display headings. Astryx AppShell and SideNav provide the desktop sidebar and mobile navigation drawer. The appearance menu offers Default, Sepia, and Dark. The lesson reader and chart exercise controls are working examples in `apps/web/src/course`.
 
 Import components from their individual package paths. The app already loads the theme and styles for every route.
 

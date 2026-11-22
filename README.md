@@ -24,13 +24,39 @@ Open [the web app](http://localhost:5173). The home page checks the [Hono API](h
 
 | Workspace | Purpose |
 | --- | --- |
-| `apps/web` | React, Vite, and TanStack Router |
+| `apps/web` | React, Vite, TanStack Router, and Astryx |
 | `apps/server` | Hono server with tRPC and Better Auth endpoints |
 | `packages/api` | tRPC routers and procedure definitions |
 | `packages/auth` | Better Auth configuration |
 | `packages/db` | Drizzle schema, SQLite connection, and migrations |
 | `packages/ui` | Shared shadcn/ui components and styles |
 | `packages/config` | Shared TypeScript configuration |
+
+## Astryx design system
+
+The web app loads Astryx's Neutral theme. The header's appearance menu switches between light, dark, and system mode. The home page's API status card is a working example in `apps/web/src/routes/index.tsx`.
+
+Import components from their individual package paths. The app already loads the theme and styles for every route.
+
+```tsx
+import { Button } from "@astryxdesign/core/Button";
+
+export function ContinueButton({ onContinue }: { onContinue: () => void }) {
+  return <Button label="Continue" variant="primary" onClick={onContinue} />;
+}
+```
+
+Run the local CLI from the project root with Node.js 22.13 or newer.
+
+```bash
+bun run astryx component                 # List components
+bun run astryx component Button          # Show imports, props, and usage
+bun run astryx docs tokens/tokens-data   # Discover chart color tokens
+bun run astryx theme list                 # Browse themes
+bun run astryx doctor                    # Check the app's Astryx setup
+```
+
+Use Astryx component props and theme tokens for styling. Tailwind utilities are available for layout and the existing shared UI. Keep Core, the theme package, and the CLI on the same Astryx release. [Astryx documentation](https://astryx.atmeta.com/docs/getting-started)
 
 ## Commands
 

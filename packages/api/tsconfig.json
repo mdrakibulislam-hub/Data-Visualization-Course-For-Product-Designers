@@ -1,0 +1,6 @@
+{
+  "extends": "@Data-Visualization-Course-For-Product-Designers/config/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true
+  }
+}

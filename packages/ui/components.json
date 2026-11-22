@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "base-lyra",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@Data-Visualization-Course-For-Product-Designers/ui/components",
+    "utils": "@Data-Visualization-Course-For-Product-Designers/ui/lib/utils",
+    "hooks": "@Data-Visualization-Course-For-Product-Designers/ui/hooks",
+    "lib": "@Data-Visualization-Course-For-Product-Designers/ui/lib",
+    "ui": "@Data-Visualization-Course-For-Product-Designers/ui/components"
+  },
+  "menuColor": "default",
+  "menuAccent": "subtle",
+  "registries": {}
+}

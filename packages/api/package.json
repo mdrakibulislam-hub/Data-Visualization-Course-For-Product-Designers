@@ -1,0 +1,22 @@
+{
+  "name": "@Data-Visualization-Course-For-Product-Designers/api",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@Data-Visualization-Course-For-Product-Designers/auth": "workspace:*",
+    "@Data-Visualization-Course-For-Product-Designers/db": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@Data-Visualization-Course-For-Product-Designers/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

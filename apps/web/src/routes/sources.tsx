@@ -1,7 +1,7 @@
 import { Heading } from "@astryxdesign/core/Heading";
 import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "reicon-react";
 
 import { sources } from "@/course/sources";
 

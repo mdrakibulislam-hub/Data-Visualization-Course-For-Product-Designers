@@ -8,8 +8,8 @@ const fieldGuideTheme = defineTheme({
   name: "field-guide",
   extends: themes[defaultThemeSlug],
   typography: {
-    body: { family: "Spectral", fallbacks: "Georgia, serif" },
-    heading: { family: "Spectral", fallbacks: "Georgia, serif" },
+    body: { family: "Inter", fallbacks: "system-ui, sans-serif" },
+    heading: { family: "Inter Display", fallbacks: "Inter, system-ui, sans-serif" },
   },
   color: { accent: ["#963f32", "#f4ad97"], neutralStyle: "neutral" },
   radius: { base: 5, multiplier: 1 },

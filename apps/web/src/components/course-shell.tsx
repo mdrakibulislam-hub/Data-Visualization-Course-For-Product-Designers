@@ -1,15 +1,17 @@
 import { AppShell, useAppShellMobile } from "@astryxdesign/core/AppShell";
 import { Card } from "@astryxdesign/core/Card";
 import { HStack } from "@astryxdesign/core/HStack";
+import { IconButton } from "@astryxdesign/core/IconButton";
 import { LinkProvider } from "@astryxdesign/core/Link";
 import { MobileNav } from "@astryxdesign/core/MobileNav";
 import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { SideNav, SideNavHeading, SideNavItem, SideNavSection } from "@astryxdesign/core/SideNav";
 import { Text } from "@astryxdesign/core/Text";
+import { Tooltip } from "@astryxdesign/core/Tooltip";
 import { VStack } from "@astryxdesign/core/VStack";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { BookOpen, ChartNoAxesColumnIncreasing, Check, CircleHelp, ClipboardList, Database, Files, Layers, LayoutDashboard, LibraryBig, LineChart } from "lucide-react";
-import type { ComponentPropsWithRef, ReactNode } from "react";
+import { BookOpen, ChartBar, Check, HelpCircle, Checklist, Database, DocumentCopy, Layers, Grid, Library, ChartLine } from "reicon-react";
+import { useState, type ComponentPropsWithRef, type CSSProperties, type ReactNode } from "react";
 
 import { lessons, modules } from "@/course/curriculum";
 import { useProgress } from "@/course/progress";
@@ -17,7 +19,34 @@ import { useProgress } from "@/course/progress";
 import { ModeToggle } from "./mode-toggle";
 import UserMenu from "./user-menu";
 
-const moduleIcons = [BookOpen, Database, LayoutDashboard, Layers];
+const moduleIcons = [BookOpen, Database, Grid, Layers];
+
+function SidebarProgress({ completed, canSave, isCollapsed }: { completed: number; canSave: boolean; isCollapsed: boolean }) {
+  const details = (
+    <Card variant="muted" padding={2} className={isCollapsed ? "course-progress-tooltip" : undefined}>
+      <VStack gap={1}>
+        <ProgressBar label="Course progress" value={completed} max={lessons.length} hasValueLabel formatValueLabel={(value, max) => `${value} of ${max}`} />
+        <Text as="p" type="supporting" color="secondary">{canSave ? "Saved in this browser" : "Progress is available in this tab only"}</Text>
+      </VStack>
+    </Card>
+  );
+
+  if (isCollapsed) {
+    return (
+      <HStack justify="center" paddingBlock={1} gap={0}>
+        <Tooltip content={details} placement="end" focusTrigger="always" touchTrigger="tap" hasHoverIndication={false}>
+          <IconButton
+            variant="ghost"
+            label={`Course progress, ${completed} of ${lessons.length} lessons complete`}
+            icon={<HStack as="span" gap={0} aria-hidden="true" className="course-progress-donut" style={{ "--course-progress": `${completed / lessons.length * 100}%` } as CSSProperties} />}
+          />
+        </Tooltip>
+      </HStack>
+    );
+  }
+
+  return <VStack gap={0} paddingInline={2} paddingBlock={2} className="course-side-progress">{details}</VStack>;
+}
 
 function CourseLink({ href, onClick, ...props }: ComponentPropsWithRef<"a">) {
   const { isMobileNavOpen, closeMobileNav } = useAppShellMobile();
@@ -35,6 +64,7 @@ function CourseLink({ href, onClick, ...props }: ComponentPropsWithRef<"a">) {
 }
 
 export function CourseShell({ children }: { children: ReactNode }) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const path = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") || "/" });
   const currentLesson = lessons.find(({ id }) => path === `/lesson/${id}`);
   const activeModule = currentLesson?.moduleTitle ?? modules[0].title;
@@ -43,8 +73,8 @@ export function CourseShell({ children }: { children: ReactNode }) {
   const sections = (
     <>
       <SideNavSection title="Course">
-        <SideNavItem label="Overview" href="/" icon={LibraryBig} isSelected={path === "/"} />
-        <SideNavItem label="Sources" href="/sources" icon={Files} isSelected={path === "/sources"} />
+        <SideNavItem label="Overview" href="/" icon={Library} isSelected={path === "/"} />
+        <SideNavItem label="Sources" href="/sources" icon={DocumentCopy} isSelected={path === "/sources"} />
       </SideNavSection>
       <SideNavSection title="Lessons">
         {modules.map((module, index) => (
@@ -68,10 +98,10 @@ export function CourseShell({ children }: { children: ReactNode }) {
         ))}
       </SideNavSection>
       <SideNavSection title="Practice">
-        <SideNavItem label="Chart lab" href="/lab" icon={LineChart} isSelected={path === "/lab"} />
+        <SideNavItem label="Chart lab" href="/lab" icon={ChartLine} isSelected={path === "/lab"} />
         <SideNavItem label="Flashcards" href="/review" icon={Layers} isSelected={path === "/review"} />
-        <SideNavItem label="Quizzes" href="/quizzes" icon={CircleHelp} isSelected={path === "/quizzes"} />
-        <SideNavItem label="Capstone project" href="/capstone" icon={ClipboardList} isSelected={path === "/capstone"} />
+        <SideNavItem label="Quizzes" href="/quizzes" icon={HelpCircle} isSelected={path === "/quizzes"} />
+        <SideNavItem label="Capstone project" href="/capstone" icon={Checklist} isSelected={path === "/capstone"} />
       </SideNavSection>
     </>
   );
@@ -93,22 +123,13 @@ export function CourseShell({ children }: { children: ReactNode }) {
         sideNav={
           <SideNav
             aria-label="Course navigation"
-            collapsible
+            collapsible={{ isCollapsed, onCollapsedChange: setIsCollapsed }}
             header={<SideNavHeading heading="Data Viz Field Guide" headingHref="/" icon={
               <HStack as="span" align="center" justify="center" gap={0} className="course-brand-mark">
-                <ChartNoAxesColumnIncreasing size={17} aria-hidden="true" />
+                <ChartBar size={17} aria-hidden="true" />
               </HStack>
             } />}
-            footer={
-              <VStack gap={0} paddingInline={2} paddingBlock={2} className="course-side-progress">
-                <Card variant="muted" padding={2}>
-                  <VStack gap={1}>
-                    <ProgressBar label="Course progress" value={progress.completed.length} max={lessons.length} hasValueLabel formatValueLabel={(value, max) => `${value} of ${max}`} />
-                    <Text as="p" type="supporting" color="secondary">{canSave ? "Saved in this browser" : "Progress is available in this tab only"}</Text>
-                  </VStack>
-                </Card>
-              </VStack>
-            }
+            footer={<SidebarProgress completed={progress.completed.length} canSave={canSave} isCollapsed={isCollapsed} />}
             footerIcons={<><ModeToggle />{path === "/dashboard" && <UserMenu />}</>}
           >
             {sections}

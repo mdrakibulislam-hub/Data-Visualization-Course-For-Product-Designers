@@ -7,8 +7,9 @@ import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check } from "reicon-react";
 
+import { AppearanceTabs } from "@/components/mode-toggle";
 import { Columns } from "@/course/charts";
 import { lessons, modules, totalMinutes } from "@/course/curriculum";
 import { weekdayOrders } from "@/course/lab-data";
@@ -63,12 +64,12 @@ function CourseOverview() {
         </Card>
       )}
 
-      <VStack as="section" id="curriculum" className="course-curriculum" gap={0} aria-labelledby="curriculum-title">
-        <Heading level={2} id="curriculum-title" className="course-display course-section-title">Course outline</Heading>
+      <VStack as="section" id="curriculum" className="course-curriculum" gap={0} aria-label="Course outline">
+        <HStack className="course-curriculum-tools" gap={2} align="center"><AppearanceTabs /></HStack>
         {modules.map((module) => (
           <HStack as="section" className="course-module" key={module.title} align="start" gap={0}>
             <VStack className="course-module-title" gap={1}>
-              <Heading level={3}>{module.title}</Heading>
+              <Heading level={2}>{module.title}</Heading>
               <p>{module.description}</p>
             </VStack>
             <ol className="course-lesson-list">

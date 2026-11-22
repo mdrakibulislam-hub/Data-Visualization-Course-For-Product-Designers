@@ -8,7 +8,7 @@ import { Text } from "@astryxdesign/core/Text";
 import { TextArea } from "@astryxdesign/core/TextArea";
 import { VStack } from "@astryxdesign/core/VStack";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "reicon-react";
 import { useEffect, useState } from "react";
 
 import { ChartLab } from "./charts";

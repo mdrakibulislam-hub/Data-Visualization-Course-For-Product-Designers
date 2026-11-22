@@ -44,7 +44,7 @@ Lesson copy and questions live in `apps/web/src/course/curriculum.ts`. The origi
 
 ## Astryx design system
 
-The web app extends Astryx's Neutral theme with its expressive motion setting, Spectral for reading and controls, and Instrument Serif for display headings. Astryx AppShell and SideNav provide the desktop sidebar and mobile navigation drawer. The appearance menu offers Default, Sepia, and Dark. The lesson reader and chart exercise controls are working examples in `apps/web/src/course`.
+The web app extends Astryx's Neutral theme with its expressive motion setting, Inter for reading and controls, and Inter Display for headings. App icons use Reicon. Astryx AppShell and SideNav provide the desktop sidebar and mobile navigation drawer. The appearance segments offer Default, Sepia, and Dark. The lesson reader and chart exercise controls are working examples in `apps/web/src/course`.
 
 Import components from their individual package paths. The app already loads the theme and styles for every route.
 

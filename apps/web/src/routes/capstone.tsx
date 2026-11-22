@@ -9,7 +9,7 @@ import { Text } from "@astryxdesign/core/Text";
 import { TextArea } from "@astryxdesign/core/TextArea";
 import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Download } from "lucide-react";
+import { Download } from "reicon-react";
 
 import { DataGrid } from "@/course/charts";
 import { projects } from "@/course/practice-data";

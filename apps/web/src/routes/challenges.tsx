@@ -142,7 +142,7 @@ function ChallengesPage() {
           </Link>
         </li>)}
       </VStack> : <ChallengeExercise key={id} id={id} />}
-      <Link to="/" className="course-back"><ArrowLeft size={16} aria-hidden="true" /> Course overview</Link>
+      <Link to="/course" className="course-back"><ArrowLeft size={16} aria-hidden="true" /> Course overview</Link>
     </VStack>
   );
 }

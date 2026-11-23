@@ -16,7 +16,7 @@ export const Route = createFileRoute("/lesson/$lessonId")({
   notFoundComponent: () => (
     <VStack as="section" className="course-wrap course-simple-page" gap={3}>
       <Heading level={1} className="course-display course-page-title">Lesson unavailable</Heading>
-      <Link to="/" className="practice-link">Browse the course</Link>
+      <Link to="/course" className="practice-link">Browse the course</Link>
     </VStack>
   ),
 });

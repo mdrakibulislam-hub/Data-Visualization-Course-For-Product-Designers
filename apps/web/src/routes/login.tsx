@@ -24,7 +24,7 @@ function ProgressInfo() {
       <Text as="p" color="secondary">{canSave
         ? "Return on the same device and browser to pick up where you left off. Clearing this site’s browser data also clears your progress."
         : "Allow storage for this site to keep your progress between visits."}</Text>
-      <Button href="/" label="Back to the course" variant="primary" />
+      <Button href="/course" label="Back to the course" variant="primary" />
     </VStack>
   );
 }

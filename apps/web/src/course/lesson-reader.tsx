@@ -125,12 +125,12 @@ export function LessonReader({ lesson }: { lesson: CourseLesson }) {
   function continueCourse() {
     if (!completed) completeLesson(lesson.id);
     if (next) void navigate({ to: "/lesson/$lessonId", params: { lessonId: next.id } });
-    else void navigate({ to: "/" });
+    else void navigate({ to: "/course" });
   }
 
   return (
     <VStack className="course-wrap course-lesson" gap={5}>
-      <Link to="/" className="course-back"><ArrowLeft size={16} aria-hidden="true" /> Course overview</Link>
+      <Link to="/course" className="course-back"><ArrowLeft size={16} aria-hidden="true" /> Course overview</Link>
       <VStack as="article" className="course-reader" gap={8}>
         <VStack as="header" gap={2} className="course-reader-heading">
           <p className="course-meta">

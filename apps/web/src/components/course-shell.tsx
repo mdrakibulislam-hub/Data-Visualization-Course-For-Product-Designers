@@ -141,7 +141,7 @@ export function CourseShell({ children }: { children: ReactNode }) {
   const sections = (
     <>
       <SideNavSection title="Course">
-        <SideNavItem label="Overview" href="/" icon={Library} isSelected={path === "/"} />
+        <SideNavItem label="Overview" href="/course" icon={Library} isSelected={path === "/course"} />
       </SideNavSection>
       <SideNavSection title="Lessons">
         {modules.map((module, index) => (

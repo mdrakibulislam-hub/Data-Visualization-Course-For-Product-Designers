@@ -2,7 +2,7 @@ import { Heading } from "@astryxdesign/core/Heading";
 import { VStack } from "@astryxdesign/core/VStack";
 import { Toaster } from "@Data-Visualization-Course-For-Product-Designers/ui/components/sonner";
 import type { QueryClient } from "@tanstack/react-query";
-import { HeadContent, Link, Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import { HeadContent, Link, Outlet, createRootRouteWithContext, useRouterState } from "@tanstack/react-router";
 
 import { CourseShell } from "@/components/course-shell";
 import { ThemeProvider, useAppearance } from "@/components/theme-provider";
@@ -19,13 +19,13 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   notFoundComponent: () => (
     <VStack as="section" className="course-wrap course-simple-page" gap={3}>
       <Heading level={1} className="course-display course-page-title">Page unavailable</Heading>
-      <Link to="/" className="practice-link">Browse the course</Link>
+      <Link to="/" className="practice-link">Browse courses</Link>
     </VStack>
   ),
   head: () => ({
     meta: [
-      { title: "Graphnotes · Data visualization for product designers" },
-      { name: "description", content: "A self-paced data visualization course for product designers, with interactive charts, quizzes, and flashcards." },
+      { title: "Graphnotes · Courses for product designers" },
+      { name: "description", content: "Practical courses for product designers. Learn data visualization with interactive charts, quizzes, and flashcards. More design courses are on the way." },
     ],
   }),
 });
@@ -36,14 +36,13 @@ function CourseToaster() {
 }
 
 function RootComponent() {
+  const isLibrary = useRouterState({ select: (state) => state.location.pathname === "/" });
   return (
     <>
       <HeadContent />
       <ThemeProvider>
         <ProgressProvider>
-          <CourseShell>
-            <Outlet />
-          </CourseShell>
+          {isLibrary ? <VStack className="course-shell library-shell" gap={0}><Outlet /></VStack> : <CourseShell><Outlet /></CourseShell>}
         </ProgressProvider>
         <CourseToaster />
       </ThemeProvider>

@@ -30,7 +30,7 @@ const particles = points.flatMap(({ x, y }, index) => [0, 1, 2].map((part) => ({
   } as CSSProperties,
 })));
 
-function PlotMarks({ kind, selected, onInspect }: { kind: ChartStyle; selected: number; onInspect?: (index: number) => void }) {
+function PlotMarks({ kind, selected, onInspect, hasValue = true }: { kind: ChartStyle; selected: number; onInspect?: (index: number) => void; hasValue?: boolean }) {
   function moveFocus(event: KeyboardEvent<SVGGElement>, index: number) {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -72,7 +72,7 @@ function PlotMarks({ kind, selected, onInspect }: { kind: ChartStyle; selected: 
                   <circle cx={x} cy={y} r={kind === "Lollipop" ? 6 : 4.5} className="overview-chart-fill" />
                 </>
               )}
-              {index === selected && <text x={x} y={y - 10} textAnchor="middle" className="overview-chart-value">{value}</text>}
+              {hasValue && index === selected && <text x={x} y={y - 10} textAnchor="middle" className="overview-chart-value">{value}</text>}
               {onInspect && <rect x={x - step / 2} y={plot.top - 16} width={step} height={plot.bottom - plot.top + 20} rx={4} className="overview-chart-hit" />}
             </g>
           );
@@ -82,7 +82,7 @@ function PlotMarks({ kind, selected, onInspect }: { kind: ChartStyle; selected: 
   );
 }
 
-export function OverviewChart() {
+export function OverviewChart({ isPreview = false }: { isPreview?: boolean }) {
   const [chart, setChart] = useState<{ current: number; previous: number | null }>({ current: 0, previous: null });
   const [paused, setPaused] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -110,12 +110,12 @@ export function OverviewChart() {
   }, []);
 
   useEffect(() => {
-    if (paused || hovered || focused || !inView || reducedMotion) return;
+    if (isPreview || paused || hovered || focused || !inView || reducedMotion) return;
     const timer = window.setInterval(() => {
       if (!document.hidden) nextStyle();
     }, 3000);
     return () => window.clearInterval(timer);
-  }, [paused, hovered, focused, inView, reducedMotion, nextStyle, chart.current]);
+  }, [isPreview, paused, hovered, focused, inView, reducedMotion, nextStyle, chart.current]);
 
   useEffect(() => {
     if (chart.previous === null) return;
@@ -124,40 +124,44 @@ export function OverviewChart() {
   }, [chart.current, chart.previous]);
 
   return (
-    <Card className="course-hero-figure" padding={4}>
+    <Card className={`course-hero-figure${isPreview ? " library-chart-preview" : ""}`} padding={4} variant={isPreview ? "transparent" : "default"}>
       <VStack as="figure" ref={figure} gap={0} aria-label="Orders by weekday">
-        <HStack justify="between" align="center" gap={2} className="overview-chart-heading">
-          <Text as="p" weight="semibold">Orders by weekday</Text>
-          <HStack gap={0}>
-            {!reducedMotion && (
-              <IconButton
-                label={paused ? "Resume chart rotation" : "Pause chart rotation"}
-                tooltip={paused ? "Resume chart rotation" : "Pause chart rotation"}
-                icon={paused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
-                variant="ghost"
-                size="sm"
-                onClick={() => setPaused((value) => !value)}
-              />
-            )}
-            <IconButton
-              label="Next chart style"
-              tooltip="Next chart style"
-              icon={<ArrowRight size={16} aria-hidden="true" />}
-              variant="ghost"
-              size="sm"
-              onClick={nextStyle}
-            />
-          </HStack>
-        </HStack>
-        <HStack justify="between" gap={2} className="course-axis-unit">
-          <Text type="supporting" color="secondary">Orders</Text>
-          <Text type="supporting" color="secondary">{styles[chart.current]}</Text>
-        </HStack>
+        {!isPreview && (
+          <>
+            <HStack justify="between" align="center" gap={2} className="overview-chart-heading">
+              <Text as="p" weight="semibold">Orders by weekday</Text>
+              <HStack gap={0}>
+                {!reducedMotion && (
+                  <IconButton
+                    label={paused ? "Resume chart rotation" : "Pause chart rotation"}
+                    tooltip={paused ? "Resume chart rotation" : "Pause chart rotation"}
+                    icon={paused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setPaused((value) => !value)}
+                  />
+                )}
+                <IconButton
+                  label="Next chart style"
+                  tooltip="Next chart style"
+                  icon={<ArrowRight size={16} aria-hidden="true" />}
+                  variant="ghost"
+                  size="sm"
+                  onClick={nextStyle}
+                />
+              </HStack>
+            </HStack>
+            <HStack justify="between" gap={2} className="course-axis-unit">
+              <Text type="supporting" color="secondary">Orders</Text>
+              <Text type="supporting" color="secondary">{styles[chart.current]}</Text>
+            </HStack>
+          </>
+        )}
         <svg
-          viewBox="0 0 440 210"
+          viewBox={isPreview ? "28 0 404 190" : "0 0 440 210"}
           className="overview-chart"
-          role="group"
-          aria-label={`${styles[chart.current]} chart. Inspect a weekday for its order count.`}
+          role={isPreview ? "img" : "group"}
+          aria-label={isPreview ? "Bar chart preview" : `${styles[chart.current]} chart. Inspect a weekday for its order count.`}
           onPointerEnter={(event) => {
             if (event.pointerType === "mouse") setHovered(true);
           }}
@@ -177,7 +181,7 @@ export function OverviewChart() {
             return (
               <g key={value} aria-hidden="true">
                 <line x1={plot.left} x2={plot.right} y1={y} y2={y} className="overview-chart-grid" />
-                <text x={plot.left - 9} y={y + 4} textAnchor="end" className="overview-chart-label">{value}</text>
+                {!isPreview && <text x={plot.left - 9} y={y + 4} textAnchor="end" className="overview-chart-label">{value}</text>}
               </g>
             );
           })}
@@ -188,7 +192,7 @@ export function OverviewChart() {
               </g>
             )}
             <g key={chart.current} className={chart.previous !== null && !reducedMotion ? "overview-chart-incoming" : undefined}>
-              <PlotMarks kind={styles[chart.current]} selected={selected} onInspect={setSelected} />
+              <PlotMarks kind={styles[chart.current]} selected={selected} hasValue={!isPreview} onInspect={isPreview ? undefined : setSelected} />
             </g>
             {chart.previous !== null && !reducedMotion && (
               <g key={`dust-${chart.current}`} aria-hidden="true" pointerEvents="none">
@@ -206,9 +210,9 @@ export function OverviewChart() {
               </g>
             )}
           </g>
-          {weekdayOrders.map(([day], index) => <text key={day} x={points[index].x} y={203} textAnchor="middle" className="overview-chart-label" aria-hidden="true">{day}</text>)}
+          {!isPreview && weekdayOrders.map(([day], index) => <text key={day} x={points[index].x} y={203} textAnchor="middle" className="overview-chart-label" aria-hidden="true">{day}</text>)}
         </svg>
-        <figcaption>{selected === 4 ? "Friday was busiest, with 58 orders." : `${days[selected]} had ${weekdayOrders[selected][1]} orders.`}</figcaption>
+        {!isPreview && <figcaption>{selected === 4 ? "Friday was busiest, with 58 orders." : `${days[selected]} had ${weekdayOrders[selected][1]} orders.`}</figcaption>}
       </VStack>
     </Card>
   );

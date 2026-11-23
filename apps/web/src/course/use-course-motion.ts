@@ -21,7 +21,7 @@ function pageOffset(from: string | null, to: string) {
       ? "calc(-1 * var(--spacing-8)) 0"
       : "var(--spacing-8) 0";
   }
-  if (to === "/" && from?.startsWith("/lesson/")) return "calc(-1 * var(--spacing-8)) 0";
+  if (to === "/course" && from?.startsWith("/lesson/")) return "calc(-1 * var(--spacing-8)) 0";
   return "0 var(--spacing-2)";
 }
 

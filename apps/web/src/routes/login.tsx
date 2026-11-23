@@ -17,7 +17,7 @@ function RouteComponent() {
 
   return (
     <VStack className="course-wrap course-simple-page course-account" gap={4}>
-      <VStack as="header" gap={2} className="course-motion-enter">
+      <VStack as="header" gap={2}>
         <Heading level={1} className="course-display course-page-title">{showSignIn ? "Sign in" : "Create an account"}</Heading>
         <Link href="/" weight="semibold">Continue to the course without an account</Link>
       </VStack>

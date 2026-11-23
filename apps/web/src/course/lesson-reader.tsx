@@ -108,7 +108,7 @@ export function LessonReader({ lesson }: { lesson: CourseLesson }) {
     <VStack className="course-wrap course-lesson" gap={5}>
       <Link to="/" className="course-back"><ArrowLeft size={16} aria-hidden="true" /> Course overview</Link>
       <VStack as="article" className="course-reader" gap={8}>
-        <VStack as="header" gap={2} className="course-reader-heading course-motion-enter">
+        <VStack as="header" gap={2} className="course-reader-heading">
           <p className="course-meta">
             {lesson.moduleTitle} <span aria-hidden="true">·</span> Lesson {index + 1} of {lessons.length} <span aria-hidden="true">·</span> {lesson.minutes} min
             {completed && <><span aria-hidden="true"> · </span>Completed</>}
@@ -124,28 +124,28 @@ export function LessonReader({ lesson }: { lesson: CourseLesson }) {
 
         <VStack as="section" id="lesson-notes" gap={4} aria-label="Lesson">
           {lesson.sections.map(({ title, body }) => (
-            <VStack key={title} gap={1}>
+            <VStack key={title} gap={1} data-scroll-reveal>
               <Heading level={2}>{title}</Heading>
               <Text as="p" type="body">{body}</Text>
             </VStack>
           ))}
         </VStack>
 
-        {lab && <VStack id="lesson-lab" gap={0}><ChartLab lab={lab} /></VStack>}
+        {lab && <VStack id="lesson-lab" gap={0} data-scroll-reveal><ChartLab lab={lab} /></VStack>}
 
-        <VStack as="aside" className="course-takeaway" gap={1} aria-label="Key idea">
+        <VStack as="aside" className="course-takeaway" gap={1} aria-label="Key idea" data-scroll-reveal>
           <Heading level={2}>Keep this in mind</Heading>
           <Text as="p" type="body">{lesson.takeaway}</Text>
         </VStack>
 
-        <VStack as="section" id="lesson-quiz" gap={4} aria-labelledby="quiz-heading">
+        <VStack as="section" id="lesson-quiz" gap={4} aria-labelledby="quiz-heading" data-scroll-reveal>
           <Heading level={2} id="quiz-heading">Check your understanding</Heading>
           {lesson.questions.map((question, questionIndex) => (
             <QuizQuestion key={question.prompt} lessonId={lesson.id} question={question} index={questionIndex} />
           ))}
         </VStack>
 
-        <VStack as="section" id="lesson-practice" gap={2} aria-labelledby="practice-heading">
+        <VStack as="section" id="lesson-practice" gap={2} aria-labelledby="practice-heading" data-scroll-reveal>
           <Heading level={2} id="practice-heading">Try it at work</Heading>
           <Text as="p" type="body">{lesson.practice}</Text>
           {lesson.id === "capstone" && <>

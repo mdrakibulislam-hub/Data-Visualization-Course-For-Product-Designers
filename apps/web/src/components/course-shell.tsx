@@ -16,6 +16,7 @@ import { useState, type ComponentPropsWithRef, type CSSProperties, type ReactNod
 
 import { lessons, modules } from "@/course/curriculum";
 import { useProgress } from "@/course/progress";
+import { useCourseMotion } from "@/course/use-course-motion";
 
 import { ModeToggle } from "./mode-toggle";
 
@@ -94,6 +95,8 @@ function CourseLink({ href, onClick, ...props }: ComponentPropsWithRef<"a">) {
 export function CourseShell({ children }: { children: ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const path = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") || "/" });
+  const settledPath = useRouterState({ select: (state) => state.resolvedLocation?.pathname ?? state.location.pathname });
+  const contentRef = useCourseMotion(settledPath.replace(/\/$/, "") || "/");
   const currentLesson = lessons.find(({ id }) => path === `/lesson/${id}`);
   const activeModule = currentLesson?.moduleTitle ?? modules[0].title;
   const { progress, canSave } = useProgress();
@@ -162,7 +165,7 @@ export function CourseShell({ children }: { children: ReactNode }) {
           </SideNav>
         }
       >
-        <VStack className="course-frame" gap={0}>{children}</VStack>
+        <VStack className="course-frame" gap={0} ref={contentRef}>{children}</VStack>
       </AppShell>
     </LinkProvider>
   );

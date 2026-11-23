@@ -27,7 +27,7 @@ function SourcesPage() {
         <Heading id="articles" level={2}>Articles and guides</Heading>
         <VStack gap={0}>
           {articleSources.map((source) => (
-            <VStack as="article" key={source.id} id={source.id} className="course-source" gap={1}>
+            <VStack as="article" key={source.id} id={source.id} className="course-source" data-scroll-reveal gap={1}>
               <Text as="p" type="supporting" color="secondary" className="course-meta">{source.credit}</Text>
               <Heading level={3}><AstryxLink href={source.url} weight="semibold" type="inherit">{source.title}</AstryxLink></Heading>
               <p>{source.note}</p>
@@ -39,7 +39,7 @@ function SourcesPage() {
         <Heading id="books" level={2}>Books and slides</Heading>
         <VStack gap={0}>
           {bookSources.map((source) => (
-            <VStack as="article" key={source.id} id={source.id} className="course-source" gap={2}>
+            <VStack as="article" key={source.id} id={source.id} className="course-source" data-scroll-reveal gap={2}>
               <Text as="p" type="supporting" color="secondary" className="course-meta">{source.credit}</Text>
               <Heading level={3}>{source.title}</Heading>
               <p>{source.scope}</p>

@@ -24,7 +24,7 @@ function CourseOverview() {
   const completed = progress.completed.length;
 
   return (
-    <VStack className="course-wrap course-overview course-motion-enter" gap={0}>
+    <VStack className="course-wrap course-overview" gap={0}>
       <HStack as="section" className="course-hero" gap={0} aria-labelledby="course-title">
         <VStack className="course-hero-copy" gap={0}>
           <Heading level={1} id="course-title" className="course-display course-hero-title">
@@ -59,7 +59,7 @@ function CourseOverview() {
 
       <VStack as="section" id="curriculum" className="course-curriculum" gap={0} aria-label="Course outline">
         {modules.map((module) => (
-          <HStack as="section" className="course-module" key={module.title} align="start" gap={0}>
+          <HStack as="section" className="course-module" key={module.title} align="start" gap={0} data-scroll-reveal>
             <VStack className="course-module-title" gap={1}>
               <Heading level={2}>{module.title}</Heading>
               <p>{module.description}</p>

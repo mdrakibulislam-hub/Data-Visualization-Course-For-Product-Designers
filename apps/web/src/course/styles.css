@@ -12,6 +12,7 @@
   --positive: var(--color-text-success);
   --display-font: var(--font-family-heading, "Inter Display", Inter, sans-serif);
   min-height: 100svh;
+  overflow-x: clip;
   color: var(--ink);
   font-family: var(--font-family-body, Inter, sans-serif);
 }
@@ -77,33 +78,34 @@
 }
 
 .course-action {
-  transition: scale var(--duration-fast) var(--ease-move);
+  transition: scale var(--duration-fast) var(--ease-standard), translate var(--duration-fast) var(--ease-standard);
 }
 
-.course-action:active {
-  scale: .97;
+.course-action:active:not(:disabled):not([aria-disabled="true"]) {
+  scale: .985;
+  translate: 0 var(--spacing-0-5);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .course-action:hover:not(:active) {
-    scale: 1.025;
+  .course-action:hover:not(:active):not(:disabled):not([aria-disabled="true"]) {
+    translate: 0 calc(-1 * var(--border-width));
   }
 }
 
 .course-motion-enter {
-  animation: course-arrive var(--duration-medium) var(--ease-entrance) both;
+  animation: course-arrive var(--duration-medium-min) var(--ease-standard) both;
 }
 
 @keyframes course-arrive {
-  from { opacity: 0; translate: 0 .4rem; }
+  from { opacity: .55; translate: 0 var(--spacing-2); }
   to { opacity: 1; translate: 0 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .course-motion-enter { animation: none; }
   .course-action { transition: none; }
-  .course-action:active,
-  .course-action:hover:not(:active) { scale: 1; }
+  .course-action:active:not(:disabled):not([aria-disabled="true"]),
+  .course-action:hover:not(:active):not(:disabled):not([aria-disabled="true"]) { scale: 1; translate: none; }
 }
 
 .course-meta {
@@ -263,6 +265,7 @@
   padding: .9rem .65rem;
   min-height: 4rem;
   border-radius: .2rem;
+  transition: background-color var(--duration-fast-min) var(--ease-standard);
 }
 
 .course-lesson-row:hover {
@@ -288,6 +291,16 @@
 .course-row-arrow { color: var(--accent); }
 .course-row-completed { color: var(--positive); }
 
+.course-row-arrow,
+.course-back > svg {
+  transition: translate var(--duration-fast) var(--ease-standard);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .course-lesson-row:hover .course-row-arrow { translate: var(--spacing-1) 0; }
+  .course-back:hover > svg { translate: calc(-1 * var(--spacing-1)) 0; }
+}
+
 .course-back {
   display: inline-flex;
   width: fit-content;
@@ -297,6 +310,7 @@
   color: var(--muted);
   font-size: .9rem;
   font-weight: 600;
+  transition: color var(--duration-fast-min) var(--ease-standard);
 }
 
 .course-back:hover {

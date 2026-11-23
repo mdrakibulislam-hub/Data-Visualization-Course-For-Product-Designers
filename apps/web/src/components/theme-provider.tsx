@@ -16,6 +16,11 @@ const fieldGuideTheme = defineTheme({
   motion: { character: "expressive", tempo: 0.95 },
   components: {
     "side-nav-item": {
+      base: {
+        transitionProperty: "background-color, color",
+        transitionDuration: "var(--duration-fast)",
+        transitionTimingFunction: "var(--ease-standard)",
+      },
       "size:md": { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" },
       "size:sm": { minHeight: "calc(var(--spacing-8) + var(--spacing-1))" },
       selected: {

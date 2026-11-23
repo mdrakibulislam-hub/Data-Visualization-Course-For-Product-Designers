@@ -74,12 +74,12 @@ function CapstonePage() {
       </TabList>
       <VStack key={id} gap={5}>
         {view === "brief" ? (
-          <VStack id="project-brief" role="tabpanel" aria-label="Brief and data" gap={5}>
-            <VStack as="section" gap={2} className="capstone-brief">
+          <VStack id="project-brief" role="tabpanel" className="course-motion-enter" aria-label="Brief and data" gap={5}>
+            <VStack as="section" data-scroll-reveal gap={2} className="capstone-brief">
               <Heading level={2}>{project.title}</Heading>
               <Text as="p">{project.brief}</Text>
             </VStack>
-            <VStack as="section" gap={3} aria-labelledby="project-data-title">
+            <VStack as="section" data-scroll-reveal gap={3} aria-labelledby="project-data-title">
               <HStack justify="between" align="center" wrap="wrap" gap={2}>
                 <Heading level={2} id="project-data-title">Practice data</Heading>
                 <Button label="Download CSV" variant="ghost" size="sm" icon={<Download size={16} aria-hidden="true" />} onClick={() => downloadFile(project.csv, project.filename, "text/csv;charset=utf-8")} />
@@ -97,7 +97,7 @@ function CapstonePage() {
             </HStack>
           </VStack>
         ) : (
-          <VStack id="project-workspace" role="tabpanel" aria-label="Your workspace" gap={4}>
+          <VStack id="project-workspace" role="tabpanel" className="course-motion-enter" aria-label="Your workspace" gap={4}>
             <HStack justify="between" align="center" wrap="wrap" gap={3}>
               <Heading level={2} ref={workspaceHeading} tabIndex={-1}>Your design</Heading>
               <VStack gap={0} className="capstone-progress">
@@ -105,14 +105,14 @@ function CapstonePage() {
               </VStack>
             </HStack>
             <HStack className="capstone-workspace" align="start" gap={0}>
-              <VStack as="section" aria-label="Project checklist" gap={0}>
+              <VStack as="section" data-scroll-reveal aria-label="Project checklist" gap={0}>
                 {projectSteps.map(({ id: step, label, description }) => (
                   <VStack key={step} className="capstone-step" gap={0}>
                     <CheckboxInput label={label} description={description} value={checked.includes(step)} onChange={(value) => checkProjectStep(id, step, value)} />
                   </VStack>
                 ))}
               </VStack>
-              <VStack as="section" gap={3} aria-label="Design notes" className="capstone-notes">
+              <VStack as="section" data-scroll-reveal gap={3} aria-label="Design notes" className="capstone-notes">
                 <TextArea label="Your design rationale" value={draft} onChange={setDraft} rows={10} maxLength={2500} htmlMaxLength={2500} placeholder="Who is this for? What will they see first? What can they do next?" />
                 <HStack gap={2} wrap="wrap" align="center" justify="between">
                   <Text type="supporting" color="secondary">{canSave ? "Saved in this browser" : "Available in this tab only"}</Text>

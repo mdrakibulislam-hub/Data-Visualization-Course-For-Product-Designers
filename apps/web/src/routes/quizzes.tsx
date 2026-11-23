@@ -127,7 +127,7 @@ function QuizzesPage() {
 
     return (
       <VStack className="course-wrap course-simple-page quiz-library-page" gap={5}>
-        <VStack as="header" gap={1.5} className="course-motion-enter">
+        <VStack as="header" gap={1.5}>
           <Heading level={1} ref={catalogHeading} tabIndex={-1} className="course-display course-page-title">Quizzes</Heading>
           <Text as="p" color="secondary">Choose a topic to practice making chart decisions.</Text>
         </VStack>
@@ -141,7 +141,7 @@ function QuizzesPage() {
             const action = current ? completed ? "View results" : "Resume quiz" : "Start quiz";
 
             return (
-              <VStack as="li" key={value} gap={0}>
+              <VStack as="li" key={value} gap={0} data-scroll-reveal>
                 <ClickableCard label={`${action}: ${label}`} padding={5} className="quiz-library-card" data-current={current || undefined} onClick={() => openTopic(value)}>
                   <VStack gap={3} className="quiz-library-card-content">
                     <HStack align="center" gap={2}>

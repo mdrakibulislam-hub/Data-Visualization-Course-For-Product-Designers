@@ -54,7 +54,7 @@ function ChartAtlas() {
       {results.length ? (
         <VStack as="ul" className="lab-atlas-results" gap={0}>
           {results.map(([type, name, guidance]) => (
-            <VStack as="li" key={name} className="lab-atlas-row" gap={1}>
+            <VStack as="li" key={name} className="lab-atlas-row" data-scroll-reveal gap={1}>
               <HStack justify="between" align="start" wrap="wrap" gap={1}>
                 <Heading level={3}>{name}</Heading>
                 <Text type="supporting" color="secondary">{type}</Text>
@@ -95,7 +95,7 @@ function ExperimentCatalog({
         </SegmentedControl>
         <Grid columns={{ minWidth: 240, max: 3 }} gap={3}>
           {options.map(({ id, title, lab }) => (
-            <ClickableCard key={id} label={title} onClick={() => onOpen(id)} padding={4} className="lab-browser-card">
+            <ClickableCard data-scroll-reveal key={id} label={title} onClick={() => onOpen(id)} padding={4} className="lab-browser-card">
               <VStack gap={4}>
                 <ChartThumbnail data={lab.views[0].chart} />
                 <Text weight="semibold" as="p">{title}</Text>
@@ -123,7 +123,7 @@ function ChartLabPage() {
 
   return (
     <VStack className={`course-wrap course-simple-page practice-page lab-page ${view === "browse" ? "lab-catalog-page" : ""}`} gap={4}>
-      <VStack as="header" gap={2} className="course-motion-enter">
+      <VStack as="header" gap={2}>
         <Heading level={1} className="course-display course-page-title">Chart Lab</Heading>
         <Text as="p" color="secondary">Change how a chart is drawn and see which patterns become easier to read.</Text>
       </VStack>

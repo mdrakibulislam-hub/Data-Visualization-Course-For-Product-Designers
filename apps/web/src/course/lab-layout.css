@@ -31,7 +31,7 @@
 .lab-browser-card {
   height: 100%;
   text-align: start;
-  transition: background-color var(--duration-fast) var(--ease-standard), translate var(--duration-fast) var(--ease-move);
+  transition: background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), translate var(--duration-fast) var(--ease-standard);
 }
 
 .lab-browser-card p {
@@ -46,7 +46,7 @@
   border-radius: 0;
 }
 
-@media (hover: hover) and (pointer: fine) {
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .lab-browser-card:hover {
     background-color: var(--panel);
     translate: 0 calc(-1 * var(--spacing-0-5));

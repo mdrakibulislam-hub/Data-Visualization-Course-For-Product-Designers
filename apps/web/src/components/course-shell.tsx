@@ -41,6 +41,7 @@ function SidebarHeader({ isCollapsed }: { isCollapsed: boolean }) {
       align="center"
       justify="between"
       gap={isCompact ? 1.5 : 2}
+      paddingBlockStart={isMobile ? 0 : 2}
     >
       <BrandLink isCompact={isCompact} />
       {!isMobile && <SideNavCollapseButton size="sm" />}
@@ -101,7 +102,6 @@ export function CourseShell({ children }: { children: ReactNode }) {
     <>
       <SideNavSection title="Course">
         <SideNavItem label="Overview" href="/" icon={Library} isSelected={path === "/"} />
-        <SideNavItem label="Sources" href="/sources" icon={DocumentCopy} isSelected={path === "/sources"} />
       </SideNavSection>
       <SideNavSection title="Lessons">
         {modules.map((module, index) => (
@@ -129,6 +129,9 @@ export function CourseShell({ children }: { children: ReactNode }) {
         <SideNavItem label="Flashcards" href="/review" icon={Layers} isSelected={path === "/review"} />
         <SideNavItem label="Quizzes" href="/quizzes" icon={HelpCircle} isSelected={path === "/quizzes"} />
         <SideNavItem label="Capstone project" href="/capstone" icon={Checklist} isSelected={path === "/capstone"} />
+      </SideNavSection>
+      <SideNavSection title="Resources" isHeaderHidden>
+        <SideNavItem label="Sources" href="/sources" icon={DocumentCopy} isSelected={path === "/sources"} />
       </SideNavSection>
     </>
   );

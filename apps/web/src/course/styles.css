@@ -634,7 +634,7 @@
   block-size: auto;
 }
 
-.dark .course-brand-wordmark {
+.dark :is(.course-brand-wordmark, .course-brand-icon) {
   filter: brightness(3) saturate(.55);
 }
 

@@ -615,6 +615,12 @@
   .course-data :where(th, td) { padding-inline: .25rem; }
 }
 
+.course-sidebar-header[data-direction="horizontal"] > .astryx-side-nav-heading {
+  flex: 1;
+  min-inline-size: 0;
+  padding-inline-end: 0;
+}
+
 .course-brand-mark {
   width: 2rem;
   height: 2rem;

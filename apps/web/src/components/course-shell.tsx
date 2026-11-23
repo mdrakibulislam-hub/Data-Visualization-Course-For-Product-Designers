@@ -5,7 +5,8 @@ import { IconButton } from "@astryxdesign/core/IconButton";
 import { LinkProvider } from "@astryxdesign/core/Link";
 import { MobileNav } from "@astryxdesign/core/MobileNav";
 import { ProgressBar } from "@astryxdesign/core/ProgressBar";
-import { SideNav, SideNavHeading, SideNavItem, SideNavSection } from "@astryxdesign/core/SideNav";
+import { SideNav, SideNavCollapseButton, SideNavHeading, SideNavItem, SideNavSection } from "@astryxdesign/core/SideNav";
+import { Stack } from "@astryxdesign/core/Stack";
 import { Text } from "@astryxdesign/core/Text";
 import { Tooltip } from "@astryxdesign/core/Tooltip";
 import { VStack } from "@astryxdesign/core/VStack";
@@ -19,6 +20,26 @@ import { useProgress } from "@/course/progress";
 import { ModeToggle } from "./mode-toggle";
 
 const moduleIcons = [BookOpen, Database, Grid, Layers];
+
+function SidebarHeader({ isCollapsed }: { isCollapsed: boolean }) {
+  const { isMobile } = useAppShellMobile();
+  return (
+    <Stack
+      direction={isCollapsed && !isMobile ? "vertical" : "horizontal"}
+      align="center"
+      justify="between"
+      gap={isCollapsed ? 1.5 : 0}
+      className="course-sidebar-header"
+    >
+      <SideNavHeading heading="Data Viz Field Guide" headingHref="/" icon={
+        <HStack as="span" align="center" justify="center" gap={0} className="course-brand-mark">
+          <ChartBar size={17} aria-hidden="true" />
+        </HStack>
+      } />
+      {!isMobile && <SideNavCollapseButton size="sm" />}
+    </Stack>
+  );
+}
 
 function SidebarProgress({ completed, canSave, isCollapsed }: { completed: number; canSave: boolean; isCollapsed: boolean }) {
   const details = (
@@ -122,12 +143,8 @@ export function CourseShell({ children }: { children: ReactNode }) {
         sideNav={
           <SideNav
             aria-label="Course navigation"
-            collapsible={{ isCollapsed, onCollapsedChange: setIsCollapsed }}
-            header={<SideNavHeading heading="Data Viz Field Guide" headingHref="/" icon={
-              <HStack as="span" align="center" justify="center" gap={0} className="course-brand-mark">
-                <ChartBar size={17} aria-hidden="true" />
-              </HStack>
-            } />}
+            collapsible={{ isCollapsed, onCollapsedChange: setIsCollapsed, hasButton: false }}
+            header={<SidebarHeader isCollapsed={isCollapsed} />}
             footer={<SidebarProgress completed={progress.completed.length} canSave={canSave} isCollapsed={isCollapsed} />}
             footerIcons={<ModeToggle isCollapsed={isCollapsed} />}
           >

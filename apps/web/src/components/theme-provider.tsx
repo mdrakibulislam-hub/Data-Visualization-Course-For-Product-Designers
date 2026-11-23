@@ -16,6 +16,8 @@ const fieldGuideTheme = defineTheme({
   motion: { character: "expressive", tempo: 0.95 },
   components: {
     "side-nav-item": {
+      "size:md": { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" },
+      "size:sm": { minHeight: "calc(var(--spacing-8) + var(--spacing-1))" },
       selected: {
         backgroundColor: "var(--color-accent-muted)",
         color: "var(--color-text-accent)",

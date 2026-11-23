@@ -2,6 +2,10 @@
   max-width: 55rem;
 }
 
+.lab-catalog-page {
+  max-width: 64rem;
+}
+
 .lab-section[hidden] {
   display: none;
 }
@@ -30,8 +34,16 @@
   transition: background-color var(--duration-fast) var(--ease-standard), translate var(--duration-fast) var(--ease-move);
 }
 
+.lab-browser-card p {
+  font-size: 1.0625rem;
+  line-height: 1.4;
+}
+
 .lab-browser-card .chart-thumbnail {
-  height: var(--spacing-10);
+  height: 7.5rem;
+  padding: var(--spacing-2);
+  background: transparent;
+  border-radius: 0;
 }
 
 @media (hover: hover) and (pointer: fine) {

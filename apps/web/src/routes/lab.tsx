@@ -93,10 +93,10 @@ function ExperimentCatalog({
           <SegmentedControlItem label="Studio" value="studio" />
           <SegmentedControlItem label="Lessons" value="lessons" />
         </SegmentedControl>
-        <Grid columns={{ minWidth: 156, max: 4 }} gap={2}>
+        <Grid columns={{ minWidth: 240, max: 3 }} gap={3}>
           {options.map(({ id, title, lab }) => (
-            <ClickableCard key={id} label={title} onClick={() => onOpen(id)} padding={2} className="lab-browser-card">
-              <VStack gap={1.5}>
+            <ClickableCard key={id} label={title} onClick={() => onOpen(id)} padding={4} className="lab-browser-card">
+              <VStack gap={4}>
                 <ChartThumbnail data={lab.views[0].chart} />
                 <Text weight="semibold" as="p">{title}</Text>
               </VStack>
@@ -122,7 +122,7 @@ function ChartLabPage() {
   }
 
   return (
-    <VStack className="course-wrap course-simple-page practice-page lab-page" gap={4}>
+    <VStack className={`course-wrap course-simple-page practice-page lab-page ${view === "browse" ? "lab-catalog-page" : ""}`} gap={4}>
       <VStack as="header" gap={2} className="course-motion-enter">
         <Heading level={1} className="course-display course-page-title">Chart Lab</Heading>
         <Text as="p" color="secondary">Change how a chart is drawn and see which patterns become easier to read.</Text>

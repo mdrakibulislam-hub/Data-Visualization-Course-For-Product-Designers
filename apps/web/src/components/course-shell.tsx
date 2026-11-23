@@ -153,7 +153,7 @@ export function CourseShell({ children }: { children: ReactNode }) {
             collapsible={{ isCollapsed, onCollapsedChange: setIsCollapsed, hasButton: false }}
             header={<SidebarHeader isCollapsed={isCollapsed} />}
             footer={<SidebarProgress completed={progress.completed.length} canSave={canSave} isCollapsed={isCollapsed} />}
-            footerIcons={<ModeToggle isCollapsed={isCollapsed} />}
+            footerIcons={<HStack gap={0} width="100%"><ModeToggle isCollapsed={isCollapsed} /></HStack>}
           >
             {sections}
           </SideNav>

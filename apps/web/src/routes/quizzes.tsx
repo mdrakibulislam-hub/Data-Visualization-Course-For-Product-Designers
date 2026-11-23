@@ -142,25 +142,21 @@ function QuizzesPage() {
 
             return (
               <VStack as="li" key={value} gap={0}>
-                <ClickableCard label={`${action}: ${label}`} padding={3} className="quiz-library-card" data-current={current || undefined} onClick={() => openTopic(value)}>
+                <ClickableCard label={`${action}: ${label}`} padding={5} className="quiz-library-card" data-current={current || undefined} onClick={() => openTopic(value)}>
                   <VStack gap={3} className="quiz-library-card-content">
-                    <HStack justify="between" align="start" gap={2}>
-                      <HStack as="span" align="center" justify="center" gap={0} className="quiz-library-icon">
-                        <Icon size={19} aria-hidden="true" />
-                      </HStack>
-                      <ArrowRight size={17} className="quiz-library-arrow" aria-hidden="true" />
+                    <HStack align="center" gap={2}>
+                      <Icon size={23} className="quiz-library-icon" aria-hidden="true" />
+                      <Heading level={2} className="quiz-library-title">{label}</Heading>
                     </HStack>
                     <VStack gap={1}>
-                      <Heading level={2} className="quiz-library-title">{label}</Heading>
-                      <Text as="p" color="secondary" type="supporting">{description}</Text>
+                      <Text as="p" color="secondary">{description}</Text>
                     </VStack>
-                    <HStack wrap="wrap" align="center" justify="between" gap={1} className="quiz-library-meta">
-                      <Text type="supporting" color="secondary">{count} questions</Text>
-                      {current ? (
-                        <Text type="supporting" color="accent" weight="semibold">{action}</Text>
-                      ) : best !== undefined && (
-                        <Text type="supporting" color="secondary">Best {best} correct</Text>
-                      )}
+                    <HStack wrap="wrap" align="center" justify="between" gap={2} className="quiz-library-meta">
+                      <Text type="supporting" color="secondary">{count} questions{best !== undefined ? ` · Best ${best}/${count}` : ""}</Text>
+                      <HStack gap={1} align="center">
+                        <Text type="supporting" color={current ? "accent" : "secondary"} weight="medium">{current ? action : "Start quiz"}</Text>
+                        <ArrowRight size={15} aria-hidden="true" className="quiz-library-arrow" />
+                      </HStack>
                     </HStack>
                   </VStack>
                 </ClickableCard>

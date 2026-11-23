@@ -1,6 +1,5 @@
 import { Button } from "@astryxdesign/core/Button";
 import { Card } from "@astryxdesign/core/Card";
-import { Divider } from "@astryxdesign/core/Divider";
 import { Heading } from "@astryxdesign/core/Heading";
 import { HStack } from "@astryxdesign/core/HStack";
 import { Link } from "@astryxdesign/core/Link";
@@ -10,9 +9,9 @@ import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Check, Repeat } from "reicon-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState, type Ref } from "react";
 
-import { lessons } from "@/course/curriculum";
+import { lessons, type CourseLesson } from "@/course/curriculum";
 import { useProgress } from "@/course/progress";
 
 export const Route = createFileRoute("/review")({
@@ -20,10 +19,46 @@ export const Route = createFileRoute("/review")({
   component: Flashcards,
 });
 
+type LeavingCard = { lesson: CourseLesson; revealed: boolean; direction: "left" | "right" };
+
+function StudyCard({ lesson, revealed, leaving, questionRef, answerRef, onExit }: {
+  lesson: CourseLesson;
+  revealed: boolean;
+  leaving?: LeavingCard["direction"];
+  questionRef?: Ref<HTMLHeadingElement>;
+  answerRef?: Ref<HTMLHeadingElement>;
+  onExit?: () => void;
+}) {
+  return (
+    <Card padding={0} className={`review-sheet ${leaving ? "review-leaving" : "review-current"}`} data-direction={leaving} aria-hidden={leaving ? true : undefined} inert={leaving ? true : undefined} onAnimationEnd={(event) => {
+      if (leaving && event.target === event.currentTarget) onExit?.();
+    }}>
+      <VStack as="section" aria-labelledby={leaving ? undefined : "flashcard-question"} gap={0}>
+        <HStack paddingInline={5} paddingBlock={4} justify="between" align="center" gap={2}>
+          <Text type="supporting" color="secondary">{lesson.moduleTitle}</Text>
+          <Text type="supporting" color="secondary">{lessons.indexOf(lesson) + 1} / {lessons.length}</Text>
+        </HStack>
+        <VStack className="review-prompt" padding={5} gap={4} align="center" justify="center">
+          <Heading level={2} ref={questionRef} tabIndex={leaving ? undefined : -1} className="course-display review-question" id={leaving ? undefined : "flashcard-question"} textWrap="balance" justify="center">{lesson.flashcard.front}</Heading>
+          {revealed && (
+            <VStack className="review-answer" gap={2} align="center">
+              <Heading level={3} ref={answerRef} tabIndex={leaving ? undefined : -1} id={leaving ? undefined : "flashcard-answer"} aria-describedby={leaving ? undefined : "flashcard-answer-text"} className="review-answer-label">Answer</Heading>
+              <Text as="p" id={leaving ? undefined : "flashcard-answer-text"}>{lesson.flashcard.back}</Text>
+            </VStack>
+          )}
+        </VStack>
+      </VStack>
+    </Card>
+  );
+}
+
 function Flashcards() {
   const { progress, canSave, rateCard } = useProgress();
   const [reviewAll, setReviewAll] = useState(false);
   const [revealedCard, setRevealedCard] = useState<string | null>(null);
+  const [leaving, setLeaving] = useState<LeavingCard | null>(null);
+  const [turn, setTurn] = useState(0);
+  const advanceLock = useRef(false);
   const answerHeading = useRef<HTMLHeadingElement>(null);
   const questionHeading = useRef<HTMLHeadingElement>(null);
   const remaining = lessons.filter(({ id }) => !progress.knownCards.includes(id));
@@ -31,30 +66,50 @@ function Flashcards() {
   const card = deck.find(({ id }) => id === progress.reviewCard) ?? deck[0];
   const isRevealed = card != null && revealedCard === card.id;
 
+  function finishExit() {
+    advanceLock.current = false;
+    setLeaving(null);
+  }
+
+  useEffect(() => {
+    if (!leaving) return;
+    // Clear the decorative outgoing sheet even if motion settings change mid-animation.
+    const timeout = window.setTimeout(() => {
+      advanceLock.current = false;
+      setLeaving(null);
+    }, 600);
+    return () => window.clearTimeout(timeout);
+  }, [leaving]);
+
   function changeDeck(all: boolean) {
     setRevealedCard(null);
     setReviewAll(all);
   }
 
   function rate(known: boolean) {
-    if (!card) return;
-    const position = deck.indexOf(card);
-    const next = deck[(position + 1) % deck.length];
+    if (!card || !isRevealed || advanceLock.current) return;
+    const next = deck[(deck.indexOf(card) + 1) % deck.length];
+    const animate = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (animate) {
+      advanceLock.current = true;
+      setLeaving({ lesson: card, revealed: true, direction: known ? "right" : "left" });
+    }
+    // Save the decision immediately so navigation during the exit preserves progress.
     rateCard(card.id, known, known && !reviewAll && next.id === card.id ? null : next.id);
+    setTurn((value) => value + 1);
     setRevealedCard(null);
     requestAnimationFrame(() => questionHeading.current?.focus());
   }
 
   return (
     <VStack className="course-wrap course-simple-page review-page" gap={5}>
-      <VStack as="header" gap={1.5} className="course-motion-enter">
+      <VStack as="header" gap={1.5}>
         <Heading level={1} className="course-display course-page-title">Flashcards</Heading>
-        <Text as="p" color="secondary">Try to recall the answer before you reveal it.</Text>
+        <Text as="p" color="secondary">Recall an idea, then turn the card to check it.</Text>
       </VStack>
-
-      <VStack gap={3}>
+      <VStack gap={4}>
         <HStack justify="between" align="center" wrap="wrap" gap={3}>
-          <SegmentedControl label="Review deck" value={reviewAll ? "all" : "remaining"} onChange={(value) => changeDeck(value === "all")}>
+          <SegmentedControl label="Review deck" value={reviewAll ? "all" : "remaining"} onChange={(value) => changeDeck(value === "all")} isDisabled={Boolean(leaving)}>
             <SegmentedControlItem label="To review" value="remaining" />
             <SegmentedControlItem label="All cards" value="all" />
           </SegmentedControl>
@@ -64,57 +119,43 @@ function Flashcards() {
         </HStack>
         {!canSave && <Text as="p" type="supporting" role="status" color="secondary">Progress is available in this tab only.</Text>}
 
-        {card ? (
-          <Card padding={0} className="review-sheet">
-            <VStack as="section" aria-labelledby="flashcard-question" gap={0}>
-              <VStack paddingInline={4} paddingBlock={3} gap={0}>
-                <Text type="supporting" color="secondary" weight="semibold">{card.moduleTitle}</Text>
-              </VStack>
-              <Divider />
-              <VStack key={card.id} className="review-prompt course-motion-enter" padding={5} gap={3} align="center" justify="center">
-                <Heading level={2} ref={questionHeading} tabIndex={-1} className="course-display review-question" id="flashcard-question" textWrap="balance" justify="center">{card.flashcard.front}</Heading>
-                {isRevealed && (
-                  <VStack className="review-answer course-motion-enter" gap={1.5} align="start" aria-labelledby="flashcard-answer">
-                    <Heading level={3} ref={answerHeading} tabIndex={-1} id="flashcard-answer" aria-describedby="flashcard-answer-text" className="review-answer-label">Answer</Heading>
-                    <Text as="p" id="flashcard-answer-text">{card.flashcard.back}</Text>
-                  </VStack>
-                )}
-              </VStack>
-              <Divider />
-              <HStack paddingInline={4} paddingBlock={3} justify="center" align="center" gap={2} wrap="wrap">
-                {isRevealed ? (
-                  <>
-                    <Button label="Review again" variant="secondary" size="lg" icon={<Repeat size={16} aria-hidden="true" />} className="course-action" onClick={() => rate(false)} />
-                    <Button label="I knew it" variant="primary" size="lg" icon={<Check size={16} aria-hidden="true" />} className="course-action" onClick={() => rate(true)} />
-                  </>
-                ) : (
-                  <Button label="Show answer" variant="primary" size="lg" className="course-action" endContent={<ArrowRight size={16} aria-hidden="true" />} onClick={() => {
-                    setRevealedCard(card.id);
-                    requestAnimationFrame(() => answerHeading.current?.focus());
-                  }} />
-                )}
-              </HStack>
-            </VStack>
-          </Card>
-        ) : (
-          <Card padding={5} className="review-sheet">
-            <VStack as="section" gap={3} align="start" className="course-motion-enter">
-              <Heading level={2} ref={questionHeading} tabIndex={-1}>You know all {lessons.length} cards</Heading>
-              <Text as="p" color="secondary">Revisit the full deck whenever you want more practice.</Text>
-              <Button label="Review all cards" variant="secondary" onClick={() => {
-                changeDeck(true);
-                requestAnimationFrame(() => questionHeading.current?.focus());
-              }} />
-            </VStack>
-          </Card>
-        )}
+        <VStack className="review-deck-window" gap={0}>
+          <VStack className="review-deck" gap={0} data-empty={!card || undefined}>
+            {card ? (
+              <StudyCard key={`${card.id}:${turn}`} lesson={card} revealed={isRevealed} questionRef={questionHeading} answerRef={answerHeading} />
+            ) : (
+              <Card padding={5} className="review-sheet review-current">
+                <VStack as="section" className="review-prompt" gap={3} align="center" justify="center">
+                  <Heading level={2} ref={questionHeading} tabIndex={-1}>You know all {lessons.length} cards</Heading>
+                  <Text as="p" color="secondary">Come back later to see what you remember.</Text>
+                  <Button label="Review all cards" variant="secondary" onClick={() => changeDeck(true)} />
+                </VStack>
+              </Card>
+            )}
+            {leaving && <StudyCard lesson={leaving.lesson} revealed={leaving.revealed} leaving={leaving.direction} onExit={finishExit} />}
+          </VStack>
+        </VStack>
 
         {card && (
-          <HStack align="center" gap={1.5} className="review-related">
-            <BookOpen size={16} aria-hidden="true" />
-            <Text color="secondary" type="supporting">Related lesson</Text>
-            <Link href={`/lesson/${card.id}`} type="supporting" weight="semibold" hasUnderline>{card.title}</Link>
-          </HStack>
+          <VStack gap={4} align="center">
+            <HStack justify="center" align="center" gap={2} wrap="wrap" className="review-actions">
+              {isRevealed ? (
+                <>
+                  <Button label="Review again" variant="secondary" size="lg" icon={<Repeat size={16} aria-hidden="true" />} className="course-action" isDisabled={Boolean(leaving)} onClick={() => rate(false)} />
+                  <Button label="I knew it" variant="primary" size="lg" icon={<Check size={16} aria-hidden="true" />} className="course-action" isDisabled={Boolean(leaving)} onClick={() => rate(true)} />
+                </>
+              ) : (
+                <Button label="Show answer" variant="primary" size="lg" className="course-action" isDisabled={Boolean(leaving)} endContent={<ArrowRight size={16} aria-hidden="true" />} onClick={() => {
+                  setRevealedCard(card.id);
+                  requestAnimationFrame(() => answerHeading.current?.focus());
+                }} />
+              )}
+            </HStack>
+            <HStack align="center" justify="center" gap={1.5} wrap="wrap" className="review-related">
+              <BookOpen size={15} aria-hidden="true" />
+              <Link href={`/lesson/${card.id}`} type="supporting" color="secondary" hasUnderline>{card.title}</Link>
+            </HStack>
+          </VStack>
         )}
       </VStack>
     </VStack>

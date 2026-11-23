@@ -10,7 +10,7 @@ function AppearanceTabs({ compact = false }: { compact?: boolean }) {
   const { appearance, setAppearance } = useAppearance();
 
   return (
-    <SegmentedControl label="Appearance" value={appearance} onChange={setAppearance} size={compact ? "sm" : "md"}>
+    <SegmentedControl label="Appearance" value={appearance} onChange={setAppearance} size={compact ? "sm" : "md"} layout={compact ? "fill" : "hug"}>
       <SegmentedControlItem label="Default" value="light" icon={compact ? undefined : <Sun size={15} aria-hidden="true" />} />
       <SegmentedControlItem label="Sepia" value="sepia" icon={compact ? undefined : <BookOpen size={15} aria-hidden="true" />} />
       <SegmentedControlItem label="Dark" value="dark" icon={compact ? undefined : <Moon size={15} aria-hidden="true" />} />

@@ -1,0 +1,120 @@
+.overview-chart-heading {
+  margin-bottom: var(--spacing-3);
+}
+
+.overview-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.overview-chart-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.overview-chart-label,
+.overview-chart-value {
+  fill: var(--muted);
+  font-size: clamp(11.5px, calc(32px - 5cqi), 20px);
+  font-variant-numeric: tabular-nums;
+}
+
+.overview-chart-value {
+  fill: var(--ink);
+  font-weight: 600;
+}
+
+.overview-chart-fill,
+.overview-chart-dust {
+  fill: var(--chart-muted);
+}
+
+.overview-chart-mark[data-active] .overview-chart-fill,
+.overview-chart-dust[data-accent] {
+  fill: var(--accent-fill);
+}
+
+.overview-chart-line {
+  fill: none;
+  stroke: var(--chart-muted);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.overview-chart-area {
+  fill: var(--accent-fill);
+  fill-opacity: .1;
+}
+
+.overview-chart-stem {
+  stroke: var(--chart-muted);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.overview-chart-mark[data-active] .overview-chart-stem {
+  stroke: var(--accent-fill);
+}
+
+.overview-chart-hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 1;
+}
+
+.overview-chart-mark {
+  cursor: pointer;
+}
+
+.overview-chart-mark:focus-visible {
+  outline: none;
+}
+
+.overview-chart-mark:focus-visible .overview-chart-hit {
+  stroke: var(--accent);
+  stroke-dasharray: 3 3;
+  vector-effect: non-scaling-stroke;
+}
+
+.overview-chart-incoming {
+  animation: overview-chart-form 600ms var(--ease-standard) both;
+}
+
+.overview-chart-outgoing {
+  animation: overview-chart-dissolve 420ms var(--ease-standard) both;
+}
+
+.overview-chart-dust {
+  animation: overview-chart-scatter 560ms var(--ease-standard) both;
+  animation-delay: var(--dust-delay);
+}
+
+@keyframes overview-chart-form {
+  from { opacity: 0; filter: blur(3px); transform: translateY(5px); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+@keyframes overview-chart-dissolve {
+  from { opacity: 1; filter: blur(0); }
+  to { opacity: 0; filter: blur(3px); transform: translateY(-4px); }
+}
+
+@keyframes overview-chart-scatter {
+  0% { opacity: 0; transform: translate(0, 0); }
+  18% { opacity: .7; }
+  100% { opacity: 0; transform: translate(var(--dust-x), var(--dust-y)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overview-chart-incoming,
+  .overview-chart-outgoing,
+  .overview-chart-dust { animation: none; }
+}
+.course-hero-figure {
+  container: overview-chart / inline-size;
+}
+

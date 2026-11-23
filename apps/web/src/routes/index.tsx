@@ -9,9 +9,8 @@ import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check } from "reicon-react";
 
-import { Columns } from "@/course/charts";
 import { lessons, modules, totalMinutes } from "@/course/curriculum";
-import { weekdayOrders } from "@/course/lab-data";
+import { OverviewChart } from "@/course/overview-chart";
 import { getResumeLesson, useProgress } from "@/course/progress";
 
 export const Route = createFileRoute("/")({
@@ -46,13 +45,7 @@ function CourseOverview() {
               : <>{lessons.length} lessons <Text as="span" aria-hidden="true">·</Text> {Math.floor(totalMinutes / 60)} hr {totalMinutes % 60} min</>}
           </p>
         </VStack>
-        <Card className="course-hero-figure" padding={4}>
-          <VStack as="figure" gap={0}>
-            <Text as="p" className="course-figure-head" weight="semibold">Orders by weekday</Text>
-            <Columns values={weekdayOrders} unit="Orders" max={60} emphasis={4} />
-            <figcaption>Friday was busiest, with 58 orders.</figcaption>
-          </VStack>
-        </Card>
+        <OverviewChart />
       </HStack>
 
       {isMobile && (

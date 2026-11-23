@@ -114,11 +114,6 @@
 
 .course-hero-figure {
   min-width: 0;
-  --course-column-height: clamp(6.5rem, 10cqi, 8.5rem);
-}
-
-.course-figure-head {
-  padding-bottom: 1.15rem;
 }
 
 .course-hero-figure figcaption {
@@ -219,10 +214,6 @@
   font-variant-numeric: tabular-nums;
   font-weight: 600;
   text-align: center;
-}
-
-.course-hero-figure .course-column:not([data-highlight]) b {
-  visibility: hidden;
 }
 
 .course-column[data-highlight] i,

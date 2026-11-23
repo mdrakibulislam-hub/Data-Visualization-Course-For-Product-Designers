@@ -2,16 +2,11 @@
   max-width: 55rem;
 }
 
-.lab-catalog-page {
-  max-width: 64rem;
-}
-
 .lab-section[hidden] {
   display: none;
 }
 
 .lab-panel-title {
-  font-size: var(--text-heading-3-size);
   scroll-margin-top: var(--spacing-8);
 }
 
@@ -67,8 +62,9 @@
   padding-block: var(--spacing-3);
 }
 
-.lab-atlas-row h3 {
-  font-size: var(--text-heading-4-size);
+.lab-atlas-empty {
+  padding-block: var(--spacing-4);
+  border-top: var(--border-width) solid var(--line);
 }
 
 @container course-content (max-width: 31rem) {

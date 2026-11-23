@@ -1,33 +1,30 @@
-import { Card } from "@astryxdesign/core/Card";
+import { Button } from "@astryxdesign/core/Button";
 import { Heading } from "@astryxdesign/core/Heading";
-import { Link } from "@astryxdesign/core/Link";
+import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 
-import SignInForm from "@/components/sign-in-form";
-import SignUpForm from "@/components/sign-up-form";
+import { useProgress } from "@/course/progress";
 
 export const Route = createFileRoute("/login")({
-  component: RouteComponent,
+  head: () => ({ meta: [{ title: "Your progress · Graphnotes" }] }),
+  component: ProgressInfo,
 });
 
-function RouteComponent() {
-  const [showSignIn, setShowSignIn] = useState(false);
-
+function ProgressInfo() {
+  const { canSave } = useProgress();
   return (
     <VStack className="course-wrap course-simple-page course-account" gap={4}>
       <VStack as="header" gap={2}>
-        <Heading level={1} className="course-display course-page-title">{showSignIn ? "Sign in" : "Create an account"}</Heading>
-        <Link href="/" weight="semibold">Continue to the course without an account</Link>
+        <Heading level={1} className="course-display course-page-title">No account needed</Heading>
+        <Text as="p">{canSave
+          ? "Your lessons, quiz answers, and project notes are saved in this browser."
+          : "You can keep learning in this tab, but this browser isn’t saving your progress."}</Text>
       </VStack>
-      <Card padding={4}>
-        {showSignIn ? (
-          <SignInForm onSwitchToSignUp={() => setShowSignIn(false)} />
-        ) : (
-          <SignUpForm onSwitchToSignIn={() => setShowSignIn(true)} />
-        )}
-      </Card>
+      <Text as="p" color="secondary">{canSave
+        ? "Return on the same device and browser to pick up where you left off. Clearing this site’s browser data also clears your progress."
+        : "Allow storage for this site to keep your progress between visits."}</Text>
+      <Button href="/" label="Back to the course" variant="primary" />
     </VStack>
   );
 }

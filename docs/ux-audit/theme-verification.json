@@ -1,0 +1,182 @@
+[
+  {
+    "theme": "Default",
+    "condition": "Chart rotation paused and transitions settled. Inactive controls excluded.",
+    "tokens": {
+      "colors": [
+        [
+          "--color-background-body",
+          "rgb(247, 239, 237)",
+          1.1
+        ],
+        [
+          "--color-background-surface",
+          "rgb(255, 251, 249)",
+          1
+        ],
+        [
+          "--color-background-card",
+          "rgb(255, 251, 249)",
+          1
+        ],
+        [
+          "--color-text-primary",
+          "rgb(32, 26, 25)",
+          16.69
+        ],
+        [
+          "--color-text-secondary",
+          "rgb(80, 68, 65)",
+          9.1
+        ],
+        [
+          "--color-data-neutral",
+          "rgb(102, 121, 135)",
+          4.39
+        ],
+        [
+          "--color-data-categorical-teal",
+          "rgb(0, 123, 128)",
+          4.93
+        ],
+        [
+          "--color-accent",
+          "rgb(159, 64, 50)",
+          6.28
+        ],
+        [
+          "--color-on-accent",
+          "rgb(255, 255, 255)",
+          1.03
+        ]
+      ],
+      "theme": "light"
+    },
+    "textScan": {
+      "failures": 0,
+      "rows": [],
+      "theme": "light",
+      "width": 1440
+    }
+  },
+  {
+    "theme": "Sepia",
+    "condition": "Chart rotation paused and transitions settled. Inactive controls excluded.",
+    "tokens": {
+      "colors": [
+        [
+          "--color-background-body",
+          "rgb(243, 233, 218)",
+          1.09
+        ],
+        [
+          "--color-background-surface",
+          "rgb(248, 239, 223)",
+          1.04
+        ],
+        [
+          "--color-background-card",
+          "rgb(252, 243, 230)",
+          1
+        ],
+        [
+          "--color-text-primary",
+          "rgb(50, 40, 31)",
+          13.09
+        ],
+        [
+          "--color-text-secondary",
+          "rgb(100, 83, 69)",
+          6.67
+        ],
+        [
+          "--color-data-neutral",
+          "rgb(102, 121, 135)",
+          4.11
+        ],
+        [
+          "--color-data-categorical-teal",
+          "rgb(0, 123, 128)",
+          4.61
+        ],
+        [
+          "--color-accent",
+          "rgb(151, 66, 50)",
+          6.08
+        ],
+        [
+          "--color-on-accent",
+          "rgb(255, 248, 237)",
+          1.04
+        ]
+      ],
+      "theme": "theme-sepia"
+    },
+    "textScan": {
+      "failures": 0,
+      "rows": [],
+      "theme": "theme-sepia",
+      "width": 1440
+    }
+  },
+  {
+    "theme": "Dark",
+    "condition": "Chart rotation paused and transitions settled. Inactive controls excluded.",
+    "tokens": {
+      "colors": [
+        [
+          "--color-background-body",
+          "rgb(22, 15, 13)",
+          1.1
+        ],
+        [
+          "--color-background-surface",
+          "rgb(32, 26, 25)",
+          1
+        ],
+        [
+          "--color-background-card",
+          "rgb(32, 26, 25)",
+          1
+        ],
+        [
+          "--color-text-primary",
+          "rgb(232, 225, 223)",
+          13.3
+        ],
+        [
+          "--color-text-secondary",
+          "rgb(182, 168, 164)",
+          7.46
+        ],
+        [
+          "--color-data-neutral",
+          "rgb(140, 147, 155)",
+          5.53
+        ],
+        [
+          "--color-data-categorical-teal",
+          "rgb(40, 184, 180)",
+          7.04
+        ],
+        [
+          "--color-accent",
+          "rgb(255, 180, 156)",
+          10.02
+        ],
+        [
+          "--color-on-accent",
+          "rgb(98, 16, 0)",
+          1.3
+        ]
+      ],
+      "theme": "dark"
+    },
+    "textScan": {
+      "failures": 0,
+      "rows": [],
+      "theme": "dark",
+      "width": 1440
+    }
+  }
+]

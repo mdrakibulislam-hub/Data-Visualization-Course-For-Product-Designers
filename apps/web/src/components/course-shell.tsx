@@ -12,7 +12,7 @@ import { Tooltip } from "@astryxdesign/core/Tooltip";
 import { VStack } from "@astryxdesign/core/VStack";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { BookOpen, Check, HelpCircle, Checklist, Database, DocumentCopy, Layers, Grid, Library, ChartLine } from "reicon-react";
-import { useState, type ComponentPropsWithRef, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ComponentPropsWithRef, type CSSProperties, type ReactNode } from "react";
 
 import { lessons, modules } from "@/course/curriculum";
 import { useProgress } from "@/course/progress";
@@ -97,8 +97,45 @@ export function CourseShell({ children }: { children: ReactNode }) {
   const path = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") || "/" });
   const settledPath = useRouterState({ select: (state) => state.resolvedLocation?.pathname ?? state.location.pathname });
   const contentRef = useCourseMotion(settledPath.replace(/\/$/, "") || "/");
+  const previousPath = useRef(settledPath);
+  useEffect(() => {
+    if (previousPath.current === settledPath) return;
+    previousPath.current = settledPath;
+    let destination = location.hash.slice(1);
+    try { destination = decodeURIComponent(destination); } catch { /* Keep malformed fragments usable. */ }
+    const target = (destination && document.getElementById(destination)) || contentRef.current?.querySelector<HTMLElement>("h1");
+    if (!target) return;
+    let frame = 0;
+    let cancelled = false;
+    const focus = () => {
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(() => {
+          if (!target.isConnected) return;
+          target.tabIndex = -1;
+          target.focus({ preventScroll: true });
+        });
+      });
+    };
+    const drawer = document.querySelector<HTMLElement>(".astryx-mobile-nav-drawer");
+    // Let the drawer finish its own focus return before handing off to the new page.
+    const dialog = drawer?.closest("dialog");
+    const afterClose = () => {
+      const animations = drawer?.getAnimations({ subtree: true }).filter((animation) =>
+        animation.effect?.getComputedTiming().iterations !== Infinity) ?? [];
+      void Promise.allSettled(animations.map((animation) => animation.finished)).then(() => {
+        if (!cancelled) focus();
+      });
+    };
+    if (dialog?.open) dialog.addEventListener("close", afterClose, { once: true });
+    else afterClose();
+    return () => {
+      cancelled = true;
+      dialog?.removeEventListener("close", afterClose);
+      cancelAnimationFrame(frame);
+    };
+  }, [settledPath, contentRef]);
   const currentLesson = lessons.find(({ id }) => path === `/lesson/${id}`);
-  const activeModule = currentLesson?.moduleTitle ?? modules[0].title;
+  const activeModule = currentLesson?.moduleTitle;
   const { progress, canSave } = useProgress();
 
   const sections = (

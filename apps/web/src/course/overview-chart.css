@@ -18,7 +18,8 @@
 .overview-chart-label,
 .overview-chart-value {
   fill: var(--muted);
-  font-size: clamp(11.5px, calc(32px - 5cqi), 20px);
+  /* SVG text scales with the plot; compensate as the card narrows. */
+  font-size: clamp(.875rem, calc(3.5rem - 10cqi), 1.5rem);
   font-variant-numeric: tabular-nums;
 }
 

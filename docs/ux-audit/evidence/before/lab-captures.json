@@ -1,0 +1,150 @@
+[
+  {
+    "name": "lab-experiment-desktop",
+    "url": "http://127.0.0.1:5192/lab",
+    "fullHeight": 900,
+    "height": 900,
+    "width": 1440,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1nnx-e177292f.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/before/lab-experiment-desktop.png",
+    "imageWidth": 1280,
+    "imageHeight": 800
+  },
+  {
+    "name": "lab-experiment-mobile",
+    "url": "http://127.0.0.1:5192/lab",
+    "fullHeight": 844,
+    "height": 844,
+    "width": 390,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1o47-65f06c9c.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/before/lab-experiment-mobile.png",
+    "imageWidth": 390,
+    "imageHeight": 844
+  },
+  {
+    "name": "lab-catalog-desktop",
+    "url": "http://127.0.0.1:5192/lab?view=browse",
+    "fullHeight": 944,
+    "height": 900,
+    "width": 1440,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1okq-60d55081.png"
+      },
+      {
+        "y": 44,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1oob-ef8075c9.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/before/lab-catalog-desktop.png",
+    "imageWidth": 1280,
+    "imageHeight": 839
+  },
+  {
+    "name": "lab-catalog-mobile",
+    "url": "http://127.0.0.1:5192/lab?view=browse",
+    "fullHeight": 1991,
+    "height": 844,
+    "width": 390,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1p3r-45d05cf1.png"
+      },
+      {
+        "y": 844,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1pf4-977a007b.png"
+      },
+      {
+        "y": 1147,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1pqi-b9d29c5c.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/before/lab-catalog-mobile.png",
+    "imageWidth": 390,
+    "imageHeight": 1991
+  },
+  {
+    "name": "lab-atlas-desktop",
+    "url": "http://127.0.0.1:5192/lab?view=atlas",
+    "fullHeight": 3755,
+    "height": 900,
+    "width": 1440,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1q8z-070855a0.png"
+      },
+      {
+        "y": 900,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1qlx-4e6fe86d.png"
+      },
+      {
+        "y": 1800,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1qz7-9dff86a6.png"
+      },
+      {
+        "y": 2700,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1rcl-2fe2ab31.png"
+      },
+      {
+        "y": 2855,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1rqg-9ce038ec.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/before/lab-atlas-desktop.png",
+    "imageWidth": 1280,
+    "imageHeight": 3338
+  },
+  {
+    "name": "lab-atlas-mobile",
+    "url": "http://127.0.0.1:5192/lab?view=atlas",
+    "fullHeight": 5110,
+    "height": 844,
+    "width": 390,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1s8u-cee42b21.png"
+      },
+      {
+        "y": 844,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1skk-4be879ef.png"
+      },
+      {
+        "y": 1688,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1swc-8343092d.png"
+      },
+      {
+        "y": 2532,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1t8b-a0ff669c.png"
+      },
+      {
+        "y": 3376,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1tjz-a60c1376.png"
+      },
+      {
+        "y": 4220,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1tvz-defe414f.png"
+      },
+      {
+        "y": 4266,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwsw1tyy-cde8b14a.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/before/lab-atlas-mobile.png",
+    "imageWidth": 390,
+    "imageHeight": 5110
+  }
+]

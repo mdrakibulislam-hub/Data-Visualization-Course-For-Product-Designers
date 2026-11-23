@@ -8,13 +8,32 @@ const fieldGuideTheme = defineTheme({
   name: "field-guide",
   extends: themes[defaultThemeSlug],
   typography: {
+    scale: { base: 16, ratio: 1.2 },
     body: { family: "Inter", fallbacks: "system-ui, sans-serif" },
     heading: { family: "Inter Display", fallbacks: "Inter, system-ui, sans-serif" },
   },
   color: { accent: ["#963f32", "#f4ad97"], neutralStyle: "neutral" },
   radius: { base: 5, multiplier: 1 },
   motion: { character: "expressive", tempo: 0.95 },
+  tokens: {
+    "--color-data-neutral": "light-dark(#667987, #8c939b)",
+    "--color-data-categorical-teal": "light-dark(#007b80, #28b8b4)",
+  },
   components: {
+    button: {
+      base: { minHeight: "var(--spacing-10)", minWidth: "var(--spacing-10)" },
+      "size:sm": { minHeight: "calc(var(--spacing-10) + var(--spacing-1))", minWidth: "calc(var(--spacing-10) + var(--spacing-1))" },
+      "size:md": { minHeight: "calc(var(--spacing-10) + var(--spacing-1))", minWidth: "calc(var(--spacing-10) + var(--spacing-1))" },
+      "size:lg": { minHeight: "calc(var(--spacing-10) + var(--spacing-1))", minWidth: "calc(var(--spacing-10) + var(--spacing-1))" },
+    },
+    "segmented-control": { base: { height: "auto", minHeight: "calc(var(--spacing-10) + var(--spacing-3))" } },
+    "segmented-control-item": {
+      base: { minHeight: "calc(var(--spacing-10) + var(--spacing-1))", whiteSpace: "normal", textAlign: "center" },
+    },
+    tab: { base: { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" } },
+    "tab-strip": { base: { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" } },
+    "text-input": { base: { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" } },
+    "radio-list-item": { base: { minHeight: "calc(var(--spacing-10) + var(--spacing-1))", paddingBlock: "var(--spacing-2)" } },
     "side-nav-item": {
       base: {
         transitionProperty: "background-color, color",
@@ -22,7 +41,7 @@ const fieldGuideTheme = defineTheme({
         transitionTimingFunction: "var(--ease-standard)",
       },
       "size:md": { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" },
-      "size:sm": { minHeight: "calc(var(--spacing-8) + var(--spacing-1))" },
+      "size:sm": { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" },
       selected: {
         backgroundColor: "var(--color-accent-muted)",
         color: "var(--color-text-accent)",

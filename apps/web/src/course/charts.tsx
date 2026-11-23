@@ -186,7 +186,11 @@ function Chart({ data, title }: { data: ChartData; title: string }) {
     case "columns": return <Columns {...data} histogram={data.unit === "people"} />;
     case "line": return <LineChart chart={data} />;
     case "interval": return <Intervals chart={data} />;
-    case "table": return <DataGrid data={data} title={title} />;
+    case "table": return (
+      <VStack className="course-data-scroll" gap={0} tabIndex={0} role="region" aria-label={`${title} data table`}>
+        <DataGrid data={data} title={title} />
+      </VStack>
+    );
     case "symbols": return (
       <HStack as="ul" gap={4} justify="center" align="end" className="course-symbols">
         {data.values.map(([label, value]) => {
@@ -241,7 +245,12 @@ export function ChartLab({ lab, showHeading = true }: { lab: Lab; showHeading?: 
               <Chart data={chart} title={view.title} />
             </VStack>
             <figcaption className="course-chart-note" aria-live="polite">{view.note}</figcaption>
-            {table && <details className="course-value-details"><summary>View values</summary><DataGrid data={table} title={view.title} /></details>}
+            {table && <details className="course-value-details">
+              <summary>View values</summary>
+              <VStack className="course-data-scroll" gap={0} tabIndex={0} role="region" aria-label={`${view.title} values`}>
+                <DataGrid data={table} title={view.title} />
+              </VStack>
+            </details>}
           </VStack>
         </VStack>
       </Card>

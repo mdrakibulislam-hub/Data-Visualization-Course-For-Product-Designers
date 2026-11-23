@@ -1,3 +1,5 @@
+html { scrollbar-gutter: stable; }
+
 .course-shell {
   --surface: var(--color-background-surface);
   --panel: var(--color-background-muted);
@@ -15,6 +17,8 @@
   overflow-x: clip;
   color: var(--ink);
   font-family: var(--font-family-body, Inter, sans-serif);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-leading);
 }
 
 .course-frame {
@@ -143,7 +147,7 @@
   width: 2rem;
   height: var(--chart-height);
   color: var(--muted);
-  font-size: .75rem;
+  font-size: .875rem;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -172,7 +176,7 @@
 .course-column-labels {
   padding-top: .5rem;
   color: var(--muted);
-  font-size: .75rem;
+  font-size: .875rem;
   text-align: center;
 }
 
@@ -211,7 +215,7 @@
 .course-column b {
   position: absolute;
   inset: auto 0 calc(100% + .15rem);
-  font-size: .75rem;
+  font-size: .875rem;
   font-style: normal;
   font-variant-numeric: tabular-nums;
   font-weight: 600;
@@ -239,7 +243,7 @@
 
 .course-module-title h2 {
   color: var(--ink);
-  font-size: 1.145rem;
+  font-size: var(--text-heading-3-size);
 }
 
 .course-module-title p {
@@ -259,7 +263,7 @@
 
 .course-lesson-row {
   display: grid;
-  grid-template-columns: 1.7rem minmax(0, 1fr) auto 1.1rem;
+  grid-template-columns: 1.7rem minmax(0, 1fr) 1.1rem;
   align-items: center;
   gap: .85rem;
   padding: .9rem .65rem;
@@ -276,8 +280,12 @@
 .course-lesson-index,
 .course-row-time {
   color: var(--muted);
-  font-size: .86rem;
+  font-size: .875rem;
 }
+
+.course-lesson-row p { font-size: .9375rem; line-height: 1.5; }
+.course-lesson-titleline { display: flex; align-items: baseline; justify-content: space-between; gap: var(--spacing-3); }
+.course-lesson-titleline > strong { min-width: 0; font-size: var(--text-body-size); }
 
 .course-lesson-index,
 .course-row-time {
@@ -286,6 +294,7 @@
 
 .course-row-time {
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .course-row-arrow { color: var(--accent); }
@@ -304,7 +313,7 @@
 .course-back {
   display: inline-flex;
   width: fit-content;
-  min-height: 1.8rem;
+  min-height: calc(var(--spacing-10) + var(--spacing-1));
   align-items: center;
   gap: .5rem;
   color: var(--muted);
@@ -345,7 +354,7 @@
 }
 
 .course-lesson-title {
-  font-size: clamp(1.875rem, 3.6cqi, 2.45rem);
+  font-size: clamp(1.75rem, 3.3cqi, 2.25rem);
 }
 
 .course-reader :where(section, aside) > p,
@@ -353,7 +362,7 @@
 .course-source > p,
 .course-source li p {
   max-width: 70ch;
-  font-size: 1.015rem;
+  font-size: var(--text-body-size);
   line-height: 1.65;
 }
 
@@ -365,7 +374,7 @@
 .course-reader section,
 .course-reader [id],
 .course-source {
-  scroll-margin-top: 1.5rem;
+  scroll-margin-top: var(--spacing-6);
 }
 
 .course-lab {
@@ -375,6 +384,8 @@
 .course-lab-controls {
   max-width: 100%;
   align-self: flex-start;
+  height: auto;
+  flex-wrap: wrap;
 }
 
 .course-chart-note {
@@ -505,9 +516,17 @@
 .course-data {
   border-collapse: collapse;
   width: 100%;
-  font-size: .85rem;
+  font-size: .875rem;
   font-variant-numeric: tabular-nums;
 }
+
+.course-data-scroll {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.course-data-scroll .course-data { min-width: max-content; }
 
 .course-data :where(th, td) {
   padding: .55rem .45rem;
@@ -526,6 +545,19 @@
   color: var(--muted);
   font-size: .9rem;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  min-height: calc(var(--spacing-10) + var(--spacing-1));
+}
+
+.course-value-details summary::before,
+.course-lesson-sources summary::before { content: "+"; margin-inline-end: var(--spacing-2); }
+.course-value-details[open] summary::before,
+.course-lesson-sources[open] summary::before { content: "−"; }
+
+.course-frame :is(a, summary, [tabindex="0"]):focus-visible {
+  outline: calc(var(--border-width) * 2) solid var(--color-text-accent);
+  outline-offset: var(--spacing-1);
 }
 
 .course-value-details[open] summary,
@@ -546,6 +578,11 @@
 .course-question + .course-question {
   border-top: 1px solid var(--line);
   padding-top: var(--spacing-4);
+}
+
+.course-question-title {
+  font-size: var(--text-body-size);
+  line-height: 1.5;
 }
 
 .course-lesson-sources {
@@ -612,11 +649,10 @@
   .course-hero { padding-top: var(--spacing-5); }
   .course-hero-title { font-size: clamp(1.875rem, 8cqi, 2.35rem); }
   .course-lesson-row { grid-template-columns: 1.4rem minmax(0, 1fr) 1.1rem; gap: .5rem; }
-  .course-row-time { display: none; }
   .course-bars li { grid-template-columns: 4rem minmax(0, 1fr) 2.3rem; }
   .course-bar-axis { margin-left: 4.65rem; margin-right: 2.95rem; }
-  .course-column-labels { font-size: .66rem; }
-  .course-data { font-size: .75rem; }
+  .course-column-labels { font-size: .875rem; }
+  .course-data { font-size: .875rem; }
   .course-data :where(th, td) { padding-inline: .25rem; }
 }
 
@@ -662,6 +698,9 @@
   text-decoration: underline;
   text-underline-offset: .16em;
   width: fit-content;
+  min-height: calc(var(--spacing-10) + var(--spacing-1));
+  display: inline-flex;
+  align-items: center;
 }
 
 .practice-data-scroll {
@@ -717,7 +756,8 @@
 }
 
 @container course-content (max-width: 30rem) {
-  .course-line text { font-size: 20px; }
+  /* SVG text scales with its viewBox; compensate as the chart narrows. */
+  .course-line text { font-size: clamp(1.5rem, calc(4rem - 10cqi), 2rem); }
   .course-line .course-direct-series-label { display: none; }
   .course-line-legend[data-patterns] { display: flex; }
 
@@ -746,9 +786,7 @@
     flex-direction: column;
   }
 
-  .course-swatches small {
-    font-size: .75rem;
-  }
+  .course-swatches small { font-size: .8125rem; }
 
   .course-chart-multiples {
     grid-template-columns: minmax(0, 1fr);

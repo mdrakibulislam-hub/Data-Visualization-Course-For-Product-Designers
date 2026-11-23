@@ -12,8 +12,9 @@ import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState, type Ref } from "react";
-import { ArrowLeft, ArrowRight, BookOpen, Check, ClipboardText, Database, Grid, Layers, Library, Repeat } from "reicon-react";
+import { ArrowLeft, ArrowRight, BookOpen, ClipboardText, Database, Grid, Layers, Library, Repeat } from "reicon-react";
 
+import { AnswerReview } from "@/course/answer-review";
 import { useProgress } from "@/course/progress";
 import { questionById, questionsForScope, quizScopes, quizScore, type QuizSession } from "@/course/quiz-data";
 
@@ -53,21 +54,18 @@ function QuizRound({ session, headingRef, onAdvance }: { session: QuizSession; h
       <Card padding={0} className="quiz-question-sheet course-motion-enter">
         <VStack gap={4} padding={4}>
           <Heading level={2} ref={headingRef} tabIndex={-1} className="course-display quiz-question-title">{entry.prompt}</Heading>
-          <RadioList label={entry.prompt} isLabelHidden value={answered ? String(answer) : selection} onChange={setSelection} isDisabled={answered} controlClassName="quiz-choices">
-            {entry.options.map((option, index) => (
-              <RadioListItem
-                key={option}
-                label={option}
-                aria-label={answered && index === entry.answer ? `${option}, correct answer` : undefined}
-                value={String(index)}
-                align="first-line"
-                endContent={answered && index === entry.answer ? <Check size={16} aria-hidden="true" /> : undefined}
-              />
-            ))}
-          </RadioList>
+          {answered ? (
+            <AnswerReview options={entry.options} selected={answer} correct={entry.answer} label={entry.prompt} />
+          ) : (
+            <RadioList label={entry.prompt} isLabelHidden value={selection} onChange={setSelection} controlClassName="quiz-choices">
+              {entry.options.map((option, index) => (
+                <RadioListItem key={option} label={option} value={String(index)} align="first-line" />
+              ))}
+            </RadioList>
+          )}
           {answered && (
             <VStack as="section" gap={1.5} padding={3} ref={feedbackRef} tabIndex={-1} aria-labelledby="quiz-feedback-title" aria-describedby="quiz-feedback-reason" className="quiz-feedback course-motion-enter">
-              <Text as="p" id="quiz-feedback-title" weight="semibold">{correct ? "Correct" : `Correct answer: ${entry.options[entry.answer]}`}</Text>
+              <Text as="p" id="quiz-feedback-title" weight="semibold">{correct ? "Correct" : "Here’s why"}</Text>
               <Text as="p" id="quiz-feedback-reason">{entry.explanation}</Text>
               {entry.lessonId && <Link href={`/lesson/${entry.lessonId}`} type="supporting" weight="semibold" hasUnderline>Review the lesson</Link>}
             </VStack>
@@ -191,13 +189,14 @@ function QuizzesPage() {
           requestAnimationFrame(() => catalogHeading.current?.focus());
         }} />
         <Heading level={1} className="course-display course-page-title">{topicTitle}</Heading>
+        {session.retry && <Text as="p" color="secondary">Reviewing the questions you missed.</Text>}
       </VStack>
       {completed ? (
         <Card padding={4} className="quiz-question-sheet course-motion-enter">
           <VStack gap={4}>
             <VStack gap={1}>
               <Heading level={2} ref={sessionHeading} tabIndex={-1} className="course-display quiz-question-title">{quizScore(session)} of {session.ids.length} correct</Heading>
-              {best !== undefined && <Text as="p" color="secondary">Best full round: {best} correct</Text>}
+              {best !== undefined && <Text as="p" color="secondary">Best full round: {best} of {questionsForScope(session.scope).length} correct</Text>}
             </VStack>
             {missed.length > 0 && (
               <VStack as="section" gap={2} aria-labelledby="quiz-missed-title">
@@ -208,14 +207,16 @@ function QuizzesPage() {
                     return (
                       <VStack as="li" key={id} gap={1} paddingBlock={3}>
                         <Text as="p" weight="semibold">{question.prompt}</Text>
+                        <Text as="p"><strong>Correct answer:</strong> {question.options[question.answer]}</Text>
                         <Text as="p" color="secondary">{question.explanation}</Text>
+                        {question.lessonId && <Link href={`/lesson/${question.lessonId}`} type="supporting" weight="semibold" hasUnderline>Review the lesson</Link>}
                       </VStack>
                     );
                   })}
                 </VStack>
               </VStack>
             )}
-            <HStack justify="end" gap={2} wrap="wrap">
+            <HStack justify="end" gap={2} wrap="wrap" className="quiz-result-actions">
               {missed.length > 0 && <Button label="Retry missed questions" variant="primary" className="course-action" icon={<Repeat size={16} aria-hidden="true" />} onClick={() => start(session.scope, missed)} />}
               <Button label="Start a new round" variant={missed.length ? "secondary" : "primary"} className="course-action" onClick={() => start(session.scope)} />
             </HStack>

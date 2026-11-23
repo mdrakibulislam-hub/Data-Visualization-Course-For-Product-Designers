@@ -1,0 +1,166 @@
+[
+  {
+    "name": "lab-experiment-desktop",
+    "url": "http://127.0.0.1:5192/lab",
+    "fullHeight": 900,
+    "height": 900,
+    "width": 1440,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswr29q-639ec6cc.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/after/lab-experiment-desktop.png",
+    "imageWidth": 1280,
+    "imageHeight": 800
+  },
+  {
+    "name": "lab-experiment-mobile",
+    "url": "http://127.0.0.1:5192/lab",
+    "fullHeight": 921,
+    "height": 844,
+    "width": 390,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswr2q1-580a349c.png"
+      },
+      {
+        "y": 77,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswr2tf-7a175bd7.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/after/lab-experiment-mobile.png",
+    "imageWidth": 390,
+    "imageHeight": 921
+  },
+  {
+    "name": "lab-catalog-desktop",
+    "url": "http://127.0.0.1:5192/lab?view=browse",
+    "fullHeight": 1000,
+    "height": 900,
+    "width": 1440,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswr3ah-782232a0.png"
+      },
+      {
+        "y": 100,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswr3e3-5003361c.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/after/lab-catalog-desktop.png",
+    "imageWidth": 1280,
+    "imageHeight": 889
+  },
+  {
+    "name": "lab-catalog-mobile",
+    "clientWidth": 375,
+    "fullHeight": 2091,
+    "headerHeight": 49,
+    "height": 844,
+    "width": 390,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswttid-075ebdc7.png"
+      },
+      {
+        "y": 795,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswtttq-293b7007.png"
+      },
+      {
+        "y": 1247,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswtu60-89638bc4.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/after/lab-catalog-mobile.png",
+    "imageWidth": 390,
+    "imageHeight": 2091,
+    "captureNote": "49px overlapping scroll steps remove sticky header repetitions; native scrollbar gutter excluded from subsequent tiles."
+  },
+  {
+    "name": "lab-atlas-desktop",
+    "url": "http://127.0.0.1:5192/lab?view=atlas",
+    "fullHeight": 4431,
+    "height": 900,
+    "width": 1440,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswr4qz-66aa8e3d.png"
+      },
+      {
+        "y": 900,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswr53z-3aed9a0a.png"
+      },
+      {
+        "y": 1800,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswr5gz-d17b2edd.png"
+      },
+      {
+        "y": 2700,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswr5u4-cb1e14d6.png"
+      },
+      {
+        "y": 3531,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswr66r-2099dd1a.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/after/lab-atlas-desktop.png",
+    "imageWidth": 1280,
+    "imageHeight": 3939
+  },
+  {
+    "name": "lab-atlas-mobile",
+    "clientWidth": 375,
+    "fullHeight": 6451,
+    "headerHeight": 49,
+    "height": 844,
+    "width": 390,
+    "parts": [
+      {
+        "y": 0,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswtulw-47f21837.png"
+      },
+      {
+        "y": 795,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswtuxw-ae9e2504.png"
+      },
+      {
+        "y": 1590,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswtv9j-421dee3b.png"
+      },
+      {
+        "y": 2385,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswtvm1-e5faa4fe.png"
+      },
+      {
+        "y": 3180,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswtvye-63e73d1d.png"
+      },
+      {
+        "y": 3975,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswtwai-70598944.png"
+      },
+      {
+        "y": 4770,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswtwmh-28371d31.png"
+      },
+      {
+        "y": 5565,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswtwyf-8a032a0e.png"
+      },
+      {
+        "y": 5607,
+        "path": "/Users/mdrakibulislam/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-mwswtx1p-e459a2c5.png"
+      }
+    ],
+    "file": "docs/ux-audit/evidence/after/lab-atlas-mobile.png",
+    "imageWidth": 390,
+    "imageHeight": 6451,
+    "captureNote": "49px overlapping scroll steps remove sticky header repetitions; native scrollbar gutter excluded from subsequent tiles."
+  }
+]

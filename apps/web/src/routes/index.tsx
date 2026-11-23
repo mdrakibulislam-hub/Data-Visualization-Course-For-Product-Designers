@@ -73,10 +73,12 @@ function CourseOverview() {
                     <Link to="/lesson/$lessonId" params={{ lessonId: lesson.id }} className="course-lesson-row">
                       <Text as="span" className="course-lesson-index" aria-hidden="true">{String(number).padStart(2, "0")}</Text>
                       <VStack gap={0.5}>
-                        <strong>{lesson.title}</strong>
+                        <HStack gap={2} justify="between" align="start" className="course-lesson-titleline">
+                          <strong>{lesson.title}</strong>
+                          <Text as="span" className="course-row-time">{lesson.minutes} min</Text>
+                        </HStack>
                         <p>{lesson.description}</p>
                       </VStack>
-                      <Text as="span" className="course-row-time">{lesson.minutes} min</Text>
                       {isComplete ? (
                         <Check className="course-row-completed" size={17} aria-label="Completed" role="img" />
                       ) : <ArrowRight className="course-row-arrow" size={17} aria-hidden="true" />}

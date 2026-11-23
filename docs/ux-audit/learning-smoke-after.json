@@ -1,0 +1,2044 @@
+[
+  {
+    "id": "start-with-a-question",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 52.00006103515625,
+        "h1": "Start with a question",
+        "label": "Compare drinks",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Drinks sold this week values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Drinks sold this week"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Start with a question",
+        "label": "Look up totals",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Drinks sold this week data table",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Drinks sold this week"
+      }
+    ]
+  },
+  {
+    "id": "start-with-a-question",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Start with a question",
+        "label": "Compare drinks",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Drinks sold this week values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Drinks sold this week"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Start with a question",
+        "label": "Look up totals",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Drinks sold this week data table",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Drinks sold this week"
+      }
+    ]
+  },
+  {
+    "id": "choose-the-chart",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 51.99993896484375,
+        "h1": "Choose the right chart",
+        "label": "Bars",
+        "labels": [
+          {
+            "size": 14,
+            "text": "Mon"
+          },
+          {
+            "size": 14,
+            "text": "Tue"
+          },
+          {
+            "size": 14,
+            "text": "Wed"
+          },
+          {
+            "size": 14,
+            "text": "Thu"
+          },
+          {
+            "size": 14,
+            "text": "Fri"
+          },
+          {
+            "size": 14,
+            "text": "Sat"
+          },
+          {
+            "size": 14,
+            "text": "Sun"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Orders by weekday values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Orders by weekday"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Choose the right chart",
+        "label": "Line",
+        "labels": [
+          {
+            "size": 16.714285714285715,
+            "text": "0"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "15"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "30"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "45"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "60"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Mon"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Tue"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Wed"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Thu"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Fri"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Sat"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Sun"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Orders across the week values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Orders across the week"
+      }
+    ]
+  },
+  {
+    "id": "choose-the-chart",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Choose the right chart",
+        "label": "Bars",
+        "labels": [
+          {
+            "size": 14,
+            "text": "Mon"
+          },
+          {
+            "size": 14,
+            "text": "Tue"
+          },
+          {
+            "size": 14,
+            "text": "Wed"
+          },
+          {
+            "size": 14,
+            "text": "Thu"
+          },
+          {
+            "size": 14,
+            "text": "Fri"
+          },
+          {
+            "size": 14,
+            "text": "Sat"
+          },
+          {
+            "size": 14,
+            "text": "Sun"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Orders by weekday values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Orders by weekday"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Choose the right chart",
+        "label": "Line",
+        "labels": [
+          {
+            "size": 14.716964285714287,
+            "text": "0"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "15"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "30"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "45"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "60"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Mon"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Tue"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Wed"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Thu"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Fri"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Sat"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Sun"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Orders across the week values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Orders across the week"
+      }
+    ]
+  },
+  {
+    "id": "scales-and-baselines",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Use honest scales",
+        "label": "Start at zero",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Orders by branch values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Orders by branch"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Use honest scales",
+        "label": "Start at 90",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Same orders, cropped scale values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Same orders, cropped scale"
+      }
+    ]
+  },
+  {
+    "id": "scales-and-baselines",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Use honest scales",
+        "label": "Start at zero",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Orders by branch values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Orders by branch"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Use honest scales",
+        "label": "Start at 90",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Same orders, cropped scale values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Same orders, cropped scale"
+      }
+    ]
+  },
+  {
+    "id": "counts-and-rates",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Know what you’re counting",
+        "label": "Late orders",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "How many orders need follow-up? values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "How many orders need follow-up?"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Know what you’re counting",
+        "label": "Late rate",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "How often are orders late? values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "How often are orders late?"
+      }
+    ]
+  },
+  {
+    "id": "counts-and-rates",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Know what you’re counting",
+        "label": "Late orders",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "How many orders need follow-up? values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "How many orders need follow-up?"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Know what you’re counting",
+        "label": "Late rate",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "How often are orders late? values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "How often are orders late?"
+      }
+    ]
+  },
+  {
+    "id": "averages-and-distributions",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Look beyond the average",
+        "label": "Café A",
+        "labels": [
+          {
+            "size": 14,
+            "text": "0–4"
+          },
+          {
+            "size": 14,
+            "text": "5–9"
+          },
+          {
+            "size": 14,
+            "text": "10–14"
+          },
+          {
+            "size": 14,
+            "text": "15–19"
+          },
+          {
+            "size": 14,
+            "text": "20–24"
+          },
+          {
+            "size": 14,
+            "text": "25–29"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "How long people waited at Café A values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "How long people waited at Café A"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Look beyond the average",
+        "label": "Café B",
+        "labels": [
+          {
+            "size": 14,
+            "text": "0–4"
+          },
+          {
+            "size": 14,
+            "text": "5–9"
+          },
+          {
+            "size": 14,
+            "text": "10–14"
+          },
+          {
+            "size": 14,
+            "text": "15–19"
+          },
+          {
+            "size": 14,
+            "text": "20–24"
+          },
+          {
+            "size": 14,
+            "text": "25–29"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "How long people waited at Café B values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "How long people waited at Café B"
+      }
+    ]
+  },
+  {
+    "id": "averages-and-distributions",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Look beyond the average",
+        "label": "Café A",
+        "labels": [
+          {
+            "size": 14,
+            "text": "0–4"
+          },
+          {
+            "size": 14,
+            "text": "5–9"
+          },
+          {
+            "size": 14,
+            "text": "10–14"
+          },
+          {
+            "size": 14,
+            "text": "15–19"
+          },
+          {
+            "size": 14,
+            "text": "20–24"
+          },
+          {
+            "size": 14,
+            "text": "25–29"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "How long people waited at Café A values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "How long people waited at Café A"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Look beyond the average",
+        "label": "Café B",
+        "labels": [
+          {
+            "size": 14,
+            "text": "0–4"
+          },
+          {
+            "size": 14,
+            "text": "5–9"
+          },
+          {
+            "size": 14,
+            "text": "10–14"
+          },
+          {
+            "size": 14,
+            "text": "15–19"
+          },
+          {
+            "size": 14,
+            "text": "20–24"
+          },
+          {
+            "size": 14,
+            "text": "25–29"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "How long people waited at Café B values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "How long people waited at Café B"
+      }
+    ]
+  },
+  {
+    "id": "uncertainty-and-causality",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Say what’s uncertain",
+        "label": "20 per group",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Conversion estimates and 95% intervals values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Conversion estimates and 95% intervals"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Say what’s uncertain",
+        "label": "1,000 per group",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Conversion estimates and 95% intervals values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Conversion estimates and 95% intervals"
+      }
+    ]
+  },
+  {
+    "id": "uncertainty-and-causality",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Say what’s uncertain",
+        "label": "20 per group",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Conversion estimates and 95% intervals values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Conversion estimates and 95% intervals"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Say what’s uncertain",
+        "label": "1,000 per group",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Conversion estimates and 95% intervals values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Conversion estimates and 95% intervals"
+      }
+    ]
+  },
+  {
+    "id": "annotation-and-context",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Give the chart context",
+        "label": "Bare chart",
+        "labels": [
+          {
+            "size": 16.714285714285715,
+            "text": "0"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "15"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "30"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "45"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "60"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Mon"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Tue"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Wed"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Thu"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Fri"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Sat"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Sun"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Activity values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Activity"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Give the chart context",
+        "label": "With context",
+        "labels": [
+          {
+            "size": 16.714285714285715,
+            "text": "0"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "15"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "30"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "45"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "60"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Mon"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Tue"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Wed"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Thu"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Fri"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Sat"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Sun"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Data missing"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Daily orders, 1–7 May values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Daily orders, 1–7 May"
+      }
+    ]
+  },
+  {
+    "id": "annotation-and-context",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Give the chart context",
+        "label": "Bare chart",
+        "labels": [
+          {
+            "size": 14.716964285714287,
+            "text": "0"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "15"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "30"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "45"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "60"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Mon"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Tue"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Wed"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Thu"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Fri"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Sat"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Sun"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Activity values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Activity"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Give the chart context",
+        "label": "With context",
+        "labels": [
+          {
+            "size": 14.716964285714287,
+            "text": "0"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "15"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "30"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "45"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "60"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Mon"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Tue"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Wed"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Thu"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Fri"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Sat"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Sun"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Data missing"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Daily orders, 1–7 May values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Daily orders, 1–7 May"
+      }
+    ]
+  },
+  {
+    "id": "filters-and-linked-views",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Design useful filters",
+        "label": "All regions",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Late orders · all regions values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Late orders · all regions"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Design useful filters",
+        "label": "North",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Late orders · North values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Late orders · North"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Design useful filters",
+        "label": "West",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Late orders · West values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Late orders · West"
+      }
+    ]
+  },
+  {
+    "id": "filters-and-linked-views",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Design useful filters",
+        "label": "All regions",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Late orders · all regions values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Late orders · all regions"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Design useful filters",
+        "label": "North",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Late orders · North values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Late orders · North"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Design useful filters",
+        "label": "West",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Late orders · West values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Late orders · West"
+      }
+    ]
+  },
+  {
+    "id": "accessible-charts",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Make charts accessible",
+        "label": "Color only",
+        "labels": [
+          {
+            "size": 16.714285714285715,
+            "text": "0"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "12.5"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "25"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "37.5"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "50"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Mon"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Tue"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Wed"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Thu"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Fri"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Sat"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Sun"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Orders by device values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Orders by device"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Make charts accessible",
+        "label": "Labels and patterns",
+        "labels": [
+          {
+            "size": 16.714285714285715,
+            "text": "0"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "12.5"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "25"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "37.5"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "50"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Mon"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Tue"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Wed"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Thu"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Fri"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Sat"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Sun"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Mobile"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Desktop"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Orders by device values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Orders by device"
+      }
+    ]
+  },
+  {
+    "id": "accessible-charts",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Make charts accessible",
+        "label": "Color only",
+        "labels": [
+          {
+            "size": 14.716964285714287,
+            "text": "0"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "12.5"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "25"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "37.5"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "50"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Mon"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Tue"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Wed"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Thu"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Fri"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Sat"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Sun"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Orders by device values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Orders by device"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Make charts accessible",
+        "label": "Labels and patterns",
+        "labels": [
+          {
+            "size": 14.716964285714287,
+            "text": "0"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "12.5"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "25"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "37.5"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "50"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Mon"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Tue"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Wed"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Thu"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Fri"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Sat"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Sun"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Orders by device values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Orders by device"
+      }
+    ]
+  },
+  {
+    "id": "aggregate-and-drill",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Summarize large datasets",
+        "label": "Average",
+        "labels": [
+          {
+            "size": 16.714285714285715,
+            "text": "0"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "6.3"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "12.5"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "18.8"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "25"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Week 1"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Week 2"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Week 3"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Week 4"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Average wait by week values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Average wait by week"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Summarize large datasets",
+        "label": "Peak",
+        "labels": [
+          {
+            "size": 16.714285714285715,
+            "text": "0"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "6.3"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "12.5"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "18.8"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "25"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Week 1"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Week 2"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Week 3"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Week 4"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "23 min"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Highest daily average in each week values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Highest daily average in each week"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Summarize large datasets",
+        "label": "Daily detail",
+        "labels": [
+          {
+            "size": 16.714285714285715,
+            "text": "0"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "6.3"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "12.5"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "18.8"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "25"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Day 1"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Day 7"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Day 14"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Day 21"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "Day 28"
+          },
+          {
+            "size": 16.714285714285715,
+            "text": "23 min"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Average wait by day values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Average wait by day"
+      }
+    ]
+  },
+  {
+    "id": "aggregate-and-drill",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Summarize large datasets",
+        "label": "Average",
+        "labels": [
+          {
+            "size": 14.716964285714287,
+            "text": "0"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "6.3"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "12.5"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "18.8"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "25"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Week 1"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Week 2"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Week 3"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Week 4"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Average wait by week values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Average wait by week"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Summarize large datasets",
+        "label": "Peak",
+        "labels": [
+          {
+            "size": 14.716964285714287,
+            "text": "0"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "6.3"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "12.5"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "18.8"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "25"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Week 1"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Week 2"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Week 3"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Week 4"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "23 min"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Highest daily average in each week values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Highest daily average in each week"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Summarize large datasets",
+        "label": "Daily detail",
+        "labels": [
+          {
+            "size": 14.716964285714287,
+            "text": "0"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "6.3"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "12.5"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "18.8"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "25"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Day 1"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Day 7"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Day 14"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Day 21"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "Day 28"
+          },
+          {
+            "size": 14.716964285714287,
+            "text": "23 min"
+          }
+        ],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Average wait by day values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Average wait by day"
+      }
+    ]
+  },
+  {
+    "id": "compare-many-groups",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Compare many groups",
+        "label": "Returning users",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Return visits by signup cohort data table",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Return visits by signup cohort"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Compare many groups",
+        "label": "Share returning",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Share of each cohort returning data table",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Share of each cohort returning"
+      }
+    ]
+  },
+  {
+    "id": "compare-many-groups",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Compare many groups",
+        "label": "Returning users",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Return visits by signup cohort data table",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Return visits by signup cohort"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Compare many groups",
+        "label": "Share returning",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Share of each cohort returning data table",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Share of each cohort returning"
+      }
+    ]
+  },
+  {
+    "id": "capstone",
+    "width": 1440,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Build a decision dashboard",
+        "label": "Work to clear",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Late orders by region · today values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Late orders by region · today"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Build a decision dashboard",
+        "label": "Service quality",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Late share by region · today values",
+            "scrollWidth": 720,
+            "tabIndex": 0,
+            "width": 720
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Late share by region · today"
+      }
+    ]
+  },
+  {
+    "id": "capstone",
+    "width": 390,
+    "variants": [
+      {
+        "controlHeight": 52,
+        "h1": "Build a decision dashboard",
+        "label": "Work to clear",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Late orders by region · today values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Late orders by region · today"
+      },
+      {
+        "controlHeight": 52,
+        "h1": "Build a decision dashboard",
+        "label": "Service quality",
+        "labels": [],
+        "overflow": 0,
+        "regions": [
+          {
+            "name": "Late share by region · today values",
+            "scrollWidth": 311,
+            "tabIndex": 0,
+            "width": 311
+          }
+        ],
+        "tableFonts": [
+          "14px"
+        ],
+        "title": "Late share by region · today"
+      }
+    ]
+  }
+]

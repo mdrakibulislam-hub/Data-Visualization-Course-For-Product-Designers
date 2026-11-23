@@ -9,8 +9,9 @@ import { TextArea } from "@astryxdesign/core/TextArea";
 import { VStack } from "@astryxdesign/core/VStack";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight } from "reicon-react";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
+import { AnswerReview } from "./answer-review";
 import { ChartLab } from "./charts";
 import { lessons, type CourseLesson, type Question } from "./curriculum";
 import { labs } from "./lab-data";
@@ -20,34 +21,53 @@ import { sourceTitle } from "./sources";
 function QuizQuestion({ lessonId, question, index }: { lessonId: string; question: Question; index: number }) {
   const { progress, submitAnswer } = useProgress();
   const [selected, setSelected] = useState<number | null>(null);
+  const questionId = useId();
+  const questionRef = useRef<HTMLElement>(null);
+  const feedbackRef = useRef<HTMLElement>(null);
+  const shouldFocusFeedback = useRef(false);
   const answer = progress.answers[`${lessonId}:${index}`];
   const answered = answer !== undefined;
   const correct = answer === question.answer;
 
+  useEffect(() => {
+    if (answered && shouldFocusFeedback.current) {
+      feedbackRef.current?.focus();
+      shouldFocusFeedback.current = false;
+    }
+  }, [answered]);
+
   function retry() {
     setSelected(null);
     submitAnswer(lessonId, index, null);
+    requestAnimationFrame(() => questionRef.current?.querySelector<HTMLInputElement>("input")?.focus());
   }
 
   return (
-    <VStack gap={2} className="course-question">
-      <RadioList
-        label={question.prompt}
-        value={String((answered ? answer : selected) ?? "")}
-        onChange={(value) => setSelected(Number(value))}
-        htmlName={`${lessonId}-question-${index}`}
-        isDisabled={answered}
-      >
-        {question.options.map((option, optionIndex) => (
-          <RadioListItem key={option} label={option} value={String(optionIndex)} align="first-line" />
-        ))}
-      </RadioList>
+    <VStack as="section" gap={3} className="course-question" ref={questionRef} aria-labelledby={questionId}>
+      <Heading level={3} id={questionId} className="course-question-title">{question.prompt}</Heading>
+      {answered ? (
+        <AnswerReview options={question.options} selected={answer} correct={question.answer} label={question.prompt} />
+      ) : (
+        <RadioList
+          label={question.prompt}
+          isLabelHidden
+          value={String(selected ?? "")}
+          onChange={(value) => setSelected(Number(value))}
+          htmlName={`${lessonId}-question-${index}`}
+        >
+          {question.options.map((option, optionIndex) => (
+            <RadioListItem key={option} label={option} value={String(optionIndex)} align="first-line" />
+          ))}
+        </RadioList>
+      )}
       {answered ? (
         <>
           <Card variant="muted" padding={3} className="course-motion-enter">
-            <Text as="p" type="supporting" role="status">
-              <strong>{correct ? "Correct." : "Here’s why."}</strong> {question.explanation}
-            </Text>
+            <VStack as="section" gap={0} ref={feedbackRef} tabIndex={-1} aria-label="Answer feedback">
+              <Text as="p" type="body">
+                <strong>{correct ? "Correct." : "Here’s why."}</strong> {question.explanation}
+              </Text>
+            </VStack>
           </Card>
           {!correct && <HStack gap={1}><Button label="Try again" variant="secondary" onClick={retry} className="course-action" /></HStack>}
         </>
@@ -59,7 +79,10 @@ function QuizQuestion({ lessonId, question, index }: { lessonId: string; questio
             isDisabled={selected === null}
             className="course-action"
             onClick={() => {
-              if (selected !== null) submitAnswer(lessonId, index, selected);
+              if (selected !== null) {
+                shouldFocusFeedback.current = true;
+                submitAnswer(lessonId, index, selected);
+              }
             }}
           />
         </HStack>

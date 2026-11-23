@@ -48,7 +48,7 @@ function ChartAtlas() {
       <Heading id="chart-atlas-title" level={2} className="lab-panel-title">Find a chart</Heading>
       <HStack gap={2} wrap="wrap" align="end" className="practice-filters lab-atlas-filters">
         <TextInput type="search" label="Search charts" placeholder="Search by chart or task" value={query} onChange={setQuery} hasClear startIcon={<Search size={16} aria-hidden="true" />} />
-        <Selector label="Chart family" value={family} options={familyOptions} onChange={(value) => setFamily(value ?? "all")} />
+        <Selector label="What do you want to show?" value={family} options={familyOptions} onChange={(value) => setFamily(value ?? "all")} />
       </HStack>
       <Text as="p" type="supporting" color="secondary" role="status">{results.length} {results.length === 1 ? "chart" : "charts"}</Text>
       {results.length ? (
@@ -63,7 +63,15 @@ function ChartAtlas() {
             </VStack>
           ))}
         </VStack>
-      ) : <Text as="p">Try a different term or choose another family.</Text>}
+      ) : (
+        <VStack gap={2} className="lab-atlas-empty">
+          <Heading level={3}>No charts match these filters</Heading>
+          <Text as="p" color="secondary">Try a broader term, or clear the filters to see every chart.</Text>
+          <HStack gap={0}>
+            <Button label="Clear filters" variant="secondary" onClick={() => { setQuery(""); setFamily("all"); }} />
+          </HStack>
+        </VStack>
+      )}
     </VStack>
   );
 }
@@ -86,10 +94,10 @@ function ExperimentCatalog({
     <VStack as="section" aria-labelledby="experiment-library-title" gap={4} className="course-motion-enter">
       <HStack justify="between" align="center" wrap="wrap" gap={2}>
         <Heading id="experiment-library-title" level={2} ref={titleRef} tabIndex={-1} className="lab-panel-title">Browse experiments</Heading>
-        <Button variant="ghost" size="sm" label="Back to experiment" icon={<ArrowLeft size={16} aria-hidden="true" />} onClick={onBack} />
+        <Button variant="ghost" label="Back to experiment" icon={<ArrowLeft size={16} aria-hidden="true" />} onClick={onBack} />
       </HStack>
       <VStack gap={3}>
-        <SegmentedControl label="Experiment collection" value={collection} onChange={setCollection} size="sm">
+        <SegmentedControl label="Experiment collection" value={collection} onChange={setCollection}>
           <SegmentedControlItem label="Studio" value="studio" />
           <SegmentedControlItem label="Lessons" value="lessons" />
         </SegmentedControl>
@@ -122,7 +130,7 @@ function ChartLabPage() {
   }
 
   return (
-    <VStack className={`course-wrap course-simple-page practice-page lab-page ${view === "browse" ? "lab-catalog-page" : ""}`} gap={4}>
+    <VStack className="course-wrap course-simple-page practice-page lab-page" gap={4}>
       <VStack as="header" gap={2}>
         <Heading level={1} className="course-display course-page-title">Chart Lab</Heading>
         <Text as="p" color="secondary">Change how a chart is drawn and see which patterns become easier to read.</Text>
@@ -149,7 +157,7 @@ function ChartLabPage() {
           <VStack as="section" gap={2} key={current.id} className="course-motion-enter lab-active" aria-labelledby="experiment-title">
             <HStack justify="between" align="center" wrap="wrap" gap={2}>
               <Heading level={2} id="experiment-title" ref={destination} tabIndex={-1} className="lab-panel-title">{current.title}</Heading>
-              <Button label="Browse experiments" variant="secondary" size="sm" icon={<GridIcon size={16} aria-hidden="true" />} className="course-action" onClick={() => openExperimentView("browse")} />
+              <Button label="Browse experiments" variant="secondary" icon={<GridIcon size={16} aria-hidden="true" />} className="course-action" onClick={() => openExperimentView("browse")} />
             </HStack>
             <ChartLab lab={current.lab} showHeading={false} />
           </VStack>

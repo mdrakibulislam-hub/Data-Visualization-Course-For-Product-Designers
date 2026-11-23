@@ -64,9 +64,9 @@ function CapstonePage() {
         <Heading level={1} className="course-display course-page-title">Capstone project</Heading>
         <Text as="p" color="secondary">Use a real design brief to put your chart decisions into practice.</Text>
       </VStack>
-      <SegmentedControl className="practice-case-picker" label="Project case" value={id} onChange={(value) => void navigate({ search: { project: value === "onboarding" ? "onboarding" : undefined }, resetScroll: false })}>
-        <SegmentedControlItem value="delivery" label={projects.delivery.label} />
-        <SegmentedControlItem value="onboarding" label={projects.onboarding.label} />
+      <SegmentedControl className="practice-case-picker" label="Project case" value={id} onChange={(value) => void navigate({ search: { ...search, project: value === "onboarding" ? "onboarding" : undefined }, resetScroll: false })}>
+        <SegmentedControlItem value="delivery" label="Delivery" />
+        <SegmentedControlItem value="onboarding" label="Onboarding" />
       </SegmentedControl>
       <TabList role="tablist" aria-label="Project workspace" value={view} onChange={(value) => { void setView(value); }} hasDivider>
         <Tab label="Brief & data" value="brief" panelId="project-brief" />

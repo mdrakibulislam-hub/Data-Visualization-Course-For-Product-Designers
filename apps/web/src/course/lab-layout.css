@@ -1,0 +1,76 @@
+.lab-page {
+  max-width: 55rem;
+}
+
+.lab-section[hidden] {
+  display: none;
+}
+
+.lab-panel-title {
+  font-size: var(--text-heading-3-size);
+  scroll-margin-top: var(--spacing-8);
+}
+
+.lab-active > section > p {
+  max-width: 65ch;
+  color: var(--muted);
+}
+
+.lab-active .course-symbols {
+  padding-block: var(--spacing-5);
+}
+
+.lab-active .course-symbols i {
+  width: calc(clamp(2.25rem, 8cqi, 4rem) * var(--symbol-size));
+}
+
+.lab-browser-card {
+  height: 100%;
+  text-align: start;
+  transition: background-color var(--duration-fast) var(--ease-standard), translate var(--duration-fast) var(--ease-move);
+}
+
+.lab-browser-card .chart-thumbnail {
+  height: var(--spacing-10);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lab-browser-card:hover {
+    background-color: var(--panel);
+    translate: 0 calc(-1 * var(--spacing-0-5));
+  }
+}
+
+.lab-atlas-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(11rem, auto);
+}
+
+.lab-atlas-results {
+  border-top: var(--border-width) solid var(--line);
+}
+
+.lab-atlas-row {
+  border-bottom: var(--border-width) solid var(--line);
+  padding-block: var(--spacing-3);
+}
+
+.lab-atlas-row h3 {
+  font-size: var(--text-heading-4-size);
+}
+
+@container course-content (max-width: 31rem) {
+  .lab-atlas-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-browser-card {
+    transition: none;
+  }
+
+  .lab-browser-card:hover {
+    translate: none;
+  }
+}

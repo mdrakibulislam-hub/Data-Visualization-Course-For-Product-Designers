@@ -1,9 +1,11 @@
 import { Heading } from "@astryxdesign/core/Heading";
+import { HStack } from "@astryxdesign/core/HStack";
+import { Link as AstryxLink } from "@astryxdesign/core/Link";
+import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpRight } from "reicon-react";
+import { createFileRoute } from "@tanstack/react-router";
 
-import { sources } from "@/course/sources";
+import { articleSources, bookSources } from "@/course/sources";
 
 export const Route = createFileRoute("/sources")({
   head: () => ({ meta: [{ title: "Sources · Data Viz Field Guide" }] }),
@@ -13,27 +15,45 @@ export const Route = createFileRoute("/sources")({
 function SourcesPage() {
   return (
     <VStack className="course-wrap course-simple-page" gap={6}>
-      <Link to="/" className="course-back"><ArrowLeft size={16} aria-hidden="true" /> Course overview</Link>
       <VStack as="header" gap={2}>
-        <Heading level={1} className="course-display course-page-title">Sources &amp; reading notes</Heading>
-        <p className="course-deck">Five resources informed the course. Use these notes to find the chapters and ideas that fit the problem you are working on.</p>
+        <Heading level={1} className="course-display course-page-title">Sources</Heading>
+        <p className="course-deck">Find a practical guide for your current design problem, or go deeper with the course’s books and slides.</p>
+        <HStack as="nav" gap={3} wrap="wrap" aria-label="Reading groups">
+          <AstryxLink href="#articles">Articles and guides</AstryxLink>
+          <AstryxLink href="#books">Books and slides</AstryxLink>
+        </HStack>
       </VStack>
-      <VStack className="course-source-list" gap={0}>
-        {sources.map((source) => (
-          <VStack as="article" key={source.id} id={source.id} className="course-source" gap={2}>
-            <Heading level={2}>{source.title}</Heading>
-            <p className="course-meta">{source.credit}</p>
-            <p>{source.scope}</p>
-            <p>{source.perspective}</p>
-            <details className="course-lesson-sources">
-              <summary>Reading notes</summary>
-              <VStack as="ul" gap={3}>
-                {source.parts.map(({ title, note }) => <li key={title}><strong>{title}</strong><p>{note}</p></li>)}
-              </VStack>
-            </details>
-            {source.url && <a href={source.url} className="course-back">Publisher’s reference <ArrowUpRight size={15} aria-hidden="true" /></a>}
-          </VStack>
-        ))}
+      <VStack as="section" aria-labelledby="articles" gap={2}>
+        <Heading id="articles" level={2}>Articles and guides</Heading>
+        <VStack gap={0}>
+          {articleSources.map((source) => (
+            <VStack as="article" key={source.id} id={source.id} className="course-source" gap={1}>
+              <Text as="p" type="supporting" color="secondary" className="course-meta">{source.credit}</Text>
+              <Heading level={3}><AstryxLink href={source.url} weight="semibold" type="inherit">{source.title}</AstryxLink></Heading>
+              <p>{source.note}</p>
+            </VStack>
+          ))}
+        </VStack>
+      </VStack>
+      <VStack as="section" aria-labelledby="books" gap={2}>
+        <Heading id="books" level={2}>Books and slides</Heading>
+        <VStack gap={0}>
+          {bookSources.map((source) => (
+            <VStack as="article" key={source.id} id={source.id} className="course-source" gap={2}>
+              <Text as="p" type="supporting" color="secondary" className="course-meta">{source.credit}</Text>
+              <Heading level={3}>{source.title}</Heading>
+              <p>{source.scope}</p>
+              <p>{source.perspective}</p>
+              <details className="course-lesson-sources">
+                <summary>Reading notes</summary>
+                <VStack as="ul" gap={3}>
+                  {source.parts.map(({ title, note }) => <li key={title}><strong>{title}</strong><p>{note}</p></li>)}
+                </VStack>
+              </details>
+              {source.url && <AstryxLink href={source.url}>Publisher’s reference</AstryxLink>}
+            </VStack>
+          ))}
+        </VStack>
       </VStack>
     </VStack>
   );

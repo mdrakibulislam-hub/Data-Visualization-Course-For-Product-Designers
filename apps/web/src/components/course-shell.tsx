@@ -17,7 +17,6 @@ import { lessons, modules } from "@/course/curriculum";
 import { useProgress } from "@/course/progress";
 
 import { ModeToggle } from "./mode-toggle";
-import UserMenu from "./user-menu";
 
 const moduleIcons = [BookOpen, Database, Grid, Layers];
 
@@ -130,7 +129,7 @@ export function CourseShell({ children }: { children: ReactNode }) {
               </HStack>
             } />}
             footer={<SidebarProgress completed={progress.completed.length} canSave={canSave} isCollapsed={isCollapsed} />}
-            footerIcons={<><ModeToggle />{path === "/dashboard" && <UserMenu />}</>}
+            footerIcons={<ModeToggle isCollapsed={isCollapsed} />}
           >
             {sections}
           </SideNav>

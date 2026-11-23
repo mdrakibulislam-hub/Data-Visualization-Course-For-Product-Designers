@@ -87,10 +87,10 @@ const sampleViews = (sizes: readonly number[]): IntervalView => ({
 const waits = [[6, 7, 7, 8, 8, 9, 9, 10], [2, 3, 4, 4, 6, 8, 12, 25]];
 const waitRanges = ["0–4", "5–9", "10–14", "15–19", "20–24", "25–29"];
 const dailyWaits = [7, 8, 8, 7, 9, 8, 9, 7, 7, 8, 8, 10, 8, 8, 6, 6, 6, 23, 5, 5, 5, 8, 8, 7, 9, 8, 8, 8];
-const weeklyWaits = Array.from({ length: 4 }, (_, index) => {
-  const total = dailyWaits.slice(index * 7, index * 7 + 7).reduce((sum, value) => sum + value, 0);
-  return Math.round(total / 7 * 10) / 10;
-});
+const waitWeeks = Array.from({ length: 4 }, (_, index) => dailyWaits.slice(index * 7, index * 7 + 7));
+const weekLabels = waitWeeks.map((_, index) => `Week ${index + 1}`);
+const weeklyWaits = waitWeeks.map((week) => Math.round(week.reduce((sum, value) => sum + value, 0) / week.length * 10) / 10);
+const weeklyPeaks = waitWeeks.map((week) => Math.max(...week));
 const dailyLabels = dailyWaits.map((_, index) => `Day ${index + 1}`);
 
 const deviceChart: LineView = {
@@ -170,9 +170,10 @@ export const labs: Record<string, Lab> = {
     ],
   },
   "aggregate-and-drill": {
-    prompt: "Start with the weekly average, then inspect the 28 days behind it. Find the day you would investigate.",
+    prompt: "Compare two ways to summarize daily average waits by week. Then open the daily detail to find the day you would investigate.",
     views: [
-      { label: "Weekly average", title: "Average wait by week", chart: { kind: "line", labels: ["Week 1", "Week 2", "Week 3", "Week 4"], series: [{ name: "Average wait", values: weeklyWaits }], unit: "minutes", max: 25 }, note: "All four weekly averages are exactly eight minutes. This is a useful overview, but it hides a spike." },
+      { label: "Average", title: "Average wait by week", chart: { kind: "line", labels: weekLabels, series: [{ name: "Average wait", values: weeklyWaits }], unit: "minutes", max: 25 }, note: "All four weekly averages are eight minutes. The average smooths out a short spike." },
+      { label: "Peak", title: "Highest daily average in each week", chart: { kind: "line", labels: weekLabels, series: [{ name: "Peak daily average", values: weeklyPeaks }], unit: "minutes", max: 25, annotations: { index: 2, label: "23 min" } }, note: "The peak points to Week 3. It picks the highest daily average in each time bucket." },
       { label: "Daily detail", title: "Average wait by day", chart: { kind: "line", labels: dailyLabels, series: [{ name: "Average wait", values: dailyWaits }], unit: "minutes", max: 25, annotations: { index: 17, label: "23 min" } }, note: "Day 18 reached 23 minutes. The chart uses the same scale, so the change comes from the grouping." },
     ],
   },

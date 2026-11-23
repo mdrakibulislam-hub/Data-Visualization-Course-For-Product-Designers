@@ -9,7 +9,6 @@ import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check } from "reicon-react";
 
-import { AppearanceTabs } from "@/components/mode-toggle";
 import { Columns } from "@/course/charts";
 import { lessons, modules, totalMinutes } from "@/course/curriculum";
 import { weekdayOrders } from "@/course/lab-data";
@@ -32,23 +31,24 @@ function CourseOverview() {
           <Heading level={1} id="course-title" className="course-display course-hero-title">
             Data visualization<br className="course-hero-break" /> <em>for product designers.</em>
           </Heading>
-          <p className="course-deck">Learn to read, choose, and design charts. Start with everyday examples, then apply the same ideas to data-heavy products.</p>
-          <HStack align="center" wrap="wrap" gap={3} className="course-hero-actions">
+          <p className="course-deck">Learn to choose and design charts for data-heavy products, starting with everyday examples.</p>
+          <HStack align="center" wrap="wrap" gap={2} className="course-hero-actions">
             {resume ? (
-              <Button href={`/lesson/${resume.id}`} label={progress.lastLesson ? "Continue learning" : "Start learning"} variant="primary" size="lg" className="course-action" endContent={<ArrowRight size={17} aria-hidden="true" />} />
+              <Button href={`/lesson/${resume.id}`} label={progress.lastLesson ? "Continue learning" : "Start learning"} aria-describedby="course-pace" variant="primary" size="lg" className="course-action" endContent={<ArrowRight size={17} aria-hidden="true" />} />
             ) : (
               <Button href="/review" label="Review flashcards" variant="primary" size="lg" className="course-action" endContent={<ArrowRight size={17} aria-hidden="true" />} />
             )}
             <Button href="/lab" label="Chart lab" variant="secondary" size="lg" className="course-action" />
-            <p className="course-meta">{lessons.length} lessons <span aria-hidden="true">·</span> {Math.floor(totalMinutes / 60)} hr {totalMinutes % 60} min</p>
           </HStack>
+          <p className="course-meta course-hero-pace" id="course-pace">
+            {progress.lastLesson && resume
+              ? <>Lesson {lessons.indexOf(resume) + 1} <Text as="span" aria-hidden="true">·</Text> {resume.title}</>
+              : <>{lessons.length} lessons <Text as="span" aria-hidden="true">·</Text> {Math.floor(totalMinutes / 60)} hr {totalMinutes % 60} min</>}
+          </p>
         </VStack>
         <Card className="course-hero-figure" padding={4}>
           <VStack as="figure" gap={0}>
-            <HStack className="course-figure-head" justify="between" align="center" gap={1}>
-              <Text weight="semibold">Orders by weekday</Text>
-              <Text type="supporting" color="secondary">Sample data</Text>
-            </HStack>
+            <Text as="p" className="course-figure-head" weight="semibold">Orders by weekday</Text>
             <Columns values={weekdayOrders} unit="Orders" max={60} emphasis={4} />
             <figcaption>Friday was busiest, with 58 orders.</figcaption>
           </VStack>
@@ -65,7 +65,6 @@ function CourseOverview() {
       )}
 
       <VStack as="section" id="curriculum" className="course-curriculum" gap={0} aria-label="Course outline">
-        <HStack className="course-curriculum-tools" gap={2} align="center"><AppearanceTabs /></HStack>
         {modules.map((module) => (
           <HStack as="section" className="course-module" key={module.title} align="start" gap={0}>
             <VStack className="course-module-title" gap={1}>
@@ -79,12 +78,12 @@ function CourseOverview() {
                 return (
                   <li key={lesson.id}>
                     <Link to="/lesson/$lessonId" params={{ lessonId: lesson.id }} className="course-lesson-row">
-                      <span className="course-lesson-index" aria-hidden="true">{String(number).padStart(2, "0")}</span>
+                      <Text as="span" className="course-lesson-index" aria-hidden="true">{String(number).padStart(2, "0")}</Text>
                       <VStack gap={0.5}>
                         <strong>{lesson.title}</strong>
                         <p>{lesson.description}</p>
                       </VStack>
-                      <span className="course-row-time">{lesson.minutes} min</span>
+                      <Text as="span" className="course-row-time">{lesson.minutes} min</Text>
                       {isComplete ? (
                         <Check className="course-row-completed" size={17} aria-label="Completed" role="img" />
                       ) : <ArrowRight className="course-row-arrow" size={17} aria-hidden="true" />}

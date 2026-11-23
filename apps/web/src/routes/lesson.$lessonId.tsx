@@ -1,3 +1,5 @@
+import { Heading } from "@astryxdesign/core/Heading";
+import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
 import { lessons } from "@/course/curriculum";
@@ -12,10 +14,10 @@ export const Route = createFileRoute("/lesson/$lessonId")({
   head: ({ loaderData }) => ({ meta: [{ title: `${loaderData?.title ?? "Lesson"} · Data Viz Field Guide` }] }),
   component: LessonRoute,
   notFoundComponent: () => (
-    <section className="course-wrap course-simple-page">
-      <h1>Lesson unavailable</h1>
-      <Link to="/">Browse the course</Link>
-    </section>
+    <VStack as="section" className="course-wrap course-simple-page" gap={3}>
+      <Heading level={1} className="course-display course-page-title">Lesson unavailable</Heading>
+      <Link to="/" className="practice-link">Browse the course</Link>
+    </VStack>
   ),
 });
 

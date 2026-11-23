@@ -4,6 +4,8 @@
 @import "@Data-Visualization-Course-For-Product-Designers/ui/globals.css";
 @import "@astryxdesign/core/astryx.css";
 @import "./course/styles.css" layer(components);
+@import "./course/lab-layout.css" layer(components);
+@import "./course/practice-layout.css" layer(components);
 
 @font-face {
   font-family: Inter;

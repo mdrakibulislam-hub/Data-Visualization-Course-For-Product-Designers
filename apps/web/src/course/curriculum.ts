@@ -1,4 +1,18 @@
-export type SourceId = "kirk" | "handbook" | "truthful-art" | "kirk-excerpt" | "reasoning";
+export type SourceId =
+  | "kirk"
+  | "handbook"
+  | "truthful-art"
+  | "kirk-excerpt"
+  | "reasoning"
+  | "amplitude-analytics"
+  | "datawrapper-chart-types"
+  | "kirk-bar-charts"
+  | "nngroup-dashboards"
+  | "carbon-data-tables"
+  | "accessibility-first"
+  | "stackoverflow-aggregation"
+  | "datadog-queries"
+  | "wilke-overlap";
 
 export type Question = {
   prompt: string;
@@ -40,6 +54,7 @@ export const modules: readonly Module[] = [
           { title: "Ask what someone needs to do", body: "A café owner wants to put the most popular drink at the top of the menu. That calls for a quick ranking. A colleague closing the till needs the exact number sold for each drink. The same orders can support both jobs, but each person needs a different display." },
           { title: "Write a one-sentence brief", body: "Try: “Help the café owner compare drinks sold this week so they can reorder the menu.” Name the reader, the question, and what happens next. Adding the time window also makes it easier to agree which orders belong in the chart." },
           { title: "Use the same brief at work", body: "For a checkout dashboard, ask whether the reader is spotting a problem or investigating an order. A clear overview can help with the first. A searchable table with order IDs can help with the second." },
+          { title: "Measure the behavior you care about", body: "A funnel shows where people stop along a sequence. For a grocery app, follow cart opened, delivery slot selected, and order placed. Decide how long people have to finish the steps. If the question is whether people come back, use retention and agree on what counts as returning, such as placing a second order." },
         ],
         takeaway: "Choose the display after you know the reader, the question, and the decision.",
         practice: "Pick one chart from a product you use. Write a brief for it in one sentence, then ask someone if they would know what to do after looking at it.",
@@ -48,7 +63,7 @@ export const modules: readonly Module[] = [
           { prompt: "Which brief gives a designer enough to start?", options: ["Make the dashboard more visual.", "Use a modern chart for orders.", "Help shift leads compare weekday orders so they can plan staffing."], answer: 2, explanation: "The third brief names a reader, a comparison, and a decision. Each can guide a design choice." },
         ],
         flashcard: { front: "What three things belong in a one-sentence chart brief?", back: "The reader, the question they need answered, and what they will do with the answer." },
-        reading: [{ source: "kirk", locator: "Chapters 1–3, especially project context and vision" }, { source: "kirk-excerpt", locator: "Chapter 1, the stages of understanding" }, { source: "reasoning", locator: "Slides 5–8 and 20–25" }],
+        reading: [{ source: "kirk", locator: "Chapters 1–3, especially project context and vision" }, { source: "kirk-excerpt", locator: "Chapter 1, the stages of understanding" }, { source: "reasoning", locator: "Slides 5–8 and 20–25" }, { source: "amplitude-analytics", locator: "Funnels and retention" }],
       },
       {
         id: "choose-the-chart",
@@ -58,16 +73,17 @@ export const modules: readonly Module[] = [
         sections: [
           { title: "Compare sizes with bars", body: "Use bars when someone needs to compare amounts across categories. The baseline gives their lengths a common starting point. Ranking categories helps people spot the largest one. Keep a meaningful order, such as the days of the week, when the sequence matters." },
           { title: "Show change with a line", body: "A line makes direction and changes between ordered points easier to see. It works for orders across days, where the connection has meaning. Connecting unrelated categories, such as latte and tea, suggests a relationship between neighboring points that the data does not provide." },
-          { title: "Use the form that answers the task", body: "A histogram groups numeric values into intervals to show their spread. A scatterplot shows how two numeric measurements move together. A table helps people retrieve exact values. A map earns its space when location changes the answer." },
+          { title: "Use the form that answers the task", body: "A stacked bar can show how drink categories make up all orders. To compare two similar shares precisely, put them on a common baseline. Use a histogram for the spread of numeric values, a scatterplot for a relationship between two measurements, and a table when readers need exact values." },
+          { title: "Decide what your bars need to say", body: "Try horizontal bars for long category names. If the reader needs the exact number beside each drink, put the value at the end of its bar. If they mainly need to see which drink sold most, a shared scale and a clear ranking can do the job with fewer labels." },
         ],
         takeaway: "Start with the relationship you want someone to read: difference, change, spread, or association.",
-        practice: "Sketch the same three metrics as a ranked comparison and as a time series. Label the question each sketch can answer.",
+        practice: "Sketch a café’s orders by drink and its total orders by day. Write the question above each sketch. Then add direct value labels to the bars and check whether they help someone answer the first question.",
         questions: [
           { prompt: "Which chart helps you see whether delivery time and a customer’s distance tend to increase together?", options: ["A scatterplot with one dot per delivery", "A pie chart of all delivery times", "A line connecting customer names in alphabetical order"], answer: 0, explanation: "A scatterplot gives each delivery a position using both distance and time. A visible pattern can suggest an association to investigate." },
           { prompt: "A team wants to see how sign-ups changed week by week. What should go on the horizontal axis?", options: ["Customer names", "Weeks in chronological order", "Weeks sorted from most to fewest sign-ups"], answer: 1, explanation: "Chronological order keeps the time intervals and lets readers follow the change. Sorting by size answers a different question." },
         ],
         flashcard: { front: "When are bars a better first choice than a line?", back: "When the job is to compare amounts for separate categories. Use a line for change across a meaningful order, typically time." },
-        reading: [{ source: "kirk", locator: "Chapter 6, visual encoding and chart selection" }, { source: "reasoning", locator: "Slides 30–35, selecting encodings" }],
+        reading: [{ source: "kirk", locator: "Chapter 6, visual encoding and chart selection" }, { source: "reasoning", locator: "Slides 30–35, selecting encodings" }, { source: "datawrapper-chart-types", locator: "Developments over time, shares, and absolute numbers" }, { source: "kirk-bar-charts", locator: "Direct labels and alternate bar layouts" }],
       },
       {
         id: "scales-and-baselines",
@@ -166,6 +182,7 @@ export const modules: readonly Module[] = [
           { title: "Use words to orient the reader", body: "“Activity” leaves people to guess. “Orders per day, 1–7 May” says what was measured and when. If you know the takeaway, make it specific: “Orders peaked on Friday.” Keep the measurement and time window visible as supporting context." },
           { title: "Make the important detail easy to find", body: "A short label next to a point can save a trip to the legend. Use annotation for an event, a meaningful benchmark, or a detail the reader would otherwise miss. A release marker can show when it happened, while the note avoids claiming the release caused the change." },
           { title: "Leave gaps where data is unknown", body: "An integration stopped sending orders for a day. A zero would say the café received no orders. Joining the points on either side would imply a path you never measured. Leave a gap and explain why it is there." },
+          { title: "Give the first glance a job", body: "A shift lead deciding which queue needs help should see that queue quickly. Compare wait times with bars on one baseline, mark the target, and label the queue that needs attention. A weekly planning dashboard can give more space to trends and comparisons because its reader has time to investigate." },
         ],
         takeaway: "Label the measure and time window, then add context where it changes how the chart is read.",
         practice: "Rewrite the title, axis label, and one note for a chart your team uses. Read the result to someone who has never seen the dashboard.",
@@ -174,7 +191,7 @@ export const modules: readonly Module[] = [
           { prompt: "Which heading helps a reader most?", options: ["Graph", "Key performance insights", "Daily orders, 1–7 May"], answer: 2, explanation: "The last heading names the measure, the time grain, and the date window." },
         ],
         flashcard: { front: "What is the difference between zero and missing?", back: "Zero is an observed amount of none. Missing means the amount is unknown. Show them differently and explain the gap when it matters." },
-        reading: [{ source: "kirk", locator: "Chapters 5, 8, and 10, editorial focus, annotation, and composition" }, { source: "reasoning", locator: "Slides 36–42, style and words" }],
+        reading: [{ source: "kirk", locator: "Chapters 5, 8, and 10, editorial focus, annotation, and composition" }, { source: "reasoning", locator: "Slides 36–42, style and words" }, { source: "nngroup-dashboards", locator: "Dashboard types and visual cues for fast comparisons" }],
       },
       {
         id: "filters-and-linked-views",
@@ -185,6 +202,7 @@ export const modules: readonly Module[] = [
           { title: "Start with an overview", body: "A shift lead wants to see which part of the city has late deliveries today, then inspect the orders behind that number. Start with the overview and keep the action one step away. A table can carry exact records without requiring the overview chart to show every one." },
           { title: "Make the scope visible", body: "When someone selects North, show the selection beside the results and update the views that are supposed to follow it. If a chart stays global as a comparison, label it as an all-region benchmark. Make it easy to clear filters and return to the starting view." },
           { title: "Design the states people actually hit", body: "A team will see loading, no matches, stale data, and partial results. A user should be able to tell “still loading” from “no deliveries” and “totals are ready, but the order list is late.” Keep the selected filters visible through those transitions." },
+          { title: "Give the records their own view", body: "In an orders table, show the ID, status, and delivery time together so people can compare rows. Let someone expand a row for a short delivery note. A full delivery history may need a panel or a page of its own. Put search and filters above the rows they apply to." },
         ],
         takeaway: "People should always know which records they’re looking at and how to get back.",
         practice: "Sketch a dashboard with one global filter, one chart-specific filter, and a clear reset. Write what changes for each control.",
@@ -193,7 +211,7 @@ export const modules: readonly Module[] = [
           { prompt: "A filter returns no matching records. What should the interface do?", options: ["Clear the filter automatically", "Show a blank chart without a message", "Keep the filter visible and offer a way to clear it"], answer: 2, explanation: "The user can see what caused the empty state and decide how to broaden the query." },
         ],
         flashcard: { front: "What are linked views?", back: "Views that share an interaction or a selection. Selecting a region in a chart can show the same region in a table while the scope stays visible." },
-        reading: [{ source: "kirk", locator: "Chapter 7, interaction features and trade-offs" }, { source: "handbook", locator: "II.8–II.9, linked views; IV.5, coordinated auction views" }],
+        reading: [{ source: "kirk", locator: "Chapter 7, interaction features and trade-offs" }, { source: "handbook", locator: "II.8–II.9, linked views; IV.5, coordinated auction views" }, { source: "carbon-data-tables", locator: "Expandable rows, table toolbar, and pagination" }],
       },
       {
         id: "accessible-charts",
@@ -204,6 +222,7 @@ export const modules: readonly Module[] = [
           { title: "Put meaning in more than color", body: "If two lines are labeled only with colored swatches, losing the colors can make them hard to distinguish. Label lines directly where there is room. A dash pattern, shape, or text label can preserve the distinction when colors look similar." },
           { title: "Give the graphic a readable equivalent", body: "Use a short description of what the view shows. Provide the actual values as a readable table when someone needs to inspect them. If a chart responds to a filter, the description and the table should describe the same filtered data." },
           { title: "Design beyond hover", body: "People need to discover and operate controls by keyboard and touch. Essential numbers cannot depend on pointer hover. Test focus order, contrast, small screens, and zoom. Ask people to complete a task rather than using a color simulator as the entire test." },
+          { title: "Test the chart before you polish it", body: "At 200% zoom, check whether the labels, comparison, and controls still fit the reader’s task. In a grid of checkout times, a key can explain how bar height and color both represent the same time band. Test whether people read them as two cues for one value." },
         ],
         takeaway: "Use multiple signals for meaning and provide a clear way to read the values.",
         practice: "Review one chart with color turned off and use only the keyboard. Note where the legend, values, controls, and focus become hard to follow.",
@@ -212,7 +231,7 @@ export const modules: readonly Module[] = [
           { prompt: "Exact values are available only on hover. Which improvement gives more people access?", options: ["Make the hover targets smaller", "Add more animation to the tooltip", "Add a readable data table or keyboard-accessible value controls"], answer: 2, explanation: "Keyboard and touch users need an equivalent way to inspect the values." },
         ],
         flashcard: { front: "How can you show two series without relying on color alone?", back: "Add visible names and use another visual distinction, such as solid and dashed lines or different point shapes." },
-        reading: [{ source: "kirk", locator: "Chapters 8–9, reader guides and effective color" }, { source: "reasoning", locator: "Slides 20–25, audience and accessibility" }],
+        reading: [{ source: "kirk", locator: "Chapters 8–9, reader guides and effective color" }, { source: "reasoning", locator: "Slides 20–25, audience and accessibility" }, { source: "accessibility-first", locator: "Low vision, contrast, and a second way to read values" }],
       },
     ],
   },
@@ -227,17 +246,19 @@ export const modules: readonly Module[] = [
         description: "Keep the big picture fast without hiding important detail.",
         sections: [
           { title: "Match detail to the decision", body: "A manager looking across a month can start with weekly summaries. An on-call lead investigating a busy period needs hourly or daily detail. The more you group, the more shape you lose. An average can hide a short spike, so carry a peak or spread when it affects the decision." },
+          { title: "Check what gets combined", body: "Say checkout takes 100 ms in four readings and 900 ms in a fifth. One time bucket can show a mean of 260 ms or a peak of 900 ms. The query can then combine results across servers, hiding the server with the spike. Specify the time bucket, the calculation, and the group in the chart’s details." },
+          { title: "Keep a useful comparison in view", body: "A weekly average can hide the dinner rush. Compare Friday evenings with other Friday evenings so the shift lead can judge whether a wait is unusual. Give the selected shift visual emphasis and keep the usual range nearby for context." },
           { title: "Design the overview and the drill-down together", body: "Agree with engineering on what the server groups, what the first chart requests, and what happens when a user zooms or drills down. A million orders can become a few dozen time buckets. Keep detailed records behind a filtered, paginated view." },
           { title: "Keep changes in resolution visible", body: "Label the bucket size, date range, time zone, and whether a result is sampled or partial. Sampling can reveal common patterns quickly, but may miss rare failures. Cancel outdated requests when filters change and preserve current filters until the matching results arrive." },
         ],
         takeaway: "Keep the overview fast, label its level of detail, and preserve a path to the exceptions.",
-        practice: "Write two requests for a slow dashboard: one for the first view and one for drill-down. Include the grouping, maximum result size, and freshness label.",
+        practice: "Write two requests for a checkout dashboard. Give the first view a time bucket, calculation, group, and freshness label. For the drill-down, choose a finer time bucket or a single server. Explain which one would help someone find a short outage.",
         questions: [
           { prompt: "Weekly average wait stays flat, but one day had a major outage. What could help reveal it?", options: ["A larger weekly average chart", "A weekly peak or a drill-down to the daily data", "A longer averaging window"], answer: 1, explanation: "A peak or a finer-grained view retains the exception that an average can smooth away." },
           { prompt: "A heavy view uses a sample of 5,000 from two million events. What does its interface need to say?", options: ["Only the full dataset size", "That the chart is sampled and what the sample represents", "Nothing, if the chart loads quickly"], answer: 1, explanation: "Sampling affects what users can conclude, especially about rare events. Disclose the scope and provide exact data when the task demands it." },
         ],
         flashcard: { front: "What should an aggregated overview preserve?", back: "The context of each bucket, the signal needed for the decision, and a path to finer detail when the summary might hide an exception." },
-        reading: [{ source: "handbook", locator: "II.6, high-dimensional graphics; III.4 and III.9, large datasets and smoothing" }, { source: "reasoning", locator: "Slides 26–29, trade-offs of aggregation" }],
+        reading: [{ source: "handbook", locator: "II.6, high-dimensional graphics; III.4 and III.9, large datasets and smoothing" }, { source: "reasoning", locator: "Slides 26–29, trade-offs of aggregation" }, { source: "stackoverflow-aggregation", locator: "Comparing similar periods and keeping background context" }, { source: "datadog-queries", locator: "Time and source aggregation" }],
       },
       {
         id: "compare-many-groups",
@@ -246,6 +267,7 @@ export const modules: readonly Module[] = [
         description: "Use aligned views when a single chart gets crowded.",
         sections: [
           { title: "Give groups a repeatable structure", body: "If a line chart has a dozen labels crossing one another, try one small chart per group with the same axes. If you need precise comparisons by group and week, use a table or a matrix. A matrix uses the same columns in every row so patterns can be scanned in both directions." },
+          { title: "Make overlapping points visible", body: "On a plot of rounded order totals and wait times, several orders can land on the same dot. A little transparency can reveal stacks. For a small dataset with rounded values, a slight offset can separate dots visually while the tooltip shows the original values. If thousands of marks blend together, use a grid with the count in each cell and offer a way to inspect the underlying orders." },
           { title: "Keep cohorts and denominators clear", body: "A cohort groups people who share a starting event, such as joining in the same week. Each cohort’s Week 2 occurs on a different calendar date. Show the size of each cohort and whether the group was old enough to reach each week." },
           { title: "Make gaps and restrictions meaningful", body: "An unfinished week, an unknown value, and a value withheld for privacy deserve different labels. Agree on access rules and export behavior with your data partners. Withholding small cells is one safeguard. Other totals and filters can still reveal those values through subtraction." },
         ],
@@ -256,7 +278,7 @@ export const modules: readonly Module[] = [
           { prompt: "A cell has been withheld because the group is very small. What should the design show?", options: ["0%", "A label that says the value was withheld", "The value in the exported CSV only"], answer: 1, explanation: "Withheld data is different from a measured zero. Respect the same access policy in details and exports." },
         ],
         flashcard: { front: "When do small multiples help?", back: "When a single view has too many groups to read. Repeating a simple chart with the same units and scale makes comparisons easier." },
-        reading: [{ source: "handbook", locator: "III.6, structured sets of graphs; III.14–III.15, parallel coordinates and matrix visualization" }, { source: "kirk", locator: "Chapter 10, comparing views and arranging space" }],
+        reading: [{ source: "handbook", locator: "III.6, structured sets of graphs; III.14–III.15, parallel coordinates and matrix visualization" }, { source: "kirk", locator: "Chapter 10, comparing views and arranging space" }, { source: "wilke-overlap", locator: "Sections 18.1–18.3, transparency, jitter, and density" }],
       },
       {
         id: "capstone",

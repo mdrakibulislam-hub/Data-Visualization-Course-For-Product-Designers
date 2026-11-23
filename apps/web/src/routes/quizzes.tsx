@@ -1,15 +1,18 @@
 import { Button } from "@astryxdesign/core/Button";
 import { Card } from "@astryxdesign/core/Card";
+import { ClickableCard } from "@astryxdesign/core/ClickableCard";
+import { Dialog, DialogHeader } from "@astryxdesign/core/Dialog";
+import { Divider } from "@astryxdesign/core/Divider";
 import { Heading } from "@astryxdesign/core/Heading";
 import { HStack } from "@astryxdesign/core/HStack";
+import { Link } from "@astryxdesign/core/Link";
 import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { RadioList, RadioListItem } from "@astryxdesign/core/RadioList";
-import { SelectableCard } from "@astryxdesign/core/SelectableCard";
 import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, BookOpen, ClipboardText, Database, Grid, Layers, Library } from "reicon-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { useRef, useState, type Ref } from "react";
+import { ArrowLeft, ArrowRight, BookOpen, Check, ClipboardText, Database, Grid, Layers, Library, Repeat } from "reicon-react";
 
 import { useProgress } from "@/course/progress";
 import { questionById, questionsForScope, quizScopes, quizScore, type QuizSession } from "@/course/quiz-data";
@@ -19,140 +22,214 @@ export const Route = createFileRoute("/quizzes")({
   component: QuizzesPage,
 });
 
-function QuizRound({ session }: { session: QuizSession }) {
+const topics = [
+  { Icon: Library, description: "Mix questions from every topic." },
+  { Icon: BookOpen, description: "Choose charts and set honest scales." },
+  { Icon: Database, description: "Read rates, distributions, and uncertainty." },
+  { Icon: Grid, description: "Design context, filters, and accessible charts." },
+  { Icon: Layers, description: "Summarize large datasets and compare groups." },
+  { Icon: ClipboardText, description: "Solve problems from onboarding and dashboards." },
+];
+
+function QuizRound({ session, headingRef, onAdvance }: { session: QuizSession; headingRef: Ref<HTMLHeadingElement>; onAdvance: () => void }) {
   const { saveQuiz } = useProgress();
   const [selection, setSelection] = useState("");
-  const feedbackRef = useRef<HTMLDivElement>(null);
+  const feedbackRef = useRef<HTMLElement>(null);
   const entry = questionById.get(session.ids[session.cursor])!;
   const answer = session.answers[session.cursor];
   const answered = answer !== undefined;
+  const correct = answer === entry.answer;
   const label = `Question ${session.cursor + 1} of ${session.ids.length}`;
 
   function checkAnswer() {
+    if (answered || selection === "") return;
     saveQuiz({ ...session, answers: [...session.answers, Number(selection)] });
     requestAnimationFrame(() => feedbackRef.current?.focus());
   }
 
   return (
-    <VStack gap={4} className="course-motion-enter">
+    <VStack gap={4}>
       <ProgressBar label={label} value={session.answers.length} max={session.ids.length} />
-      <RadioList label={entry.prompt} value={answered ? String(answer) : selection} onChange={setSelection} isDisabled={answered}>
-        {entry.options.map((option, index) => <RadioListItem value={String(index)} label={option} key={option} align="first-line" />)}
-      </RadioList>
-      {answered ? (
-        <>
-          <Card variant="muted" padding={3} className="course-motion-enter">
-            <VStack gap={1} ref={feedbackRef} tabIndex={-1} role="status">
-              <Text as="p" weight="semibold">{answer === entry.answer ? "Correct" : "Correct answer"}</Text>
-              {answer !== entry.answer && <Text as="p">{entry.options[entry.answer]}</Text>}
-              <Text as="p">{entry.explanation}</Text>
-              {entry.lessonId && <Link className="practice-link" to="/lesson/$lessonId" params={{ lessonId: entry.lessonId }}>Review the lesson</Link>}
+      <Card padding={0} className="quiz-question-sheet course-motion-enter">
+        <VStack gap={4} padding={4}>
+          <Heading level={2} ref={headingRef} tabIndex={-1} className="course-display quiz-question-title">{entry.prompt}</Heading>
+          <RadioList label={entry.prompt} isLabelHidden value={answered ? String(answer) : selection} onChange={setSelection} isDisabled={answered} controlClassName="quiz-choices">
+            {entry.options.map((option, index) => (
+              <RadioListItem
+                key={option}
+                label={option}
+                aria-label={answered && index === entry.answer ? `${option}, correct answer` : undefined}
+                value={String(index)}
+                align="first-line"
+                endContent={answered && index === entry.answer ? <Check size={16} aria-hidden="true" /> : undefined}
+              />
+            ))}
+          </RadioList>
+          {answered && (
+            <VStack as="section" gap={1.5} padding={3} ref={feedbackRef} tabIndex={-1} aria-labelledby="quiz-feedback-title" aria-describedby="quiz-feedback-reason" className="quiz-feedback course-motion-enter">
+              <Text as="p" id="quiz-feedback-title" weight="semibold">{correct ? "Correct" : `Correct answer: ${entry.options[entry.answer]}`}</Text>
+              <Text as="p" id="quiz-feedback-reason">{entry.explanation}</Text>
+              {entry.lessonId && <Link href={`/lesson/${entry.lessonId}`} type="supporting" weight="semibold" hasUnderline>Review the lesson</Link>}
             </VStack>
-          </Card>
-          <HStack gap={2}><Button label={session.cursor + 1 === session.ids.length ? "See results" : "Next question"} variant="primary" className="course-action" onClick={() => saveQuiz({ ...session, cursor: session.cursor + 1 })} /></HStack>
-        </>
-      ) : (
-        <HStack gap={2}><Button label="Check answer" variant="primary" className="course-action" isDisabled={selection === ""} onClick={checkAnswer} /></HStack>
-      )}
+          )}
+        </VStack>
+        <Divider />
+        <HStack justify="end" paddingInline={4} paddingBlock={3} gap={0}>
+          {answered ? (
+            <Button label={session.cursor + 1 === session.ids.length ? "See results" : "Next question"} variant="primary" className="course-action" endContent={<ArrowRight size={16} aria-hidden="true" />} onClick={onAdvance} />
+          ) : (
+            <Button label="Check answer" variant="primary" className="course-action" isDisabled={selection === ""} onClick={checkAnswer} />
+          )}
+        </HStack>
+      </Card>
     </VStack>
   );
 }
 
-const topicIcons = [Library, BookOpen, Database, Grid, Layers, ClipboardText];
-
-const topicDescriptions = [
-  "Practice design decisions from across the course.",
-  "Choose a chart, an encoding, and an honest scale.",
-  "Work with rates, distributions, and uncertainty.",
-  "Make context, filters, and charts easier to use.",
-  "Work with larger datasets and multiple groups.",
-  "Interpret realistic onboarding and dashboard examples.",
-];
-
 function QuizzesPage() {
   const { progress, saveQuiz } = useProgress();
-  const [scope, setScope] = useState(progress.quiz?.scope ?? "all");
-  const [showTopics, setShowTopics] = useState(!progress.quiz);
-  const questions = questionsForScope(scope);
-  const session = progress.quiz?.scope === scope ? progress.quiz : null;
-  const completed = session && session.cursor === session.ids.length;
-  const missed = completed ? session.ids.filter((id, index) => questionById.get(id)?.answer !== session.answers[index]) : [];
+  const session = progress.quiz;
+  const [showTopics, setShowTopics] = useState(!session);
+  const [pendingScope, setPendingScope] = useState<string | null>(null);
+  const catalogHeading = useRef<HTMLHeadingElement>(null);
+  const sessionHeading = useRef<HTMLHeadingElement>(null);
+  const isBrowsing = showTopics || !session;
+  const completed = Boolean(session && session.cursor === session.ids.length);
+  const topicTitle = quizScopes.find(({ value }) => value === session?.scope)?.label;
 
-  function start(ids = questions.map(({ id }) => id), retry = false) {
-    saveQuiz({ scope, ids, cursor: 0, answers: [], retry });
-    setShowTopics(false);
+  function focusSession() {
+    requestAnimationFrame(() => sessionHeading.current?.focus());
   }
 
-  const title = quizScopes.find(({ value }) => value === scope)?.label;
-  return (
-    <VStack className={`course-wrap course-simple-page practice-page ${showTopics ? "quiz-catalog-page" : ""}`} gap={5}>
-      <VStack as="header" gap={2} className="course-motion-enter practice-header">
-        <Heading level={1} className="course-display course-page-title">Quizzes</Heading>
-        <p className="course-deck">Choose a topic and test your chart decisions with scenario questions.</p>
-      </VStack>
-      {showTopics || !session ? (
-        <>
-          <VStack gap={0} className="quiz-topic-grid" role="group" aria-label="Quiz topics">
-            {quizScopes.map(({ value, label }, index) => {
-              const count = questionsForScope(value).length;
-              const Icon = topicIcons[index];
-              const best = progress.quizBests[value];
-              const round = progress.quiz?.scope === value ? progress.quiz : null;
-              const inProgress = round && round.cursor < round.ids.length;
-              return (
-                <SelectableCard key={value} label={label} padding={3} className="quiz-topic-card" isSelected={scope === value} onChange={(selected) => { if (selected) setScope(value); }}>
-                  <VStack gap={2} className="quiz-topic-layout">
-                    <HStack as="span" className="quiz-topic-icon" align="center" justify="center" gap={0}>
-                      <Icon size={21} aria-hidden="true" />
+  function start(scope: string, retryIds?: string[]) {
+    const ids = retryIds ?? questionsForScope(scope).map(({ id }) => id);
+    saveQuiz({ scope, ids, cursor: 0, answers: [], retry: retryIds !== undefined });
+    setShowTopics(false);
+    setPendingScope(null);
+    focusSession();
+  }
+
+  function openTopic(scope: string) {
+    if (session?.scope === scope) {
+      setShowTopics(false);
+      focusSession();
+      return;
+    }
+    if (session && !completed && session.answers.length) {
+      setPendingScope(scope);
+      return;
+    }
+    start(scope);
+  }
+
+  if (isBrowsing) {
+    const nextTitle = quizScopes.find(({ value }) => value === pendingScope)?.label;
+
+    return (
+      <VStack className="course-wrap course-simple-page quiz-library-page" gap={5}>
+        <VStack as="header" gap={1.5} className="course-motion-enter">
+          <Heading level={1} ref={catalogHeading} tabIndex={-1} className="course-display course-page-title">Quizzes</Heading>
+          <Text as="p" color="secondary">Choose a topic to practice making chart decisions.</Text>
+        </VStack>
+
+        <VStack as="ul" className="quiz-library-grid" gap={0} aria-label="Quiz topics">
+          {quizScopes.map(({ value, label }, index) => {
+            const { Icon, description } = topics[index];
+            const count = questionsForScope(value).length;
+            const best = progress.quizBests[value];
+            const current = session?.scope === value;
+            const action = current ? completed ? "View results" : "Resume quiz" : "Start quiz";
+
+            return (
+              <VStack as="li" key={value} gap={0}>
+                <ClickableCard label={`${action}: ${label}`} padding={3} className="quiz-library-card" data-current={current || undefined} onClick={() => openTopic(value)}>
+                  <VStack gap={3} className="quiz-library-card-content">
+                    <HStack justify="between" align="start" gap={2}>
+                      <HStack as="span" align="center" justify="center" gap={0} className="quiz-library-icon">
+                        <Icon size={19} aria-hidden="true" />
+                      </HStack>
+                      <ArrowRight size={17} className="quiz-library-arrow" aria-hidden="true" />
                     </HStack>
                     <VStack gap={1}>
-                      <Text weight="semibold">{label}</Text>
-                      <Text as="p" type="supporting" color="secondary">{topicDescriptions[index]}</Text>
+                      <Heading level={2} className="quiz-library-title">{label}</Heading>
+                      <Text as="p" color="secondary" type="supporting">{description}</Text>
                     </VStack>
-                    <HStack gap={2} wrap="wrap" className="quiz-topic-meta">
+                    <HStack wrap="wrap" align="center" justify="between" gap={1} className="quiz-library-meta">
                       <Text type="supporting" color="secondary">{count} questions</Text>
-                      {inProgress ? <Text type="supporting" color="accent">In progress</Text> : best !== undefined ? <Text type="supporting" color="secondary">Best {best}/{count}</Text> : null}
+                      {current ? (
+                        <Text type="supporting" color="accent" weight="semibold">{action}</Text>
+                      ) : best !== undefined && (
+                        <Text type="supporting" color="secondary">Best {best} correct</Text>
+                      )}
                     </HStack>
                   </VStack>
-                </SelectableCard>
-              );
-            })}
-          </VStack>
-          <HStack justify="between" align="center" wrap="wrap" gap={3} className="quiz-topic-actions">
-            <VStack gap={0.5}>
-              <Text weight="semibold">{title}</Text>
-              <Text type="supporting" color="secondary">{questions.length} questions</Text>
-            </VStack>
-            <Button label={session ? completed ? "View results" : "Resume quiz" : "Start quiz"} variant="primary" className="course-action" endContent={<ArrowRight size={16} aria-hidden="true" />} onClick={() => {
-              if (session) setShowTopics(false);
-              else start();
-            }} />
-          </HStack>
-        </>
-      ) : (
-        <VStack gap={2}>
-          <Button label="Quiz topics" variant="ghost" className="quiz-back" icon={<ArrowLeft size={16} aria-hidden="true" />} onClick={() => setShowTopics(true)} />
-          <Card padding={4}>
-            {completed ? (
-              <VStack gap={3} className="course-motion-enter">
-                <Heading level={2}>{quizScore(session)} of {session.ids.length} correct</Heading>
-                {progress.quizBests[scope] !== undefined && <Text as="p" color="secondary">Best full round · {progress.quizBests[scope]} of {questions.length}</Text>}
-                {missed.length > 0 && (
-                  <VStack as="ul" gap={2} className="quiz-missed">
-                    {missed.map((id) => {
-                      const question = questionById.get(id)!;
-                      return <li key={id}><Text as="p" weight="semibold">{question.prompt}</Text><Text as="p" color="secondary">{question.explanation}</Text></li>;
-                    })}
-                  </VStack>
-                )}
-                <HStack gap={2} wrap="wrap">
-                  {missed.length > 0 && <Button label="Retry missed questions" variant="primary" className="course-action" onClick={() => start(missed, true)} />}
-                  <Button label="Start a new round" variant={missed.length ? "secondary" : "primary"} className="course-action" onClick={() => start()} />
-                </HStack>
+                </ClickableCard>
               </VStack>
-            ) : <QuizRound key={`${scope}:${session.cursor}`} session={session} />}
-          </Card>
+            );
+          })}
         </VStack>
+        {pendingScope && (
+          <Dialog isOpen onOpenChange={(open) => { if (!open) setPendingScope(null); }}>
+            <VStack gap={3}>
+              <DialogHeader title={`Start ${nextTitle}?`} hasDivider={false} />
+              <Text as="p">You have an unfinished quiz in {topicTitle}. Starting this quiz will replace that round.</Text>
+              <HStack justify="end" wrap="wrap" gap={2}>
+                <Button label="Keep current quiz" variant="secondary" onClick={() => setPendingScope(null)} />
+                <Button label="Start new quiz" variant="primary" onClick={() => start(pendingScope)} />
+              </HStack>
+            </VStack>
+          </Dialog>
+        )}
+      </VStack>
+    );
+  }
+
+  const missed = completed ? session.ids.filter((id, index) => questionById.get(id)?.answer !== session.answers[index]) : [];
+  const best = progress.quizBests[session.scope];
+
+  return (
+    <VStack className="course-wrap course-simple-page quiz-session-page" gap={4}>
+      <VStack as="header" gap={2} align="start">
+        <Button label="Quiz topics" size="sm" variant="ghost" icon={<ArrowLeft size={15} aria-hidden="true" />} onClick={() => {
+          setShowTopics(true);
+          requestAnimationFrame(() => catalogHeading.current?.focus());
+        }} />
+        <Heading level={1} className="course-display course-page-title">{topicTitle}</Heading>
+      </VStack>
+      {completed ? (
+        <Card padding={4} className="quiz-question-sheet course-motion-enter">
+          <VStack gap={4}>
+            <VStack gap={1}>
+              <Heading level={2} ref={sessionHeading} tabIndex={-1} className="course-display quiz-question-title">{quizScore(session)} of {session.ids.length} correct</Heading>
+              {best !== undefined && <Text as="p" color="secondary">Best full round: {best} correct</Text>}
+            </VStack>
+            {missed.length > 0 && (
+              <VStack as="section" gap={2} aria-labelledby="quiz-missed-title">
+                <Heading level={3} id="quiz-missed-title">Questions to revisit</Heading>
+                <VStack as="ul" gap={0} className="quiz-results-list">
+                  {missed.map((id) => {
+                    const question = questionById.get(id)!;
+                    return (
+                      <VStack as="li" key={id} gap={1} paddingBlock={3}>
+                        <Text as="p" weight="semibold">{question.prompt}</Text>
+                        <Text as="p" color="secondary">{question.explanation}</Text>
+                      </VStack>
+                    );
+                  })}
+                </VStack>
+              </VStack>
+            )}
+            <HStack justify="end" gap={2} wrap="wrap">
+              {missed.length > 0 && <Button label="Retry missed questions" variant="primary" className="course-action" icon={<Repeat size={16} aria-hidden="true" />} onClick={() => start(session.scope, missed)} />}
+              <Button label="Start a new round" variant={missed.length ? "secondary" : "primary"} className="course-action" onClick={() => start(session.scope)} />
+            </HStack>
+          </VStack>
+        </Card>
+      ) : (
+        <QuizRound key={session.ids[session.cursor]} session={session} headingRef={sessionHeading} onAdvance={() => {
+          saveQuiz({ ...session, cursor: session.cursor + 1 });
+          focusSession();
+        }} />
       )}
     </VStack>
   );

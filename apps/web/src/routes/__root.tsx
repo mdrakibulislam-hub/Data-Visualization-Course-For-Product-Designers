@@ -1,3 +1,5 @@
+import { Heading } from "@astryxdesign/core/Heading";
+import { VStack } from "@astryxdesign/core/VStack";
 import { Toaster } from "@Data-Visualization-Course-For-Product-Designers/ui/components/sonner";
 import type { QueryClient } from "@tanstack/react-query";
 import { HeadContent, Link, Outlet, createRootRouteWithContext } from "@tanstack/react-router";
@@ -15,10 +17,10 @@ export interface RouterAppContext {
 export const Route = createRootRouteWithContext<RouterAppContext>()({
   component: RootComponent,
   notFoundComponent: () => (
-    <section className="course-wrap course-simple-page">
-      <h1>Page unavailable</h1>
-      <Link to="/">Browse the course</Link>
-    </section>
+    <VStack as="section" className="course-wrap course-simple-page" gap={3}>
+      <Heading level={1} className="course-display course-page-title">Page unavailable</Heading>
+      <Link to="/" className="practice-link">Browse the course</Link>
+    </VStack>
   ),
   head: () => ({
     meta: [

@@ -10,7 +10,7 @@ type Source = {
   url?: string;
 };
 
-export const sources: readonly Source[] = [
+export const bookSources: readonly Source[] = [
   {
     id: "kirk",
     title: "Data Visualisation: A Handbook for Data Driven Design",
@@ -77,6 +77,79 @@ export const sources: readonly Source[] = [
     ],
   },
 ];
+
+type ArticleSource = Pick<Source, "id" | "title" | "credit"> & {
+  url: string;
+  note: string;
+};
+
+export const articleSources: readonly ArticleSource[] = [
+  {
+    id: "amplitude-analytics",
+    title: "Getting started: Product analytics isn’t just for analysts",
+    credit: "Michele Morales · Amplitude",
+    note: "Use funnels to locate drop-off and retention to see whether a cohort returns. Compare groups to find where behavior differs, then investigate what could explain it.",
+    url: "https://www.amplitude.com/blog/getting-started-product-analytics",
+  },
+  {
+    id: "datawrapper-chart-types",
+    title: "A friendly guide to choosing a chart type",
+    credit: "Lisa Charlotte Muth · Datawrapper",
+    note: "Start with the comparison people need to make. The guide shows which forms serve change over time, shares, and absolute amounts, with examples to compare.",
+    url: "https://www.datawrapper.de/blog/chart-types-guide",
+  },
+  {
+    id: "kirk-bar-charts",
+    title: "Five ways to… present bar charts",
+    credit: "Andy Kirk · Visualising Data",
+    note: "Compare five treatments of the same data. Look at how placing labels inside, above, or at the bar ends affects readability when space is tight.",
+    url: "https://visualisingdata.com/2019/07/five-ways-to-present-bar-charts/",
+  },
+  {
+    id: "nngroup-dashboards",
+    title: "Dashboards: Making Charts and Graphs Easier to Understand",
+    credit: "Page Laubheimer · Nielsen Norman Group",
+    note: "Time-sensitive dashboard decisions benefit from cues people can read quickly. Use aligned position or length when the reader needs to judge how much values differ.",
+    url: "https://www.nngroup.com/articles/dashboards-preattentive/",
+  },
+  {
+    id: "carbon-data-tables",
+    title: "Data table",
+    credit: "Carbon Design System · IBM",
+    note: "Keep table-wide actions above the rows. Use expansion for short details and move substantial detail to a panel or dedicated view. Use pagination where people need to navigate many records.",
+    url: "https://www.carbondesignsystem.com/building-blocks/core/components/data-table/guidelines",
+  },
+  {
+    id: "accessibility-first",
+    title: "An Accessibility-First Approach to Chart Visual Design",
+    credit: "Kent Eisenhuth and Kai Chang · Smashing Magazine",
+    note: "This case study shows how designing for zoom, contrast, and color vision changed the chart itself. The authors use height and color to encode the same ranges.",
+    url: "https://www.smashingmagazine.com/2022/07/accessibility-first-approach-chart-visual-design/",
+  },
+  {
+    id: "stackoverflow-aggregation",
+    title: "Stop aggregating away the signal in your data",
+    credit: "Zan Armstrong · Stack Overflow Blog",
+    note: "Before smoothing a line, try comparing similar periods or highlighting one subset against the full dataset. Keep the variation that tells you whether an observation is unusual.",
+    url: "https://stackoverflow.blog/2022/03/03/stop-aggregating-away-the-signal-in-your-data/",
+  },
+  {
+    id: "datadog-queries",
+    title: "Query to the Graph",
+    credit: "Datadog Docs",
+    note: "Follow a chart point from the query to the screen. Values can be combined within a time bucket and then again across sources. Both choices affect what a spike looks like.",
+    url: "https://docs.datadoghq.com/dashboards/guide/query-to-the-graph/",
+  },
+  {
+    id: "wilke-overlap",
+    title: "Handling overlapping points",
+    credit: "Claus O. Wilke · Fundamentals of Data Visualization, chapter 18",
+    note: "Faint dots and small offsets help reveal overlapping observations. For dense plots, grouping points into squares or hexagons makes the number in each area readable.",
+    url: "https://clauswilke.com/dataviz/overlapping-points.html",
+  },
+];
+
+const sources = [...bookSources, ...articleSources];
 
 export function sourceTitle(id: SourceId) {
   return sources.find((source) => source.id === id)?.title ?? id;

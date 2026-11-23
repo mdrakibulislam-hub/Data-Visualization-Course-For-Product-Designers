@@ -52,8 +52,8 @@ function SidebarHeader({ isCollapsed }: { isCollapsed: boolean }) {
 
 function SidebarProgress({ completed, canSave, isCollapsed }: { completed: number; canSave: boolean; isCollapsed: boolean }) {
   const details = (
-    <Card variant="muted" padding={2} className={isCollapsed ? "course-progress-tooltip" : undefined}>
-      <VStack gap={1}>
+    <Card variant="muted" padding={isCollapsed ? 3 : 4} className={isCollapsed ? "course-progress-tooltip" : undefined}>
+      <VStack gap={3}>
         <ProgressBar label="Course progress" value={completed} max={lessons.length} hasValueLabel formatValueLabel={(value, max) => `${value} of ${max}`} />
         <Text as="p" type="supporting" color="secondary">{canSave ? "Saved in this browser" : "Progress is available in this tab only"}</Text>
       </VStack>
@@ -151,16 +151,19 @@ export function CourseShell({ children }: { children: ReactNode }) {
             icon={moduleIcons[index]}
             collapsible={{ defaultIsCollapsed: module.title !== activeModule }}
           >
-            {module.lessons.map(({ id, title }) => (
-              <SideNavItem
-                key={id}
-                label={title}
-                href={`/lesson/${id}`}
-                size="sm"
-                isSelected={currentLesson?.id === id}
-                endContent={progress.completed.includes(id) ? <Check size={14} aria-label="Completed" role="img" /> : undefined}
-              />
-            ))}
+            <VStack gap={0} className="course-lesson-tree">
+              {module.lessons.map(({ id, title }) => (
+                <SideNavItem
+                  key={id}
+                  className="course-lesson-branch"
+                  label={title}
+                  href={`/lesson/${id}`}
+                  size="sm"
+                  isSelected={currentLesson?.id === id}
+                  endContent={progress.completed.includes(id) ? <Check size={14} aria-label="Completed" role="img" /> : undefined}
+                />
+              ))}
+            </VStack>
           </SideNavItem>
         ))}
       </SideNavSection>
@@ -171,8 +174,8 @@ export function CourseShell({ children }: { children: ReactNode }) {
         <SideNavItem label="Quizzes" href="/quizzes" icon={HelpCircle} isSelected={path === "/quizzes"} />
         <SideNavItem label="Capstone project" href="/capstone" icon={Checklist} isSelected={path === "/capstone"} />
       </SideNavSection>
-      <SideNavSection title="Resources" isHeaderHidden>
-        <SideNavItem label="Sources" href="/sources" icon={DocumentCopy} isSelected={path === "/sources"} />
+      <SideNavSection title="Other">
+        <SideNavItem label="Credits" href="/sources" icon={DocumentCopy} isSelected={path === "/sources"} />
         <SideNavItem label="Preferences" href="/preferences" icon={Settings} isSelected={path === "/preferences"} />
       </SideNavSection>
     </>

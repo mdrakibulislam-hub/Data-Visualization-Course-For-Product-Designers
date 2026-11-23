@@ -115,7 +115,7 @@ function Flashcards() {
         <Heading level={1} className="course-display course-page-title">Flashcards</Heading>
         <Text as="p" color="secondary">Recall an idea, then turn the card to check it.</Text>
       </VStack>
-      <VStack gap={4}>
+      <VStack gap={4} className="review-workspace">
         <HStack justify="between" align="center" wrap="wrap" gap={3}>
           <SegmentedControl label="Review deck" value={reviewAll ? "all" : "remaining"} onChange={(value) => changeDeck(value === "all")} isDisabled={Boolean(leaving)}>
             <SegmentedControlItem label={`Due now (${remaining.length})`} value="remaining" />
@@ -128,48 +128,50 @@ function Flashcards() {
         {progress.learning.weeklyGoal > 0 && <Text as="p" type="supporting" color="secondary">Three different cards count as a practice day.</Text>}
         {!canSave && <Text as="p" type="supporting" role="status" color="secondary">Progress is available in this tab only.</Text>}
 
-        <VStack className="review-deck-window" gap={0}>
-          <VStack className="review-deck" gap={0} data-empty={!card || undefined}>
-            {card ? (
-              <StudyCard key={`${card.id}:${turn}`} lesson={card} revealed={isRevealed} questionRef={questionHeading} answerRef={answerHeading} />
-            ) : (
-              <Card padding={5} className="review-sheet review-current">
-                <VStack as="section" className="review-prompt" gap={3} align="center" justify="center">
-                  <Heading level={2} ref={questionHeading} tabIndex={-1}>{nextDue ? "You’re up to date" : "No reviews due yet"}</Heading>
-                  <Text as="p" color="secondary">{nextDue ? `Your next review is ${formatDay(nextDue)}. You can practice ahead with the full deck.` : "Finish a lesson to schedule a review two days later, or explore the full deck now."}</Text>
-                  <Button label="Practice all cards" variant="secondary" onClick={() => changeDeck(true)} />
-                </VStack>
-              </Card>
-            )}
-            {leaving && <StudyCard lesson={leaving.lesson} revealed={leaving.revealed} leaving={leaving.direction} onExit={finishExit} />}
-          </VStack>
-        </VStack>
-
-        {lastRated && progress.learning.reviews[lastRated] && <Text as="p" type="supporting" color="secondary" role="status">
-          {newRevisit ? "Milestone earned · An idea revisited. " : "Review saved. "}Next review for this idea: {formatDay(progress.learning.reviews[lastRated].dueOn)}.
-        </Text>}
-
-        {card && (
-          <VStack gap={4} align="center">
-            <HStack justify="center" align="center" gap={2} wrap="wrap" className="review-actions">
-              {isRevealed ? (
-                <>
-                  <Button label="Review tomorrow" variant="secondary" size="lg" icon={<Repeat size={16} aria-hidden="true" />} className="course-action" isDisabled={Boolean(leaving)} onClick={() => rate(false)} />
-                  <Button label="I knew it" variant="primary" size="lg" icon={<Check size={16} aria-hidden="true" />} className="course-action" isDisabled={Boolean(leaving)} onClick={() => rate(true)} />
-                </>
+        <VStack className="review-stage" gap={4} align="center" justify="center">
+          <VStack className="review-deck-window" gap={0} width="100%">
+            <VStack className="review-deck" gap={0} data-empty={!card || undefined}>
+              {card ? (
+                <StudyCard key={`${card.id}:${turn}`} lesson={card} revealed={isRevealed} questionRef={questionHeading} answerRef={answerHeading} />
               ) : (
-                <Button label="Show answer" variant="primary" size="lg" className="course-action" isDisabled={Boolean(leaving)} endContent={<ArrowRight size={16} aria-hidden="true" />} onClick={() => {
-                  setRevealedCard(card.id);
-                  requestAnimationFrame(() => answerHeading.current?.focus());
-                }} />
+                <Card padding={5} className="review-sheet review-current">
+                  <VStack as="section" className="review-prompt" gap={3} align="center" justify="center">
+                    <Heading level={2} ref={questionHeading} tabIndex={-1}>{nextDue ? "You’re up to date" : "No reviews due yet"}</Heading>
+                    <Text as="p" color="secondary">{nextDue ? `Your next review is ${formatDay(nextDue)}. You can practice ahead with the full deck.` : "Finish a lesson to schedule a review two days later, or explore the full deck now."}</Text>
+                    <Button label="Practice all cards" variant="secondary" onClick={() => changeDeck(true)} />
+                  </VStack>
+                </Card>
               )}
-            </HStack>
-            <HStack align="center" justify="center" gap={1.5} wrap="wrap" className="review-related">
-              <BookOpen size={15} aria-hidden="true" />
-              <Link href={`/lesson/${card.id}`} type="supporting" color="secondary" hasUnderline>{card.title}</Link>
-            </HStack>
+              {leaving && <StudyCard lesson={leaving.lesson} revealed={leaving.revealed} leaving={leaving.direction} onExit={finishExit} />}
+            </VStack>
           </VStack>
-        )}
+
+          {lastRated && progress.learning.reviews[lastRated] && <Text as="p" type="supporting" color="secondary" role="status">
+            {newRevisit ? "Milestone earned · An idea revisited. " : "Review saved. "}Next review for this idea: {formatDay(progress.learning.reviews[lastRated].dueOn)}.
+          </Text>}
+
+          {card && (
+            <VStack gap={4} align="center">
+              <HStack justify="center" align="center" gap={2} wrap="wrap" className="review-actions">
+                {isRevealed ? (
+                  <>
+                    <Button label="Review tomorrow" variant="secondary" size="lg" icon={<Repeat size={16} aria-hidden="true" />} className="course-action" isDisabled={Boolean(leaving)} onClick={() => rate(false)} />
+                    <Button label="I knew it" variant="primary" size="lg" icon={<Check size={16} aria-hidden="true" />} className="course-action" isDisabled={Boolean(leaving)} onClick={() => rate(true)} />
+                  </>
+                ) : (
+                  <Button label="Show answer" variant="primary" size="lg" className="course-action" isDisabled={Boolean(leaving)} endContent={<ArrowRight size={16} aria-hidden="true" />} onClick={() => {
+                    setRevealedCard(card.id);
+                    requestAnimationFrame(() => answerHeading.current?.focus());
+                  }} />
+                )}
+              </HStack>
+              <HStack align="center" justify="center" gap={1.5} wrap="wrap" className="review-related">
+                <BookOpen size={15} aria-hidden="true" />
+                <Link href={`/lesson/${card.id}`} type="supporting" color="secondary" hasUnderline>{card.title}</Link>
+              </HStack>
+            </VStack>
+          )}
+        </VStack>
       </VStack>
     </VStack>
   );

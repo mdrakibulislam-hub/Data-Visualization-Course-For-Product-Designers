@@ -31,6 +31,55 @@ html { scrollbar-gutter: stable; }
   min-width: 0;
 }
 
+.course-lesson-branch {
+  position: relative;
+}
+
+.course-lesson-branch::before,
+.course-lesson-branch::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: var(--spacing-3);
+  pointer-events: none;
+  border-color: var(--line);
+  border-style: solid;
+  border-width: 0;
+}
+
+.course-lesson-branch::before {
+  inset-block: 0;
+  border-inline-start-width: var(--border-width);
+}
+
+.course-lesson-tree > :last-child .course-lesson-branch::before {
+  inset-block-end: 50%;
+}
+
+.course-lesson-branch::after {
+  inset-block-start: 50%;
+  inline-size: var(--spacing-2);
+  border-block-start-width: var(--border-width);
+}
+
+.course-credit-link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: calc(var(--spacing-10) + var(--spacing-1));
+  overflow-wrap: anywhere;
+}
+
+.course-credit-link > .astryx-text {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.course-credit-link svg {
+  flex-shrink: 0;
+}
+
 .course-wrap {
   width: min(calc(100% - 4rem), 72rem);
   margin-inline: auto;

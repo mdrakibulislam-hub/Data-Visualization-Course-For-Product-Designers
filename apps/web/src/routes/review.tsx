@@ -111,24 +111,24 @@ function Flashcards() {
 
   return (
     <VStack className="course-wrap course-simple-page review-page" gap={5}>
-      <VStack as="header" gap={1.5}>
-        <Heading level={1} className="course-display course-page-title">Flashcards</Heading>
-        <Text as="p" color="secondary">Recall an idea, then turn the card to check it.</Text>
-      </VStack>
+      <HStack as="header" justify="between" align="start" wrap="wrap" gap={4}>
+        <VStack gap={1.5}>
+          <Heading level={1} className="course-display course-page-title">Flashcards</Heading>
+          <Text as="p" color="secondary">Recall an idea, then turn the card to check it.</Text>
+        </VStack>
+        <SegmentedControl label="Review deck" value={reviewAll ? "all" : "remaining"} onChange={(value) => changeDeck(value === "all")} isDisabled={Boolean(leaving)}>
+          <SegmentedControlItem label={`Due now (${remaining.length})`} value="remaining" />
+          <SegmentedControlItem label="All cards" value="all" />
+        </SegmentedControl>
+      </HStack>
       <VStack gap={4} className="review-workspace">
-        <HStack justify="between" align="center" wrap="wrap" gap={3}>
-          <SegmentedControl label="Review deck" value={reviewAll ? "all" : "remaining"} onChange={(value) => changeDeck(value === "all")} isDisabled={Boolean(leaving)}>
-            <SegmentedControlItem label={`Due now (${remaining.length})`} value="remaining" />
-            <SegmentedControlItem label="All cards" value="all" />
-          </SegmentedControl>
-          <VStack gap={0} className="review-progress">
-            <ProgressBar label="Cards recalled" value={progress.knownCards.length} max={lessons.length} hasValueLabel formatValueLabel={(value, max) => `${value} of ${max}`} />
-          </VStack>
-        </HStack>
+        <VStack gap={0} width="100%">
+          <ProgressBar label="Cards recalled" value={progress.knownCards.length} max={lessons.length} hasValueLabel formatValueLabel={(value, max) => `${value} of ${max}`} />
+        </VStack>
         {progress.learning.weeklyGoal > 0 && <Text as="p" type="supporting" color="secondary">Three different cards count as a practice day.</Text>}
         {!canSave && <Text as="p" type="supporting" role="status" color="secondary">Progress is available in this tab only.</Text>}
 
-        <VStack className="review-stage" gap={4} align="center" justify="center">
+        <VStack className="review-stage" gap={4} align="center">
           <VStack className="review-deck-window" gap={0} width="100%">
             <VStack className="review-deck" gap={0} data-empty={!card || undefined}>
               {card ? (

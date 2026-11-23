@@ -1,29 +1,16 @@
 .review-page {
   max-width: 44rem;
-  min-block-size: 100svh;
   padding-block-end: clamp(1.65rem, 3cqi, 2.65rem);
 }
 
 .review-workspace,
 .review-stage {
-  flex: 1;
   min-inline-size: 0;
 }
 
 .review-stage {
-  padding-block: var(--spacing-4);
+  padding-block: var(--spacing-6) var(--spacing-4);
   text-align: center;
-}
-
-@media (max-width: 63.999rem) {
-  .review-page {
-    min-block-size: calc(100svh - var(--spacing-12) - var(--border-width));
-  }
-}
-
-.review-progress {
-  flex: 0 1 12rem;
-  min-width: 9rem;
 }
 
 .review-deck-window {
@@ -43,13 +30,17 @@
   inset: var(--spacing-3) var(--spacing-2) calc(-1 * var(--spacing-3));
   border: var(--border-width) solid var(--line);
   border-radius: var(--radius-container);
-  background: color-mix(in srgb, var(--color-background-card) 50%, var(--panel));
+  background-color: var(--color-background-card);
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--panel) 50%, transparent),
+    color-mix(in srgb, var(--panel) 50%, transparent)
+  );
   z-index: -1;
 }
 
 .review-deck::before {
   inset: var(--spacing-5) var(--spacing-4) calc(-1 * var(--spacing-5));
-  background: var(--panel);
+  background-image: linear-gradient(var(--panel), var(--panel));
   z-index: -2;
 }
 
@@ -261,10 +252,6 @@
 }
 
 @container course-content (max-width: 30rem) {
-  .review-progress {
-    flex: 1 1 100%;
-  }
-
   .capstone-progress {
     flex: 1 1 100%;
   }

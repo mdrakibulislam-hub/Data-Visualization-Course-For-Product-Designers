@@ -8,7 +8,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { articleSources, bookSources } from "@/course/sources";
 
 export const Route = createFileRoute("/sources")({
-  head: () => ({ meta: [{ title: "Sources · Data Viz Field Guide" }] }),
+  head: () => ({ meta: [{ title: "Sources · Graphnotes" }] }),
   component: SourcesPage,
 });
 

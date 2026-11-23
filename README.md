@@ -1,6 +1,6 @@
-# Data Visualization Course for Product Designers
+# ![Graphnotes](apps/web/public/graphnotes-logo.svg)
 
-Data Viz Field Guide is a self-paced course for product designers. Each lesson includes a chart exercise, two questions with feedback, and a way to apply the idea at work. The Practice section brings together the Chart Lab and its 49-entry chart atlas, flashcards, scored quiz rounds, and two capstone cases. The Studio examples contribute experiments and the fictional onboarding data.
+Graphnotes is a self-paced data visualization course for product designers. Each lesson includes a chart exercise, two questions with feedback, and a way to apply the idea at work. The Practice section brings together the Chart Lab and its 49-entry chart atlas, flashcards, scored quiz rounds, and two capstone cases. The Studio examples contribute experiments and the fictional onboarding data.
 
 ## Local development
 

@@ -31,7 +31,7 @@ export const Route = createFileRoute("/lab")({
     experiment: experiments.some(({ id }) => id === search.experiment) ? String(search.experiment) : undefined,
     view: search.view === "atlas" || search.view === "browse" ? search.view : undefined,
   }),
-  head: () => ({ meta: [{ title: "Chart Lab · Data Viz Field Guide" }] }),
+  head: () => ({ meta: [{ title: "Chart Lab · Graphnotes" }] }),
   component: ChartLabPage,
 });
 

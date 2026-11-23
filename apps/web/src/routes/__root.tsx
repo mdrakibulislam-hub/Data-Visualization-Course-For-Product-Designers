@@ -24,7 +24,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   ),
   head: () => ({
     meta: [
-      { title: "Data Viz Field Guide · Data visualization for product designers" },
+      { title: "Graphnotes · Data visualization for product designers" },
       { name: "description", content: "A self-paced data visualization course for product designers, with interactive charts, quizzes, and flashcards." },
     ],
   }),

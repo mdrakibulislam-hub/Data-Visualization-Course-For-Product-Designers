@@ -20,7 +20,7 @@ export const Route = createFileRoute("/capstone")({
   validateSearch: (search: Record<string, unknown>): { project?: ProjectId } => ({
     project: search.project === "onboarding" ? "onboarding" : undefined,
   }),
-  head: () => ({ meta: [{ title: "Capstone project · Data Viz Field Guide" }] }),
+  head: () => ({ meta: [{ title: "Capstone project · Graphnotes" }] }),
   component: CapstonePage,
 });
 

@@ -615,19 +615,32 @@
   .course-data :where(th, td) { padding-inline: .25rem; }
 }
 
-.course-sidebar-header[data-direction="horizontal"] > .astryx-side-nav-heading {
-  flex: 1;
+.course-brand-link {
+  display: inline-flex;
+  align-items: center;
   min-inline-size: 0;
-  padding-inline-end: 0;
+  min-block-size: var(--spacing-8);
+  padding-inline: var(--spacing-2);
+  border-radius: var(--radius-element);
 }
 
-.course-brand-mark {
-  width: 2rem;
-  height: 2rem;
-  flex-shrink: 0;
-  background: var(--color-accent);
-  color: var(--color-on-accent);
-  border-radius: var(--radius-element);
+.course-brand-link[data-compact] {
+  padding-inline: 0;
+}
+
+.course-brand-wordmark {
+  inline-size: 9rem;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+.dark .course-brand-wordmark {
+  filter: brightness(3) saturate(.55);
+}
+
+.course-brand-icon {
+  inline-size: var(--spacing-8);
+  block-size: var(--spacing-8);
 }
 
 .practice-page {

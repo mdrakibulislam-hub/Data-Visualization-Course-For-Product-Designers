@@ -18,7 +18,7 @@ import { useProgress } from "@/course/progress";
 import { questionById, questionsForScope, quizScopes, quizScore, type QuizSession } from "@/course/quiz-data";
 
 export const Route = createFileRoute("/quizzes")({
-  head: () => ({ meta: [{ title: "Quizzes · Data Viz Field Guide" }] }),
+  head: () => ({ meta: [{ title: "Quizzes · Graphnotes" }] }),
   component: QuizzesPage,
 });
 

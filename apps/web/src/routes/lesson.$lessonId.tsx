@@ -11,7 +11,7 @@ export const Route = createFileRoute("/lesson/$lessonId")({
     if (!lesson) throw notFound();
     return lesson;
   },
-  head: ({ loaderData }) => ({ meta: [{ title: `${loaderData?.title ?? "Lesson"} · Data Viz Field Guide` }] }),
+  head: ({ loaderData }) => ({ meta: [{ title: `${loaderData?.title ?? "Lesson"} · Graphnotes` }] }),
   component: LessonRoute,
   notFoundComponent: () => (
     <VStack as="section" className="course-wrap course-simple-page" gap={3}>

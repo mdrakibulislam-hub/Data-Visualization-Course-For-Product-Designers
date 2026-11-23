@@ -2,16 +2,16 @@ import { AppShell, useAppShellMobile } from "@astryxdesign/core/AppShell";
 import { Card } from "@astryxdesign/core/Card";
 import { HStack } from "@astryxdesign/core/HStack";
 import { IconButton } from "@astryxdesign/core/IconButton";
-import { LinkProvider } from "@astryxdesign/core/Link";
+import { Link as AstryxLink, LinkProvider } from "@astryxdesign/core/Link";
 import { MobileNav } from "@astryxdesign/core/MobileNav";
 import { ProgressBar } from "@astryxdesign/core/ProgressBar";
-import { SideNav, SideNavCollapseButton, SideNavHeading, SideNavItem, SideNavSection } from "@astryxdesign/core/SideNav";
+import { SideNav, SideNavCollapseButton, SideNavItem, SideNavSection } from "@astryxdesign/core/SideNav";
 import { Stack } from "@astryxdesign/core/Stack";
 import { Text } from "@astryxdesign/core/Text";
 import { Tooltip } from "@astryxdesign/core/Tooltip";
 import { VStack } from "@astryxdesign/core/VStack";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { BookOpen, ChartBar, Check, HelpCircle, Checklist, Database, DocumentCopy, Layers, Grid, Library, ChartLine } from "reicon-react";
+import { BookOpen, Check, HelpCircle, Checklist, Database, DocumentCopy, Layers, Grid, Library, ChartLine } from "reicon-react";
 import { useState, type ComponentPropsWithRef, type CSSProperties, type ReactNode } from "react";
 
 import { lessons, modules } from "@/course/curriculum";
@@ -21,21 +21,28 @@ import { ModeToggle } from "./mode-toggle";
 
 const moduleIcons = [BookOpen, Database, Grid, Layers];
 
+function BrandLink({ isCompact = false }: { isCompact?: boolean }) {
+  const baseUrl = import.meta.env.BASE_URL;
+  return (
+    <AstryxLink href="/" label="Graphnotes home" className="course-brand-link" data-compact={isCompact || undefined}>
+      {isCompact
+        ? <img className="course-brand-icon" src={`${baseUrl}graphnotes-icon.svg`} width={48} height={48} alt="" />
+        : <img className="course-brand-wordmark" src={`${baseUrl}graphnotes-logo.svg`} width={248} height={49} alt="" />}
+    </AstryxLink>
+  );
+}
+
 function SidebarHeader({ isCollapsed }: { isCollapsed: boolean }) {
   const { isMobile } = useAppShellMobile();
+  const isCompact = isCollapsed && !isMobile;
   return (
     <Stack
-      direction={isCollapsed && !isMobile ? "vertical" : "horizontal"}
+      direction={isCompact ? "vertical" : "horizontal"}
       align="center"
       justify="between"
-      gap={isCollapsed ? 1.5 : 0}
-      className="course-sidebar-header"
+      gap={isCompact ? 1.5 : 2}
     >
-      <SideNavHeading heading="Data Viz Field Guide" headingHref="/" icon={
-        <HStack as="span" align="center" justify="center" gap={0} className="course-brand-mark">
-          <ChartBar size={17} aria-hidden="true" />
-        </HStack>
-      } />
+      <BrandLink isCompact={isCompact} />
       {!isMobile && <SideNavCollapseButton size="sm" />}
     </Stack>
   );
@@ -135,7 +142,7 @@ export function CourseShell({ children }: { children: ReactNode }) {
         mobileNav={{
           breakpoint: "lg",
           content: (
-            <MobileNav side="start" header="Data Viz Field Guide" label="Course navigation">
+            <MobileNav side="start" header={<BrandLink />} label="Course navigation">
               <VStack gap={2} padding={2}>{sections}</VStack>
             </MobileNav>
           ),

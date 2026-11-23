@@ -16,7 +16,7 @@ import { lessons } from "@/course/curriculum";
 import { useProgress } from "@/course/progress";
 
 export const Route = createFileRoute("/review")({
-  head: () => ({ meta: [{ title: "Flashcards · Data Viz Field Guide" }] }),
+  head: () => ({ meta: [{ title: "Flashcards · Graphnotes" }] }),
   component: Flashcards,
 });
 

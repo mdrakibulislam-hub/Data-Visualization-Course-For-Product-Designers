@@ -1,13 +1,16 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 
 import { lessons } from "./curriculum";
+import { challengeFor } from "./challenges";
+import { awardMilestones, completeChallenge, dayKey, emptyLearning, parseLearning, rateReview, recordActivity, scheduleLesson, type LearningState } from "./learning-state";
 import { projectSteps, type ProjectId, type ProjectStep } from "./project-steps";
 import { isQuizScope, questionById, questionsForScope, quizScore, type QuizSession } from "./quiz-data";
 
 const key = "data-viz-field-guide.progress.v1";
 const lessonIds = new Set(lessons.map(({ id }) => id));
 
-type Progress = {
+export type Progress = {
+  learning: LearningState;
   lastLesson: string | null;
   completed: string[];
   answers: Record<string, number>;
@@ -21,6 +24,7 @@ type Progress = {
 };
 
 const emptyProgress: Progress = {
+  learning: emptyLearning(),
   lastLesson: null,
   completed: [],
   answers: {},
@@ -82,6 +86,7 @@ function parseProgress(raw: string | null): Progress {
       }
     }
     return {
+      learning: parseLearning(saved.learning),
       lastLesson: isLesson(saved.lastLesson) ? saved.lastLesson : null,
       completed: listOfLessons(saved.completed),
       answers,
@@ -111,6 +116,11 @@ function readProgress() {
 
 type ProgressContextValue = {
   progress: Progress;
+  today: string;
+  setWeeklyGoal: (goal: number) => void;
+  answerChallenge: (id: string, step: "fix" | "reason", answer: number | null) => void;
+  restartChallenge: (id: string) => void;
+  importProgress: (progress: Progress) => void;
   canSave: boolean;
   openLesson: (id: string) => void;
   completeLesson: (id: string) => void;
@@ -127,6 +137,19 @@ const ProgressContext = createContext<ProgressContextValue | null>(null);
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const [snapshot, setSnapshot] = useState(readProgress);
   const latest = useRef(snapshot);
+  const [today, setToday] = useState(dayKey);
+
+  useEffect(() => {
+    const refresh = () => setToday(dayKey());
+    const timer = window.setInterval(refresh, 60_000);
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", refresh);
+    };
+  }, []);
 
   useEffect(() => {
     function sync(event: StorageEvent) {
@@ -145,7 +168,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       const stored = readProgress();
       if (stored.canSave) base = stored;
     }
-    const progress = change(base.progress);
+    const next = change(base.progress);
+    const projectReady = (["delivery", "onboarding"] as const).some((project) =>
+      (project === "delivery" ? next.capstone : next.onboardingDraft).trim().length > 0 && next.projectChecks[project].length === projectSteps.length);
+    const progress = { ...next, learning: awardMilestones(next.learning, projectReady, dayKey()) };
     let canSave = true;
     try {
       window.localStorage.setItem(key, JSON.stringify(progress));
@@ -162,10 +188,31 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const value: ProgressContextValue = {
     ...snapshot,
+    today,
+    setWeeklyGoal: (goal) => {
+      if ([0, 2, 3, 4, 5].includes(goal)) update((previous) => ({ ...previous, learning: { ...previous.learning, weeklyGoal: goal } }));
+    },
+    importProgress: (progress) => update(() => progress),
+    answerChallenge: (id, step, answer) => {
+      const challenge = challengeFor(id);
+      if (!challenge || (answer !== null && !answerIndex(answer))) return;
+      update((previous) => {
+        const current = previous.learning.attempts[id] ?? { fix: null, reason: null };
+        if (step === "reason" && current.fix !== challenge.fix.answer) return previous;
+        const attempt = step === "fix" ? { fix: answer, reason: null } : { ...current, reason: answer };
+        let learning = { ...previous.learning, attempts: { ...previous.learning.attempts, [id]: attempt } };
+        if (attempt.fix === challenge.fix.answer && attempt.reason === challenge.reason.answer) learning = completeChallenge(learning, id, dayKey());
+        return { ...previous, learning };
+      });
+    },
+    restartChallenge: (id) => {
+      if (challengeFor(id)) update((previous) => ({ ...previous, learning: { ...previous.learning, attempts: { ...previous.learning.attempts, [id]: { fix: null, reason: null } } } }));
+    },
     openLesson,
     completeLesson: (id) => update((previous) => ({
       ...previous,
       completed: previous.completed.includes(id) ? previous.completed : [...previous.completed, id],
+      learning: recordActivity(scheduleLesson(previous.learning, id, dayKey()), dayKey(), "lessons", id),
     })),
     submitAnswer: (id, index, answer) => update((previous) => {
       const answers = { ...previous.answers };
@@ -174,25 +221,26 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       else answers[answerKey] = answer;
       return { ...previous, answers };
     }),
-    saveCapstone: (capstone) => update((previous) => ({ ...previous, capstone })),
-    saveOnboardingDraft: (onboardingDraft) => update((previous) => ({ ...previous, onboardingDraft })),
+    saveCapstone: (capstone) => update((previous) => ({ ...previous, capstone, learning: capstone.trim() && capstone !== previous.capstone ? recordActivity(previous.learning, dayKey(), "projects", "delivery") : previous.learning })),
+    saveOnboardingDraft: (onboardingDraft) => update((previous) => ({ ...previous, onboardingDraft, learning: onboardingDraft.trim() && onboardingDraft !== previous.onboardingDraft ? recordActivity(previous.learning, dayKey(), "projects", "onboarding") : previous.learning })),
     checkProjectStep: (project, step, checked) => update((previous) => {
       const next = new Set(previous.projectChecks[project]);
       if (checked) next.add(step);
       else next.delete(step);
-      return { ...previous, projectChecks: { ...previous.projectChecks, [project]: [...next] } };
+      return { ...previous, projectChecks: { ...previous.projectChecks, [project]: [...next] }, learning: checked ? recordActivity(previous.learning, dayKey(), "projects", project) : previous.learning };
     }),
     saveQuiz: (quiz) => update((previous) => {
       if (quiz.cursor === quiz.ids.length && !quiz.retry) {
         const best = Math.max(quizScore(quiz), previous.quizBests[quiz.scope] ?? 0);
-        return { ...previous, quiz, quizBests: { ...previous.quizBests, [quiz.scope]: best } };
+        return { ...previous, quiz, learning: recordActivity(previous.learning, dayKey(), "quiz"), quizBests: { ...previous.quizBests, [quiz.scope]: best } };
       }
-      return { ...previous, quiz };
+      return { ...previous, quiz, learning: quiz.cursor === quiz.ids.length ? recordActivity(previous.learning, dayKey(), "quiz") : previous.learning };
     }),
     rateCard: (id, known, reviewCard) => update((previous) => ({
       ...previous,
       knownCards: known ? [...new Set([...previous.knownCards, id])] : previous.knownCards.filter((card) => card !== id),
       reviewCard,
+      learning: rateReview(previous.learning, id, known, dayKey()),
     })),
   };
 
@@ -210,4 +258,14 @@ export function getResumeLesson({ lastLesson, completed }: Progress) {
   if (lastIndex >= 0 && !completed.includes(lessons[lastIndex].id)) return lessons[lastIndex];
   return lessons.slice(lastIndex + 1).find(({ id }) => !completed.includes(id))
     ?? lessons.find(({ id }) => !completed.includes(id));
+}
+
+export function readProgressBackup(text: string): Progress {
+  const backup = JSON.parse(text);
+  if (backup?.format !== "graphnotes-progress" || backup?.version !== 1 ||
+      !backup.progress || typeof backup.progress !== "object" ||
+      !Array.isArray(backup.progress.completed) || !backup.progress.answers || typeof backup.progress.answers !== "object" || Array.isArray(backup.progress.answers)) {
+    throw new Error("Choose a Graphnotes progress backup exported from Preferences.");
+  }
+  return parseProgress(JSON.stringify(backup.progress));
 }

@@ -12,6 +12,7 @@ import { ArrowLeft, ArrowRight } from "reicon-react";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { AnswerReview } from "./answer-review";
+import { challengeFor } from "./challenges";
 import { ChartLab } from "./charts";
 import { lessons, type CourseLesson, type Question } from "./curriculum";
 import { labs } from "./lab-data";
@@ -171,6 +172,7 @@ export function LessonReader({ lesson }: { lesson: CourseLesson }) {
         <VStack as="section" id="lesson-practice" gap={2} aria-labelledby="practice-heading" data-scroll-reveal>
           <Heading level={2} id="practice-heading">Try it at work</Heading>
           <Text as="p" type="body">{lesson.practice}</Text>
+          {challengeFor(lesson.id) && <Button href={`/challenges?lesson=${lesson.id}`} label={progress.learning.challenges[lesson.id] ? "Revisit the design challenge" : "Try a design challenge"} variant="secondary" />}
           {lesson.id === "capstone" && <>
             <CapstoneNote />
             <Link className="practice-link" to="/capstone">Open the project checklist</Link>

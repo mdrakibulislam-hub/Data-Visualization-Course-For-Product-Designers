@@ -7,6 +7,7 @@
 @import "./course/lab-layout.css" layer(components);
 @import "./course/practice-layout.css" layer(components);
 @import "./course/overview-chart.css" layer(components);
+@import "./course/learning.css" layer(components);
 
 @font-face {
   font-family: Inter;

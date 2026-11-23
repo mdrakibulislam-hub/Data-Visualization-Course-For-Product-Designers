@@ -10,6 +10,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check } from "reicon-react";
 
 import { lessons, modules, totalMinutes } from "@/course/curriculum";
+import { LearningSummary } from "@/course/learning-summary";
 import { OverviewChart } from "@/course/overview-chart";
 import { getResumeLesson, useProgress } from "@/course/progress";
 
@@ -56,6 +57,8 @@ function CourseOverview() {
           </VStack>
         </Card>
       )}
+
+      <LearningSummary />
 
       <VStack as="section" id="curriculum" className="course-curriculum" gap={0} aria-label="Course outline">
         {modules.map((module) => (

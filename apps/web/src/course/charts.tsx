@@ -162,7 +162,7 @@ function Intervals({ chart }: { chart: Extract<ChartData, { kind: "interval" }> 
   );
 }
 
-function valuesTable(data: Exclude<ChartData, DataTable>): DataTable | null {
+export function valuesTable(data: Exclude<ChartData, DataTable>): DataTable | null {
   switch (data.kind) {
     case "bars":
     case "columns":
@@ -180,7 +180,7 @@ function valuesTable(data: Exclude<ChartData, DataTable>): DataTable | null {
   }
 }
 
-function Chart({ data, title }: { data: ChartData; title: string }) {
+export function Chart({ data, title }: { data: ChartData; title: string }) {
   switch (data.kind) {
     case "bars": return <HorizontalBars chart={data} />;
     case "columns": return <Columns {...data} histogram={data.unit === "people"} />;

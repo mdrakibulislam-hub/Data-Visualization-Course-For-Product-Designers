@@ -28,6 +28,7 @@
   },
   "type": "module",
   "scripts": {
+    "test:learning": "bun test tests/learning-state.test.ts",
     "astryx": "bun run --cwd apps/web astryx",
     "dev": "turbo run dev",
     "build": "turbo run build",

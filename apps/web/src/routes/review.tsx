@@ -12,6 +12,7 @@ import { ArrowRight, BookOpen, Check, Repeat } from "reicon-react";
 import { useEffect, useRef, useState, type Ref } from "react";
 
 import { lessons, type CourseLesson } from "@/course/curriculum";
+import { dueLessonIds, formatDay } from "@/course/learning-state";
 import { useProgress } from "@/course/progress";
 
 export const Route = createFileRoute("/review")({
@@ -53,7 +54,9 @@ function StudyCard({ lesson, revealed, leaving, questionRef, answerRef, onExit }
 }
 
 function Flashcards() {
-  const { progress, canSave, rateCard } = useProgress();
+  const { progress, today, canSave, rateCard } = useProgress();
+  const [lastRated, setLastRated] = useState<string | null>(null);
+  const [newRevisit, setNewRevisit] = useState(false);
   const [reviewAll, setReviewAll] = useState(false);
   const [revealedCard, setRevealedCard] = useState<string | null>(null);
   const [leaving, setLeaving] = useState<LeavingCard | null>(null);
@@ -61,7 +64,9 @@ function Flashcards() {
   const advanceLock = useRef(false);
   const answerHeading = useRef<HTMLHeadingElement>(null);
   const questionHeading = useRef<HTMLHeadingElement>(null);
-  const remaining = lessons.filter(({ id }) => !progress.knownCards.includes(id));
+  const due = dueLessonIds(progress.learning, progress.completed, progress.knownCards, today);
+  const remaining = lessons.filter(({ id }) => due.includes(id)).sort((a, b) => due.indexOf(a.id) - due.indexOf(b.id));
+  const nextDue = Object.values(progress.learning.reviews).map(({ dueOn }) => dueOn).filter((day) => day > today).sort()[0];
   const deck = reviewAll ? lessons : remaining;
   const card = deck.find(({ id }) => id === progress.reviewCard) ?? deck[0];
   const isRevealed = card != null && revealedCard === card.id;
@@ -94,6 +99,9 @@ function Flashcards() {
       advanceLock.current = true;
       setLeaving({ lesson: card, revealed: true, direction: known ? "right" : "left" });
     }
+    const schedule = progress.learning.reviews[card.id];
+    setLastRated(card.id);
+    setNewRevisit(Boolean(known && !progress.learning.milestones["first-revisit"] && schedule && schedule.dueOn <= today && schedule.reviewedOn !== today));
     // Save the decision immediately so navigation during the exit preserves progress.
     rateCard(card.id, known, known && !reviewAll && next.id === card.id ? null : next.id);
     setTurn((value) => value + 1);
@@ -110,13 +118,14 @@ function Flashcards() {
       <VStack gap={4}>
         <HStack justify="between" align="center" wrap="wrap" gap={3}>
           <SegmentedControl label="Review deck" value={reviewAll ? "all" : "remaining"} onChange={(value) => changeDeck(value === "all")} isDisabled={Boolean(leaving)}>
-            <SegmentedControlItem label="To review" value="remaining" />
+            <SegmentedControlItem label={`Due now (${remaining.length})`} value="remaining" />
             <SegmentedControlItem label="All cards" value="all" />
           </SegmentedControl>
           <VStack gap={0} className="review-progress">
-            <ProgressBar label="Cards known" value={progress.knownCards.length} max={lessons.length} hasValueLabel formatValueLabel={(value, max) => `${value} of ${max}`} />
+            <ProgressBar label="Cards recalled" value={progress.knownCards.length} max={lessons.length} hasValueLabel formatValueLabel={(value, max) => `${value} of ${max}`} />
           </VStack>
         </HStack>
+        {progress.learning.weeklyGoal > 0 && <Text as="p" type="supporting" color="secondary">Three different cards count as a practice day.</Text>}
         {!canSave && <Text as="p" type="supporting" role="status" color="secondary">Progress is available in this tab only.</Text>}
 
         <VStack className="review-deck-window" gap={0}>
@@ -126,9 +135,9 @@ function Flashcards() {
             ) : (
               <Card padding={5} className="review-sheet review-current">
                 <VStack as="section" className="review-prompt" gap={3} align="center" justify="center">
-                  <Heading level={2} ref={questionHeading} tabIndex={-1}>You know all {lessons.length} cards</Heading>
-                  <Text as="p" color="secondary">Come back later to see what you remember.</Text>
-                  <Button label="Review all cards" variant="secondary" onClick={() => changeDeck(true)} />
+                  <Heading level={2} ref={questionHeading} tabIndex={-1}>{nextDue ? "You’re up to date" : "No reviews due yet"}</Heading>
+                  <Text as="p" color="secondary">{nextDue ? `Your next review is ${formatDay(nextDue)}. You can practice ahead with the full deck.` : "Finish a lesson to schedule a review two days later, or explore the full deck now."}</Text>
+                  <Button label="Practice all cards" variant="secondary" onClick={() => changeDeck(true)} />
                 </VStack>
               </Card>
             )}
@@ -136,12 +145,16 @@ function Flashcards() {
           </VStack>
         </VStack>
 
+        {lastRated && progress.learning.reviews[lastRated] && <Text as="p" type="supporting" color="secondary" role="status">
+          {newRevisit ? "Milestone earned · An idea revisited. " : "Review saved. "}Next review for this idea: {formatDay(progress.learning.reviews[lastRated].dueOn)}.
+        </Text>}
+
         {card && (
           <VStack gap={4} align="center">
             <HStack justify="center" align="center" gap={2} wrap="wrap" className="review-actions">
               {isRevealed ? (
                 <>
-                  <Button label="Review again" variant="secondary" size="lg" icon={<Repeat size={16} aria-hidden="true" />} className="course-action" isDisabled={Boolean(leaving)} onClick={() => rate(false)} />
+                  <Button label="Review tomorrow" variant="secondary" size="lg" icon={<Repeat size={16} aria-hidden="true" />} className="course-action" isDisabled={Boolean(leaving)} onClick={() => rate(false)} />
                   <Button label="I knew it" variant="primary" size="lg" icon={<Check size={16} aria-hidden="true" />} className="course-action" isDisabled={Boolean(leaving)} onClick={() => rate(true)} />
                 </>
               ) : (

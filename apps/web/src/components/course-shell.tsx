@@ -11,7 +11,7 @@ import { Text } from "@astryxdesign/core/Text";
 import { Tooltip } from "@astryxdesign/core/Tooltip";
 import { VStack } from "@astryxdesign/core/VStack";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { BookOpen, Check, HelpCircle, Checklist, Database, DocumentCopy, Layers, Grid, Library, ChartLine } from "reicon-react";
+import { BookOpen, Check, HelpCircle, Checklist, Database, DocumentCopy, Layers, Grid, Library, ChartLine, Settings, Target } from "reicon-react";
 import { useEffect, useRef, useState, type ComponentPropsWithRef, type CSSProperties, type ReactNode } from "react";
 
 import { lessons, modules } from "@/course/curriculum";
@@ -166,12 +166,14 @@ export function CourseShell({ children }: { children: ReactNode }) {
       </SideNavSection>
       <SideNavSection title="Practice">
         <SideNavItem label="Chart lab" href="/lab" icon={ChartLine} isSelected={path === "/lab"} />
+        <SideNavItem label="Design challenges" href="/challenges" icon={Target} isSelected={path === "/challenges"} />
         <SideNavItem label="Flashcards" href="/review" icon={Layers} isSelected={path === "/review"} />
         <SideNavItem label="Quizzes" href="/quizzes" icon={HelpCircle} isSelected={path === "/quizzes"} />
         <SideNavItem label="Capstone project" href="/capstone" icon={Checklist} isSelected={path === "/capstone"} />
       </SideNavSection>
       <SideNavSection title="Resources" isHeaderHidden>
         <SideNavItem label="Sources" href="/sources" icon={DocumentCopy} isSelected={path === "/sources"} />
+        <SideNavItem label="Preferences" href="/preferences" icon={Settings} isSelected={path === "/preferences"} />
       </SideNavSection>
     </>
   );

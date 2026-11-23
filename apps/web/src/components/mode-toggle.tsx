@@ -6,7 +6,7 @@ import { BookOpen, Moon, Sun } from "reicon-react";
 
 import { useAppearance } from "@/components/theme-provider";
 
-function AppearanceTabs({ compact = false }: { compact?: boolean }) {
+export function AppearanceTabs({ compact = false }: { compact?: boolean }) {
   const { appearance, setAppearance } = useAppearance();
 
   return (

@@ -90,7 +90,7 @@ function PreferencesPage() {
       <VStack as="section" className="learning-setting" gap={3} aria-labelledby="backup-title">
         <Heading level={2} id="backup-title">Keep a copy of your progress</Heading>
         <Text as="p" color="secondary">Export a backup to keep your learning record or move it to another browser. Clearing this site’s browser data clears its saved progress.</Text>
-        <HStack gap={2} wrap="wrap" className="learning-actions">
+        <HStack gap={2} wrap="wrap" className="learning-actions course-action-pair">
           <Button label="Export progress" icon={<Download size={16} aria-hidden="true" />} variant="secondary" onClick={exportBackup} />
           <Button label="Import a backup" icon={<Upload size={16} aria-hidden="true" />} variant="secondary" onClick={() => upload.current?.click()} />
         </HStack>
@@ -111,7 +111,7 @@ function PreferencesPage() {
           <DialogHeader title="Replace this browser’s progress?" hasDivider={false} />
           <Text as="p">This backup contains {pending.completed.length} completed lessons and {Object.keys(pending.learning.challenges).length} practiced challenges. Importing replaces the progress and project notes currently saved here.</Text>
           <Text as="p" type="supporting" color="secondary">Export your current progress first if you’d like to keep both copies. Appearance stays as it is.</Text>
-          <HStack gap={2} wrap="wrap" justify="end" className="learning-actions">
+          <HStack gap={2} wrap="wrap" justify="end" className="learning-actions course-action-pair">
             <Button label="Keep current progress" variant="secondary" onClick={() => setPending(null)} />
             <Button label="Import this backup" variant="primary" onClick={() => { importProgress(pending); setPending(null); setNotice("Progress imported. You can continue where the backup left off."); }} />
           </HStack>

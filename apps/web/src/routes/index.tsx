@@ -32,7 +32,7 @@ function CourseOverview() {
             Data visualization<br className="course-hero-break" /> <em>for product designers.</em>
           </Heading>
           <p className="course-deck">Learn to choose and design charts for data-heavy products, starting with everyday examples.</p>
-          <HStack align="center" wrap="wrap" gap={2} className="course-hero-actions">
+          <HStack align="center" wrap="wrap" gap={2} className="course-hero-actions course-action-pair">
             {resume ? (
               <Button href={`/lesson/${resume.id}`} label={progress.lastLesson ? "Continue learning" : "Start learning"} aria-describedby="course-pace" variant="primary" size="lg" className="course-action" endContent={<ArrowRight size={17} aria-hidden="true" />} />
             ) : (

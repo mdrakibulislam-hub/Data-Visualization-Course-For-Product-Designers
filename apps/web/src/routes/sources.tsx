@@ -7,6 +7,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AtSign, Briefcase, Envelope, Globe } from "reicon-react";
 
 import { articleSources, bookSources } from "@/course/sources";
+import { CreatorPattern } from "@/components/creator-pattern";
 
 export const Route = createFileRoute("/sources")({
   head: () => ({ meta: [{ title: "Credits · Graphnotes" }] }),
@@ -20,20 +21,26 @@ function SourcesPage() {
         <Heading level={1} className="course-display course-page-title">Credits</Heading>
         <Text as="p" color="secondary">The creator and learning sources behind Graphnotes.</Text>
       </VStack>
-      <Card padding={6}>
-        <VStack as="section" aria-labelledby="creator-name" gap={5}>
-          <VStack gap={2}>
-            <Text as="p" type="supporting" color="secondary">Created by</Text>
-            <VStack gap={1}>
-              <Heading level={2} id="creator-name">Md Rakibul Islam</Heading>
-              <Text as="p" color="secondary">Product Design Engineer</Text>
-            </VStack>
-          </VStack>
-          <VStack gap={1}>
-            <HStack gap={4} wrap="wrap">
-              <AstryxLink href="https://rakib.framer.wiki" className="course-credit-link"><Globe size={18} aria-hidden="true" />Portfolio</AstryxLink>
-              <AstryxLink href="https://x.com/rakib_ux" className="course-credit-link"><AtSign size={18} aria-hidden="true" />X (Twitter)</AstryxLink>
-              <AstryxLink href="https://www.linkedin.com/in/searchrakib/" className="course-credit-link"><Briefcase size={18} aria-hidden="true" />LinkedIn</AstryxLink>
+      <Card padding={6} className="course-creator-card">
+        <VStack as="section" aria-labelledby="creator-name" gap={6}>
+          <HStack gap={6} align="center" justify="between" className="course-creator-header">
+            <HStack gap={5} align="center" className="course-creator-profile">
+              <Avatar src={`${import.meta.env.BASE_URL}images/md-rakibul-islam.jpg`} name="Md Rakibul Islam" size={96} shape="rounded" tooltip={false} />
+              <VStack gap={2}>
+                <Text as="p" type="supporting" color="secondary">Created by</Text>
+                <VStack gap={1}>
+                  <Heading level={2} id="creator-name">Md Rakibul Islam</Heading>
+                  <Text as="p" color="secondary">Product Design Engineer</Text>
+                </VStack>
+              </VStack>
+            </HStack>
+            <CreatorPattern />
+          </HStack>
+          <VStack gap={3} className="course-creator-contact">
+            <HStack gap={2} className="course-creator-links">
+              <Button href="https://rakib.framer.wiki" label="Portfolio" variant="primary" icon={<Globe size={18} aria-hidden="true" />} className="course-action" />
+              <Button href="https://x.com/rakib_ux" label="X (Twitter)" variant="secondary" icon={<AtSign size={18} aria-hidden="true" />} className="course-action" />
+              <Button href="https://www.linkedin.com/in/searchrakib/" label="LinkedIn" variant="secondary" icon={<Briefcase size={18} aria-hidden="true" />} className="course-action" />
             </HStack>
             <AstryxLink href="mailto:rakibulislamborkan@gmail.com" className="course-credit-link"><Envelope size={18} aria-hidden="true" />rakibulislamborkan@gmail.com</AstryxLink>
           </VStack>
@@ -78,4 +85,6 @@ function SourcesPage() {
     </VStack>
   );
 }
+import { Avatar } from "@astryxdesign/core/Avatar";
+import { Button } from "@astryxdesign/core/Button";
 import { Card } from "@astryxdesign/core/Card";

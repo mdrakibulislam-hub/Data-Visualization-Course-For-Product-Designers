@@ -167,7 +167,7 @@ function QuizzesPage() {
             <VStack gap={3}>
               <DialogHeader title={`Start ${nextTitle}?`} hasDivider={false} />
               <Text as="p">You have an unfinished quiz in {topicTitle}. Starting this quiz will replace that round.</Text>
-              <HStack justify="end" wrap="wrap" gap={2}>
+              <HStack justify="end" wrap="wrap" gap={2} className="course-action-pair">
                 <Button label="Keep current quiz" variant="secondary" onClick={() => setPendingScope(null)} />
                 <Button label="Start new quiz" variant="primary" onClick={() => start(pendingScope)} />
               </HStack>
@@ -216,7 +216,7 @@ function QuizzesPage() {
                 </VStack>
               </VStack>
             )}
-            <HStack justify="end" gap={2} wrap="wrap" className="quiz-result-actions">
+            <HStack justify="end" gap={2} wrap="wrap" className="quiz-result-actions course-action-pair">
               {missed.length > 0 && <Button label="Retry missed questions" variant="primary" className="course-action" icon={<Repeat size={16} aria-hidden="true" />} onClick={() => start(session.scope, missed)} />}
               <Button label="Start a new round" variant={missed.length ? "secondary" : "primary"} className="course-action" onClick={() => start(session.scope)} />
             </HStack>

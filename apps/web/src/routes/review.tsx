@@ -152,7 +152,7 @@ function Flashcards() {
 
           {card && (
             <VStack gap={4} align="center">
-              <HStack justify="center" align="center" gap={2} wrap="wrap" className="review-actions">
+              <HStack justify="center" align="center" gap={2} wrap="wrap" className="review-actions course-action-pair">
                 {isRevealed ? (
                   <>
                     <Button label="Review tomorrow" variant="secondary" size="lg" icon={<Repeat size={16} aria-hidden="true" />} className="course-action" isDisabled={Boolean(leaving)} onClick={() => rate(false)} />

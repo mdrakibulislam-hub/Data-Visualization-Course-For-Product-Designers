@@ -84,7 +84,7 @@ function ChallengeExercise({ id }: { id: string }) {
               <Text as="p">{challenge.reason.explanation}</Text>
               <Text as="p" type="supporting" color="secondary">You’ve practiced this idea. Try the same check on a chart at work.</Text>
               {earned && earned.length > 0 && <VStack gap={1} className="learning-milestone-note" role="status">{earned.map(({ id, title }) => <Text as="p" key={id} weight="semibold">Milestone earned · {title}</Text>)}</VStack>}
-              <HStack gap={2} wrap="wrap" className="learning-actions">
+              <HStack gap={2} wrap="wrap" className="learning-actions course-action-pair">
                 {next && <Button href={`/challenges?lesson=${next.lessonId}`} label="Try another challenge" variant="primary" endContent={<ArrowRight size={16} aria-hidden="true" />} />}
                 <Button label="Practice this again" variant="secondary" onClick={() => { restartChallenge(id); setSelection(""); setMilestonesBefore(null); requestAnimationFrame(() => destination.current?.focus()); }} />
               </HStack>

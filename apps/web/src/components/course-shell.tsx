@@ -46,6 +46,19 @@ function SidebarHeader({ isCollapsed }: { isCollapsed: boolean }) {
   );
 }
 
+function SidebarEdgeControl({ isCollapsed, onCollapsedChange }: { isCollapsed: boolean; onCollapsedChange: (collapsed: boolean) => void }) {
+  const { isMobile } = useAppShellMobile();
+  if (isMobile) return null;
+
+  return (
+    <HStack gap={0} align="center" justify="center" className="course-sidebar-edge-control">
+      <SideNavCollapseButton collapsible={{ isCollapsed, onCollapsedChange }} size="sm">
+        {isCollapsed ? <ArrowsRight size={16} aria-hidden="true" /> : <ArrowsLeft size={16} aria-hidden="true" />}
+      </SideNavCollapseButton>
+    </HStack>
+  );
+}
+
 function SidebarProgress({ completed, canSave, isCollapsed }: { completed: number; canSave: boolean; isCollapsed: boolean }) {
   const { content: { lessons } } = useCurrentCourse();
   const details = <CourseProgressCard completed={completed} canSave={canSave} isTooltip={isCollapsed} />;
@@ -200,11 +213,7 @@ export function CourseShell({ children }: { children: ReactNode }) {
           >
             {sections}
           </SideNav>
-          <HStack gap={0} align="center" justify="center" className="course-sidebar-edge-control">
-            <SideNavCollapseButton collapsible={sidebarCollapse} size="sm">
-              {isCollapsed ? <ArrowsRight size={16} aria-hidden="true" /> : <ArrowsLeft size={16} aria-hidden="true" />}
-            </SideNavCollapseButton>
-          </HStack>
+          <SidebarEdgeControl isCollapsed={isCollapsed} onCollapsedChange={setIsCollapsed} />
           </>
         }
       >

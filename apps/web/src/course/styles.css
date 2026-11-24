@@ -1,7 +1,7 @@
 html { scrollbar-gutter: stable; }
 
 /* Let the edge control cross the sidebar boundary without being clipped. */
-.course-shell .astryx-layout-panel:has(> .course-sidebar-edge-control) { overflow: visible; }
+.course-shell .astryx-layout-panel:has(> .course-sidebar-edge-control) { overflow: visible; min-block-size: 0; }
 .course-shell :has(> .astryx-layout-panel > .course-sidebar-edge-control) { overflow: visible; z-index: 4; }
 
 .course-sidebar-edge-control {
@@ -22,7 +22,15 @@ html { scrollbar-gutter: stable; }
   background: var(--color-background-surface);
   pointer-events: none;
 }
-.course-sidebar-edge-control > button { position: relative; inline-size: 100%; block-size: 100%; }
+.course-sidebar-edge-control > button {
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+  background-color: transparent;
+  background-image: none;
+  color: var(--color-text-secondary);
+}
+.course-sidebar-edge-control > button:hover { color: var(--color-text-accent); }
 
 /* Native scrolling stays available, with a quiet track and thumb in the rail. */
 .astryx-side-nav * { scrollbar-width: inherit; }

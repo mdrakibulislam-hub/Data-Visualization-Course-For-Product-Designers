@@ -20,7 +20,9 @@ const fieldGuideTheme = defineTheme({
     "--color-data-categorical-teal": "light-dark(#007b80, #28b8b4)",
   },
   components: {
-    "side-nav": { base: { scrollbarWidth: "thin", scrollbarColor: "color-mix(in srgb, var(--color-text-secondary) 16%, transparent) transparent" } },
+    "side-nav": {
+      base: { minWidth: "calc(2 * var(--spacing-8))", scrollbarWidth: "thin", scrollbarColor: "color-mix(in srgb, var(--color-text-secondary) 16%, transparent) transparent" },
+    },
     button: {
       base: { minHeight: "var(--spacing-10)", minWidth: "var(--spacing-10)" },
       "size:sm": { minHeight: "calc(var(--spacing-10) + var(--spacing-1))", minWidth: "calc(var(--spacing-10) + var(--spacing-1))" },

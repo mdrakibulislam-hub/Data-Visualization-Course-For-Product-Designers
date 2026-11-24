@@ -46,7 +46,7 @@ const fieldGuideTheme = defineTheme({
         transitionTimingFunction: "var(--ease-standard)",
       },
       "size:md": { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" },
-      "size:sm": { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" },
+      "size:sm": { minHeight: "calc(var(--spacing-10) + var(--spacing-1))", paddingInlineEnd: "var(--spacing-3)" },
       selected: {
         backgroundColor: "var(--color-accent-muted)",
         color: "var(--color-text-accent)",

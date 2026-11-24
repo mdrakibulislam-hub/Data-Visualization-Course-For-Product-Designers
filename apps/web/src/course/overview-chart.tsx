@@ -88,7 +88,7 @@ export function OverviewChart({ isPreview = false }: { isPreview?: boolean }) {
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [inView, setInView] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const [reducedMotion, setReducedMotion] = useState(() => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [selected, setSelected] = useState(4);
   const figure = useRef<HTMLElement>(null);
   const clipId = useId();
@@ -110,12 +110,12 @@ export function OverviewChart({ isPreview = false }: { isPreview?: boolean }) {
   }, []);
 
   useEffect(() => {
-    if (isPreview || paused || hovered || focused || !inView || reducedMotion) return;
+    if (paused || hovered || focused || !inView || reducedMotion) return;
     const timer = window.setInterval(() => {
       if (!document.hidden) nextStyle();
     }, 3000);
     return () => window.clearInterval(timer);
-  }, [isPreview, paused, hovered, focused, inView, reducedMotion, nextStyle, chart.current]);
+  }, [paused, hovered, focused, inView, reducedMotion, nextStyle, chart.current]);
 
   useEffect(() => {
     if (chart.previous === null) return;
@@ -123,97 +123,109 @@ export function OverviewChart({ isPreview = false }: { isPreview?: boolean }) {
     return () => window.clearTimeout(timer);
   }, [chart.current, chart.previous]);
 
-  return (
-    <Card className={`course-hero-figure${isPreview ? " library-chart-preview" : ""}`} padding={4} variant={isPreview ? "transparent" : "default"}>
-      <VStack as="figure" ref={figure} gap={0} aria-label="Orders by weekday">
-        {!isPreview && (
-          <>
-            <HStack justify="between" align="center" gap={2} className="overview-chart-heading">
-              <Text as="p" weight="semibold">Orders by weekday</Text>
-              <HStack gap={0}>
-                {!reducedMotion && (
-                  <IconButton
-                    label={paused ? "Resume chart rotation" : "Pause chart rotation"}
-                    tooltip={paused ? "Resume chart rotation" : "Pause chart rotation"}
-                    icon={paused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setPaused((value) => !value)}
-                  />
-                )}
+  const content = (
+    <VStack as="figure" ref={figure} gap={0} aria-label="Orders by weekday">
+      {isPreview && !reducedMotion && (
+        <HStack gap={0} className="library-chart-controls">
+          <IconButton
+            label={paused ? "Resume chart rotation" : "Pause chart rotation"}
+            tooltip={paused ? "Resume chart rotation" : "Pause chart rotation"}
+            icon={paused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
+            variant="ghost"
+            size="sm"
+            onClick={() => setPaused((value) => !value)}
+          />
+        </HStack>
+      )}
+      {!isPreview && (
+        <>
+          <HStack justify="between" align="center" gap={2} className="overview-chart-heading">
+            <Text as="p" weight="semibold">Orders by weekday</Text>
+            <HStack gap={0}>
+              {!reducedMotion && (
                 <IconButton
-                  label="Next chart style"
-                  tooltip="Next chart style"
-                  icon={<ArrowRight size={16} aria-hidden="true" />}
+                  label={paused ? "Resume chart rotation" : "Pause chart rotation"}
+                  tooltip={paused ? "Resume chart rotation" : "Pause chart rotation"}
+                  icon={paused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
                   variant="ghost"
                   size="sm"
-                  onClick={nextStyle}
+                  onClick={() => setPaused((value) => !value)}
                 />
-              </HStack>
+              )}
+              <IconButton
+                label="Next chart style"
+                tooltip="Next chart style"
+                icon={<ArrowRight size={16} aria-hidden="true" />}
+                variant="ghost"
+                size="sm"
+                onClick={nextStyle}
+              />
             </HStack>
-            <HStack justify="between" gap={2} className="course-axis-unit">
-              <Text type="supporting" color="secondary">Orders</Text>
-              <Text type="supporting" color="secondary">{styles[chart.current]}</Text>
-            </HStack>
-          </>
-        )}
-        <svg
-          viewBox={isPreview ? "28 0 404 190" : "0 0 440 210"}
-          className="overview-chart"
-          role={isPreview ? "img" : "group"}
-          aria-label={isPreview ? "Bar chart preview" : `${styles[chart.current]} chart. Inspect a weekday for its order count.`}
-          onPointerEnter={(event) => {
-            if (event.pointerType === "mouse") setHovered(true);
-          }}
-          onPointerLeave={() => setHovered(false)}
-          onFocusCapture={() => setFocused(true)}
-          onBlurCapture={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);
-          }}
-        >
-          <defs>
-            <clipPath id={clipId}>
-              <rect x={plot.left - 4} y={0} width={plot.right - plot.left + 8} height={plot.bottom + 4} />
-            </clipPath>
-          </defs>
-          {[0, 15, 30, 45, 60].map((value) => {
-            const y = plot.bottom - value / 60 * (plot.bottom - plot.top);
-            return (
-              <g key={value} aria-hidden="true">
-                <line x1={plot.left} x2={plot.right} y1={y} y2={y} className="overview-chart-grid" />
-                {!isPreview && <text x={plot.left - 9} y={y + 4} textAnchor="end" className="overview-chart-label">{value}</text>}
-              </g>
-            );
-          })}
-          <g clipPath={`url(#${clipId})`}>
-            {chart.previous !== null && !reducedMotion && (
-              <g key={`out-${chart.current}`} className="overview-chart-outgoing" aria-hidden="true" pointerEvents="none">
-                <PlotMarks kind={styles[chart.previous]} selected={selected} />
-              </g>
-            )}
-            <g key={chart.current} className={chart.previous !== null && !reducedMotion ? "overview-chart-incoming" : undefined}>
-              <PlotMarks kind={styles[chart.current]} selected={selected} hasValue={!isPreview} onInspect={isPreview ? undefined : setSelected} />
+          </HStack>
+          <HStack justify="between" gap={2} className="course-axis-unit">
+            <Text type="supporting" color="secondary">Orders</Text>
+            <Text type="supporting" color="secondary">{styles[chart.current]}</Text>
+          </HStack>
+        </>
+      )}
+      <svg
+        viewBox={isPreview ? "0 -36 460 258.75" : "0 0 440 210"}
+        className="overview-chart"
+        role={isPreview ? "img" : "group"}
+        aria-label={isPreview ? `${styles[chart.current]} chart preview` : `${styles[chart.current]} chart. Inspect a weekday for its order count.`}
+        onPointerEnter={(event) => {
+          if (event.pointerType === "mouse") setHovered(true);
+        }}
+        onPointerLeave={() => setHovered(false)}
+        onFocusCapture={() => setFocused(true)}
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);
+        }}
+      >
+        <defs>
+          <clipPath id={clipId}>
+            <rect x={plot.left - 4} y={0} width={plot.right - plot.left + 8} height={plot.bottom + 4} />
+          </clipPath>
+        </defs>
+        {[0, 15, 30, 45, 60].map((value) => {
+          const y = plot.bottom - value / 60 * (plot.bottom - plot.top);
+          return (
+            <g key={value} aria-hidden="true">
+              <line x1={plot.left} x2={plot.right} y1={y} y2={y} className="overview-chart-grid" />
+              {!isPreview && <text x={plot.left - 9} y={y + 4} textAnchor="end" className="overview-chart-label">{value}</text>}
             </g>
-            {chart.previous !== null && !reducedMotion && (
-              <g key={`dust-${chart.current}`} aria-hidden="true" pointerEvents="none">
-                {particles.map(({ x, y, day, style }, index) => (
-                  <circle
-                    key={index}
-                    cx={x}
-                    cy={y}
-                    r={1.5 + index % 3 * .4}
-                    className="overview-chart-dust"
-                    data-accent={day === selected || undefined}
-                    style={style}
-                  />
-                ))}
-              </g>
-            )}
+          );
+        })}
+        <g clipPath={`url(#${clipId})`}>
+          {chart.previous !== null && !reducedMotion && (
+            <g key={`out-${chart.current}`} className="overview-chart-outgoing" aria-hidden="true" pointerEvents="none">
+              <PlotMarks kind={styles[chart.previous]} selected={selected} hasValue={!isPreview} />
+            </g>
+          )}
+          <g key={chart.current} className={chart.previous !== null && !reducedMotion ? "overview-chart-incoming" : undefined}>
+            <PlotMarks kind={styles[chart.current]} selected={selected} hasValue={!isPreview} onInspect={isPreview ? undefined : setSelected} />
           </g>
-          {!isPreview && weekdayOrders.map(([day], index) => <text key={day} x={points[index].x} y={203} textAnchor="middle" className="overview-chart-label" aria-hidden="true">{day}</text>)}
-        </svg>
-        {!isPreview && <figcaption>{selected === 4 ? "Friday was busiest, with 58 orders." : `${days[selected]} had ${weekdayOrders[selected][1]} orders.`}</figcaption>}
-      </VStack>
-    </Card>
+          {chart.previous !== null && !reducedMotion && (
+            <g key={`dust-${chart.current}`} aria-hidden="true" pointerEvents="none">
+              {particles.map(({ x, y, day, style }, index) => (
+                <circle
+                  key={index}
+                  cx={x}
+                  cy={y}
+                  r={1.5 + index % 3 * .4}
+                  className="overview-chart-dust"
+                  data-accent={day === selected || undefined}
+                  style={style}
+                />
+              ))}
+            </g>
+          )}
+        </g>
+        {!isPreview && weekdayOrders.map(([day], index) => <text key={day} x={points[index].x} y={203} textAnchor="middle" className="overview-chart-label" aria-hidden="true">{day}</text>)}
+      </svg>
+      {!isPreview && <figcaption>{selected === 4 ? "Friday was busiest, with 58 orders." : `${days[selected]} had ${weekdayOrders[selected][1]} orders.`}</figcaption>}
+    </VStack>
   );
+
+  return isPreview ? <VStack className="library-chart-preview" gap={0}>{content}</VStack> : <Card className="course-hero-figure" padding={4}>{content}</Card>;
 }

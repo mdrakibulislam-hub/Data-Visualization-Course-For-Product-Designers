@@ -9,12 +9,13 @@ import { Check } from "reicon-react";
 import { courseMinutes, type Course, type AvailableCourse } from "@/course/catalog";
 import { getResumeLesson } from "@/course/progress";
 import { useSavedProgress } from "@/course/use-saved-progress";
+import { OverviewChart } from "@/course/overview-chart";
 import { CourseCountdown } from "./course-countdown";
 import { CourseArtwork } from "./course-artwork";
 import { LibraryIcon, libraryAsset } from "./library-assets";
 
 function CourseCover({ course }: { course: Course }) {
-  return course.cover === "data" ? <img src={libraryAsset("data-visualization.svg")} width={498} height={279.125} alt="" aria-hidden="true" className="library-course-image" /> : <CourseArtwork kind={course.cover} />;
+  return course.cover === "data" ? <OverviewChart isPreview /> : <CourseArtwork kind={course.cover} />;
 }
 
 export function CourseCard({ course, hasCountdown = false }: { course: Course; hasCountdown?: boolean }) {

@@ -57,7 +57,23 @@ html:has(.library-shell) { scrollbar-gutter: auto; }
   border-block-end: var(--border-width) solid var(--line);
   background: var(--surface);
 }
-.library-course-image { display: block; inline-size: 100%; block-size: auto; }
+.library-chart-preview,
+.library-chart-preview > figure { inline-size: 100%; block-size: 100%; }
+.library-chart-preview { position: relative; }
+.library-chart-preview .overview-chart-mark { cursor: inherit; }
+.library-chart-controls {
+  position: absolute;
+  inset-block-start: var(--spacing-2);
+  inset-inline-end: var(--spacing-2);
+  z-index: 2;
+  border-radius: var(--radius-container);
+  background: var(--surface);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+.library-course-cover:hover .library-chart-controls,
+.library-chart-controls:focus-within { opacity: 1; }
+@media (hover: none) { .library-chart-controls { opacity: 1; } }
 .library-course-artwork { display: block; inline-size: 100%; block-size: 100%; }
 .library-art-line { stroke: var(--line); stroke-width: 1; }
 .library-art-muted { fill: var(--chart-muted); }

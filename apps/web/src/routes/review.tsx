@@ -37,7 +37,7 @@ function StudyCard({ lesson, revealed, position, leaving, isLocked = false, ques
   onRate?: (known: boolean) => void;
 }) {
   return (
-    <Card padding={0} elevation="low" className={`review-sheet ${leaving ? "review-leaving" : "review-current"}`} data-direction={leaving} data-revealed={revealed} aria-hidden={leaving ? true : undefined} inert={leaving ? true : undefined} onAnimationEnd={(event) => {
+    <Card padding={0} elevation="none" className={`review-sheet ${leaving ? "review-leaving" : "review-current"}`} data-direction={leaving} data-revealed={revealed} aria-hidden={leaving ? true : undefined} inert={leaving ? true : undefined} onAnimationEnd={(event) => {
       if (leaving && event.target === event.currentTarget) onExit?.();
     }}>
       <VStack as="section" aria-labelledby={leaving ? undefined : revealed ? "flashcard-answer" : "flashcard-question"} gap={0}>

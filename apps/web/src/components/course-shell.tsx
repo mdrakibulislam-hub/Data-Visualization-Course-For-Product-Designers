@@ -1,13 +1,10 @@
 import { AppShell, useAppShellMobile } from "@astryxdesign/core/AppShell";
-import { Card } from "@astryxdesign/core/Card";
 import { HStack } from "@astryxdesign/core/HStack";
 import { IconButton } from "@astryxdesign/core/IconButton";
 import { LinkProvider } from "@astryxdesign/core/Link";
 import { MobileNav } from "@astryxdesign/core/MobileNav";
-import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { SideNav, SideNavCollapseButton, SideNavItem, SideNavSection } from "@astryxdesign/core/SideNav";
 import { Stack } from "@astryxdesign/core/Stack";
-import { Text } from "@astryxdesign/core/Text";
 import { Tooltip } from "@astryxdesign/core/Tooltip";
 import { VStack } from "@astryxdesign/core/VStack";
 import { Link, useRouterState } from "@tanstack/react-router";
@@ -20,6 +17,7 @@ import { useProgress } from "@/course/progress";
 import { useCourseMotion } from "@/course/use-course-motion";
 
 import { ModeToggle } from "./mode-toggle";
+import { CourseProgressCard } from "./course-progress-card";
 
 const moduleIcons = [BookOpen, Database, Grid, Layers];
 
@@ -53,14 +51,7 @@ function SidebarHeader({ isCollapsed }: { isCollapsed: boolean }) {
 
 function SidebarProgress({ completed, canSave, isCollapsed }: { completed: number; canSave: boolean; isCollapsed: boolean }) {
   const { content: { lessons } } = useCurrentCourse();
-  const details = (
-    <Card variant="muted" padding={isCollapsed ? 3 : 4} className={isCollapsed ? "course-progress-tooltip" : undefined}>
-      <VStack gap={3}>
-        <ProgressBar label="Course progress" value={completed} max={lessons.length} hasValueLabel formatValueLabel={(value, max) => `${value} of ${max}`} />
-        <Text as="p" type="supporting" color="secondary">{canSave ? "Saved in this browser" : "Progress is available in this tab only"}</Text>
-      </VStack>
-    </Card>
-  );
+  const details = <CourseProgressCard completed={completed} canSave={canSave} isTooltip={isCollapsed} />;
 
   if (isCollapsed) {
     return (

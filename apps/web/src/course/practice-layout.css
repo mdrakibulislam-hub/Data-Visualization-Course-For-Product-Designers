@@ -1,120 +1,76 @@
+/* A focused study surface, with controls kept on the sheet. */
 .review-page {
-  max-width: 44rem;
-  padding-block-end: clamp(1.65rem, 3cqi, 2.65rem);
+  max-width: 52rem;
+  padding-block-end: var(--spacing-8);
 }
-
-.review-workspace,
-.review-stage {
-  min-inline-size: 0;
-}
-
-.review-stage {
-  padding-block: var(--spacing-6) var(--spacing-4);
-  text-align: center;
-}
-
+.review-header { border-block-end: var(--border-width) solid var(--line); padding-block-end: var(--spacing-5); }
+.review-header h1 { font-size: 1.75rem; }
+.review-workspace, .review-stage { min-inline-size: 0; }
+.review-stage { padding-block-start: var(--spacing-4); text-align: center; }
 .review-deck-window {
+  max-inline-size: 48rem;
   overflow: clip;
-  padding: var(--spacing-2) var(--spacing-3) var(--spacing-6);
+  padding: var(--spacing-2) var(--spacing-4) var(--spacing-6);
 }
-
-.review-deck {
-  position: relative;
-  isolation: isolate;
-}
-
-.review-deck::before,
-.review-deck::after {
+.review-deck { position: relative; isolation: isolate; }
+.review-deck::before, .review-deck::after {
   content: "";
   position: absolute;
-  inset: var(--spacing-3) var(--spacing-2) calc(-1 * var(--spacing-3));
+  inset: var(--spacing-2) var(--spacing-2) calc(-1 * var(--spacing-2));
   border: var(--border-width) solid var(--line);
   border-radius: var(--radius-container);
-  background-color: var(--color-background-card);
-  background-image: linear-gradient(
-    color-mix(in srgb, var(--panel) 50%, transparent),
-    color-mix(in srgb, var(--panel) 50%, transparent)
-  );
+  background: color-mix(in srgb, var(--color-background-card) 65%, var(--panel));
   z-index: -1;
 }
-
 .review-deck::before {
-  inset: var(--spacing-5) var(--spacing-4) calc(-1 * var(--spacing-5));
-  background-image: linear-gradient(var(--panel), var(--panel));
+  inset: var(--spacing-4) var(--spacing-4) calc(-1 * var(--spacing-4));
+  background: var(--panel);
   z-index: -2;
 }
-
-.review-deck[data-empty]::before,
-.review-deck[data-empty]::after {
-  display: none;
+.review-deck[data-empty]::before, .review-deck[data-empty]::after { display: none; }
+.review-sheet { position: relative; background: var(--color-background-card); border-radius: var(--radius-container); }
+.review-current { animation: review-deal 360ms var(--ease-entrance) both; }
+.review-leaving { position: absolute; inset: 0; z-index: 2; pointer-events: none; animation: review-swipe-right 360ms var(--ease-move) both; }
+.review-leaving[data-direction="left"] { animation-name: review-swipe-left; }
+@keyframes review-deal { from { transform: translateY(var(--spacing-2)) scale(.985); } to { transform: translateY(0) scale(1); } }
+@keyframes review-swipe-right { to { transform: translateX(115%); opacity: 0; } }
+@keyframes review-swipe-left { to { transform: translateX(-115%); opacity: 0; } }
+.review-card-meta { border-block-end: var(--border-width) solid var(--line); text-align: start; }
+.review-card-meta svg { flex-shrink: 0; color: var(--muted); }
+.review-position { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.review-prompt { min-block-size: 18rem; }
+.review-sheet[data-revealed="false"] .review-prompt { cursor: pointer; }
+.review-face { max-inline-size: 34rem; animation: review-face-arrive 180ms var(--ease-standard); }
+.review-question { max-inline-size: 30rem; font-size: clamp(1.4rem, 2.8cqi, 1.8rem); line-height: 1.3; letter-spacing: -.03em; }
+.review-answer-text { font-size: clamp(1.1rem, 2.15cqi, 1.35rem); line-height: 1.5; font-weight: 500; letter-spacing: -.015em; }
+.review-face-label { transition: color var(--duration-fast) var(--ease-standard); }
+.review-sheet[data-revealed="false"] .review-prompt:hover .review-face-label { color: var(--accent); }
+@keyframes review-face-arrive { from { opacity: .3; translate: 0 var(--spacing-1); } to { opacity: 1; translate: 0 0; } }
+.review-card-footer { border-block-start: var(--border-width) solid var(--line); background: var(--surface); border-radius: 0 0 var(--radius-container) var(--radius-container); }
+.review-actions { inline-size: min(100%, 28rem); }
+.review-actions:has(> :only-child) { inline-size: min(100%, 14rem); }
+.review-under-card { inline-size: min(calc(100% - 2rem), 46rem); }
+.review-related { min-inline-size: 0; text-align: start; }
+.review-related > svg, .quiz-library-arrow { flex-shrink: 0; color: var(--muted); }
+.review-recall-note { max-inline-size: 42rem; }
+.review-save-status { min-block-size: 1.25rem; max-inline-size: 44rem; }
+.review-keyboard-hints { white-space: nowrap; }
+.review-keyboard-hints kbd { display: inline-block; min-inline-size: 1.5rem; padding: var(--spacing-0-5) var(--spacing-1); margin-inline-end: var(--spacing-1); border: var(--border-width) solid var(--line); border-radius: var(--radius-inner); font-family: inherit; font-size: .75rem; line-height: 1.4; }
+.review-empty-icon { color: var(--accent); }
+@media (hover: none) { .review-keyboard-hints { display: none; } }
+@container course-content (max-width: 35rem) {
+  .review-keyboard-hints { display: none; }
+  .review-header .astryx-segmented-control { inline-size: 100%; }
+  .review-deck-window { padding-inline: var(--spacing-1); }
+  .review-card-meta { padding-inline: var(--spacing-4); }
+  .review-prompt { min-block-size: 16rem; padding-inline: var(--spacing-4); }
+  .review-card-footer { padding-inline: var(--spacing-4); }
+  .review-actions, .review-actions:has(> :only-child) { inline-size: 100%; }
+  .review-under-card { inline-size: calc(100% - .5rem); }
+  .review-card-meta > :first-child { gap: var(--spacing-1); }
+  .review-card-meta > :first-child svg { display: none; }
 }
-
-.review-sheet {
-  position: relative;
-  background: var(--color-background-card);
-  border-radius: var(--radius-container);
-}
-
-.review-current {
-  animation: review-deal 360ms var(--ease-entrance) both;
-}
-
-.review-leaving {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  animation: review-swipe-right 360ms var(--ease-move) both;
-}
-
-.review-leaving[data-direction="left"] {
-  animation-name: review-swipe-left;
-}
-
-@keyframes review-deal {
-  from { transform: translateY(var(--spacing-3)) scale(.97); }
-  to { transform: translateY(0) scale(1); }
-}
-
-@keyframes review-swipe-right {
-  to { transform: translateX(115%); opacity: 0; }
-}
-
-@keyframes review-swipe-left {
-  to { transform: translateX(-115%); opacity: 0; }
-}
-
-.review-prompt {
-  min-block-size: 19rem;
-  padding-block: var(--spacing-6);
-}
-
-.review-question {
-  max-inline-size: 29rem;
-  font-size: clamp(1.5rem, 2.8cqi, 2rem);
-  line-height: 1.24;
-  letter-spacing: -.03em;
-}
-
-.review-answer {
-  width: min(100%, 31rem);
-  text-align: center;
-  padding-top: var(--spacing-4);
-  border-top: var(--border-width) solid var(--line);
-}
-
-.review-answer p { line-height: 1.65; }
-
-.review-answer-label {
-  font-size: .875rem;
-  color: var(--muted);
-}
-
-.review-related > svg,
-.quiz-library-arrow {
-  flex-shrink: 0;
-  color: var(--muted);
-}
+@media (prefers-reduced-motion: reduce) { .review-face { animation: none; } }
 
 .quiz-library-page {
   max-width: 58rem;

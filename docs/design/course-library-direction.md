@@ -2,6 +2,8 @@
 
 Research date: November 24, 2026. Reviewed signed-in Mobbin web collections using Ego Browser. This is a recommendation; the application has not been redesigned in this research pass.
 
+Implementation: the compact library, reusable catalog and course templates, course-specific progress, and conditional browsing controls are now in place. See [Adding a course](adding-a-course.md) for the current authoring workflow and compatibility details. The separate resume row, learning paths, and My learning remain deferred until real usage warrants them.
+
 ## Recommendation
 
 Use a compact course library that gradually gains browsing tools. Keep the existing Astryx theme, Inter typography, restrained accent, light/sepia/dark appearances, minimal creator credit, and simple chart covers. The important change is a reusable catalog and course structure, rather than a different layout for every new subject.

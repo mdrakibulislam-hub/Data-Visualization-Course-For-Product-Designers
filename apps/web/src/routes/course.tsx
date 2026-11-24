@@ -9,7 +9,9 @@ import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check } from "reicon-react";
 
-import { lessons, modules, totalMinutes } from "@/course/curriculum";
+import { useCurrentCourse } from "@/course/course-context";
+import { CourseArtwork } from "@/components/course-artwork";
+import { courseDuration, courseLessonHref, coursePageHref, dataVisualizationId } from "@/course/catalog";
 import { LearningSummary } from "@/course/learning-summary";
 import { OverviewChart } from "@/course/overview-chart";
 import { getResumeLesson, useProgress } from "@/course/progress";
@@ -19,10 +21,12 @@ export const Route = createFileRoute("/course")({
   component: CourseOverview,
 });
 
-function CourseOverview() {
+export function CourseOverview() {
+  const course = useCurrentCourse();
+  const { lessons, modules } = course.content;
   const { progress, canSave } = useProgress();
   const { isMobile } = useAppShellMobile();
-  const resume = getResumeLesson(progress);
+  const resume = getResumeLesson(progress, lessons);
   const completed = progress.completed.length;
 
   return (
@@ -30,24 +34,24 @@ function CourseOverview() {
       <HStack as="section" className="course-hero" gap={0} aria-labelledby="course-title">
         <VStack className="course-hero-copy" gap={0}>
           <Heading level={1} id="course-title" className="course-display course-hero-title">
-            Data visualization<br className="course-hero-break" /> <em>for product designers.</em>
+            {course.title}<br className="course-hero-break" /> <em>for product designers.</em>
           </Heading>
-          <p className="course-deck">Learn to choose and design charts for data-heavy products, starting with everyday examples.</p>
+          <p className="course-deck">{course.description}</p>
           <HStack align="center" wrap="wrap" gap={2} className="course-hero-actions course-action-pair">
             {resume ? (
-              <Button href={`/lesson/${resume.id}`} label={progress.lastLesson ? "Continue learning" : "Start learning"} aria-describedby="course-pace" variant="primary" size="lg" className="course-action" endContent={<ArrowRight size={17} aria-hidden="true" />} />
+              <Button href={courseLessonHref(course, resume.id)} label={progress.lastLesson ? "Continue learning" : "Start learning"} aria-describedby="course-pace" variant="primary" size="lg" className="course-action" endContent={<ArrowRight size={17} aria-hidden="true" />} />
             ) : (
-              <Button href="/review" label="Review flashcards" variant="primary" size="lg" className="course-action" endContent={<ArrowRight size={17} aria-hidden="true" />} />
+              <Button href={coursePageHref(course, "review")} label="Review flashcards" variant="primary" size="lg" className="course-action" endContent={<ArrowRight size={17} aria-hidden="true" />} />
             )}
-            <Button href="/lab" label="Chart lab" variant="secondary" size="lg" className="course-action" />
+            {course.id === dataVisualizationId && <Button href="/lab" label="Chart lab" variant="secondary" size="lg" className="course-action" />}
           </HStack>
           <p className="course-meta course-hero-pace" id="course-pace">
             {progress.lastLesson && resume
               ? <>Lesson {lessons.indexOf(resume) + 1} <Text as="span" aria-hidden="true">·</Text> {resume.title}</>
-              : <>{lessons.length} lessons <Text as="span" aria-hidden="true">·</Text> {Math.floor(totalMinutes / 60)} hr {totalMinutes % 60} min</>}
+              : <>{lessons.length} lessons <Text as="span" aria-hidden="true">·</Text> {courseDuration(course)}</>}
           </p>
         </VStack>
-        <OverviewChart />
+        {course.id === dataVisualizationId ? <OverviewChart /> : <Card padding={0} className="course-hero-figure"><CourseArtwork kind={course.cover} /></Card>}
       </HStack>
 
       {isMobile && (
@@ -74,7 +78,7 @@ function CourseOverview() {
                 const isComplete = progress.completed.includes(lesson.id);
                 return (
                   <li key={lesson.id}>
-                    <Link to="/lesson/$lessonId" params={{ lessonId: lesson.id }} className="course-lesson-row">
+                    <Link to="/courses/$courseId/lessons/$lessonId" params={{ courseId: course.id, lessonId: lesson.id }} className="course-lesson-row">
                       <Text as="span" className="course-lesson-index" aria-hidden="true">{String(number).padStart(2, "0")}</Text>
                       <VStack gap={0.5}>
                         <HStack gap={2} justify="between" align="start" className="course-lesson-titleline">

@@ -11,9 +11,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Check, Repeat } from "reicon-react";
 import { useEffect, useRef, useState, type Ref } from "react";
 
-import { lessons, type CourseLesson } from "@/course/curriculum";
+import { type CourseLesson } from "@/course/curriculum";
 import { dueLessonIds, formatDay } from "@/course/learning-state";
 import { useProgress } from "@/course/progress";
+import { useCurrentCourse } from "@/course/course-context";
+import { courseLessonHref } from "@/course/catalog";
 
 export const Route = createFileRoute("/review")({
   head: () => ({ meta: [{ title: "Flashcards · Graphnotes" }] }),
@@ -30,6 +32,7 @@ function StudyCard({ lesson, revealed, leaving, questionRef, answerRef, onExit }
   answerRef?: Ref<HTMLHeadingElement>;
   onExit?: () => void;
 }) {
+  const { content: { lessons } } = useCurrentCourse();
   return (
     <Card padding={0} className={`review-sheet ${leaving ? "review-leaving" : "review-current"}`} data-direction={leaving} aria-hidden={leaving ? true : undefined} inert={leaving ? true : undefined} onAnimationEnd={(event) => {
       if (leaving && event.target === event.currentTarget) onExit?.();
@@ -53,7 +56,9 @@ function StudyCard({ lesson, revealed, leaving, questionRef, answerRef, onExit }
   );
 }
 
-function Flashcards() {
+export function Flashcards() {
+  const course = useCurrentCourse();
+  const { lessons } = course.content;
   const { progress, today, canSave, rateCard } = useProgress();
   const [lastRated, setLastRated] = useState<string | null>(null);
   const [newRevisit, setNewRevisit] = useState(false);
@@ -64,7 +69,7 @@ function Flashcards() {
   const advanceLock = useRef(false);
   const answerHeading = useRef<HTMLHeadingElement>(null);
   const questionHeading = useRef<HTMLHeadingElement>(null);
-  const due = dueLessonIds(progress.learning, progress.completed, progress.knownCards, today);
+  const due = dueLessonIds(progress.learning, progress.completed, progress.knownCards, today, lessons);
   const remaining = lessons.filter(({ id }) => due.includes(id)).sort((a, b) => due.indexOf(a.id) - due.indexOf(b.id));
   const nextDue = Object.values(progress.learning.reviews).map(({ dueOn }) => dueOn).filter((day) => day > today).sort()[0];
   const deck = reviewAll ? lessons : remaining;
@@ -167,7 +172,7 @@ function Flashcards() {
               </HStack>
               <HStack align="center" justify="center" gap={1.5} wrap="wrap" className="review-related">
                 <BookOpen size={15} aria-hidden="true" />
-                <Link href={`/lesson/${card.id}`} type="supporting" color="secondary" hasUnderline>{card.title}</Link>
+                <Link href={courseLessonHref(course, card.id)} type="supporting" color="secondary" hasUnderline>{card.title}</Link>
               </HStack>
             </VStack>
           )}

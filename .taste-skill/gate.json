@@ -1,0 +1,51 @@
+{
+ "start": "2026-11-24T04:06:05.904Z",
+ "round": 0,
+ "idle": 0,
+ "errors": 1,
+ "status": "error",
+ "history": [
+  {
+   "at": "2026-11-24T04:06:20.501Z",
+   "mode": "manual",
+   "status": "error",
+   "fails": 0,
+   "round": 0,
+   "reused": false,
+   "stopHookActive": false
+  }
+ ],
+ "max": 3,
+ "marker": {
+  "page": "apps/web/dist/index.html",
+  "url": null,
+  "root": "apps/web/dist",
+  "kind": "software",
+  "category": "Design learning courses",
+  "primary": "Open a course",
+  "rounds": 3,
+  "start": "2026-11-24T04:06:05.904Z",
+  "by": "gate.mjs --start"
+ },
+ "manual": true,
+ "fp": "68861fb1aa6fab67",
+ "page": "apps/web/dist/index.html",
+ "found": {
+  "fails": [],
+  "warns": [],
+  "crashed": [
+   "the copy (the page showed no <main>, <section> or <h1> to lint)",
+   "consistency.mjs gave no report (exit 1: Error: No Chrome, Edge or Chromium found; set CHROME_PATH.)",
+   "check.mjs could not run (exit 2: no Chrome found (set CHROME_PATH))"
+  ],
+  "seconds": {
+   "consistency": 0,
+   "layout": 0
+  }
+ },
+ "open": [],
+ "waived": [],
+ "warnCount": 0,
+ "note": "the copy (the page showed no <main>, <section> or <h1> to lint); consistency.mjs gave no report (exit 1: Error: No Chrome, Edge or Chromium found; set CHROME_PATH.); check.mjs could not run (exit 2: no Chrome found (set CHROME_PATH))",
+ "at": "2026-11-24T04:06:20.502Z"
+}

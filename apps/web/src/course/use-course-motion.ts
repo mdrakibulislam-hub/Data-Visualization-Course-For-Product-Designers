@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
 
-import { lessons } from "./curriculum";
+import { useCurrentCourse } from "./course-context";
 
 const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
 
@@ -13,10 +13,10 @@ function motionTiming(element: HTMLElement) {
   };
 }
 
-function pageOffset(from: string | null, to: string) {
-  if (to.startsWith("/lesson/")) {
-    const previous = lessons.findIndex(({ id }) => from === `/lesson/${id}`);
-    const next = lessons.findIndex(({ id }) => to === `/lesson/${id}`);
+function pageOffset(from: string | null, to: string, lessons: readonly { id: string }[]) {
+  if (to.includes("/lesson/") || to.includes("/lessons/")) {
+    const previous = lessons.findIndex(({ id }) => from?.endsWith(`/lesson/${id}`) || from?.endsWith(`/lessons/${id}`));
+    const next = lessons.findIndex(({ id }) => to.endsWith(`/lesson/${id}`) || to.endsWith(`/lessons/${id}`));
     return previous > next && next !== -1
       ? "calc(-1 * var(--spacing-8)) 0"
       : "var(--spacing-8) 0";
@@ -27,6 +27,7 @@ function pageOffset(from: string | null, to: string) {
 
 /** Animate the live content, so navigation never waits for an exit or remounts saved work. */
 export function useCourseMotion(pathname: string) {
+  const { content: { lessons } } = useCurrentCourse();
   const frame = useRef<HTMLElement>(null);
   const previousPath = useRef<string | null>(null);
 
@@ -41,7 +42,7 @@ export function useCourseMotion(pathname: string) {
     if (preference.matches || location.hash) return;
 
     const animation = element.animate([
-      { opacity: .55, translate: from ? pageOffset(from, pathname) : "0 var(--spacing-2)" },
+      { opacity: .55, translate: from ? pageOffset(from, pathname, lessons) : "0 var(--spacing-2)" },
       { opacity: 1, translate: "0 0" },
     ], motionTiming(element));
     const cancel = () => animation.cancel();
@@ -50,7 +51,7 @@ export function useCourseMotion(pathname: string) {
       preference.removeEventListener("change", cancel);
       cancel();
     };
-  }, [pathname]);
+  }, [pathname, lessons]);
 
   useLayoutEffect(() => {
     const element = frame.current;
@@ -112,7 +113,7 @@ export function useCourseMotion(pathname: string) {
       preference.removeEventListener("change", settle);
       for (const animation of animations) animation.cancel();
     };
-  }, [pathname]);
+  }, [pathname, lessons]);
 
   return frame;
 }

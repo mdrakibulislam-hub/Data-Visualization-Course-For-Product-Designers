@@ -7,6 +7,8 @@ import { HeadContent, Link, Outlet, createRootRouteWithContext, useRouterState }
 import { CourseShell } from "@/components/course-shell";
 import { ThemeProvider, useAppearance } from "@/components/theme-provider";
 import { ProgressProvider } from "@/course/progress";
+import { courseForPath } from "@/course/catalog";
+import { CurrentCourseProvider } from "@/course/course-context";
 import type { trpc } from "@/utils/trpc";
 
 export interface RouterAppContext {
@@ -36,14 +38,18 @@ function CourseToaster() {
 }
 
 function RootComponent() {
-  const isLibrary = useRouterState({ select: (state) => state.location.pathname === "/" });
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const isLibrary = pathname === "/";
+  const course = courseForPath(pathname);
   return (
     <>
       <HeadContent />
       <ThemeProvider>
-        <ProgressProvider>
-          {isLibrary ? <VStack className="course-shell library-shell" gap={0}><Outlet /></VStack> : <CourseShell><Outlet /></CourseShell>}
-        </ProgressProvider>
+        <CurrentCourseProvider course={course}>
+          <ProgressProvider key={course.id}>
+            {isLibrary ? <VStack className="course-shell library-shell" gap={0}><Outlet /></VStack> : <CourseShell><Outlet /></CourseShell>}
+          </ProgressProvider>
+        </CurrentCourseProvider>
         <CourseToaster />
       </ThemeProvider>
     </>

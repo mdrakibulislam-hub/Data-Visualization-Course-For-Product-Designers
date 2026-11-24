@@ -1,101 +1,95 @@
+html:has(.library-shell) { scrollbar-gutter: auto; }
+
 .library-shell {
   background: var(--surface);
   container: course-content / inline-size;
 }
 
 .library-topbar {
-  padding: var(--spacing-5) var(--spacing-6);
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 5;
+  flex-shrink: 0;
+  padding-block: var(--spacing-3);
+  border-block-end: var(--border-width) solid var(--line);
+  background: var(--surface);
 }
 
+.library-header-inner,
 .library-main {
-  inline-size: min(calc(100% - 4rem), 58rem);
-  margin: auto;
-  padding-block: var(--spacing-8) var(--spacing-10);
+  inline-size: min(calc(100% - 4rem), 64rem);
+  margin-inline: auto;
 }
 
-.library-intro {
-  padding-block: var(--spacing-6) var(--spacing-8);
-  text-align: center;
+.library-brand-heading { line-height: 1; }
+.library-brand-link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: calc(var(--spacing-10) + var(--spacing-1));
 }
-
 .library-wordmark {
   display: block;
   max-inline-size: 100%;
   block-size: auto;
 }
-
 .dark .library-wordmark { filter: brightness(3) saturate(.55); }
+.library-request-compact { display: none; }
+.library-icon { display: block; flex-shrink: 0; }
+.dark .library-ink-icon { filter: brightness(0) invert(1); }
 
+.library-main {
+  flex: 1 0 auto;
+  justify-content: center;
+  padding-block: calc(var(--spacing-6) * 2);
+}
+.library-main > * { flex-shrink: 0; inline-size: 100%; }
+.library-search { flex: 1 1 15rem; max-inline-size: 30rem; }
+.library-filters { min-inline-size: 0; }
 .library-course-tile {
   position: relative;
   overflow: hidden;
+  transition: translate var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
 }
-
-.library-chart-preview,
-.library-coming-preview {
-  block-size: 17rem;
-  border: 0;
-  border-radius: 0;
+.library-course-tile > article { block-size: 100%; }
+.library-course-cover {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
   border-block-end: var(--border-width) solid var(--line);
-  background: var(--panel);
+  background: var(--surface);
 }
+.library-course-image { display: block; inline-size: 100%; block-size: auto; }
+.library-course-artwork { display: block; inline-size: 100%; block-size: 100%; }
+.library-art-line { stroke: var(--line); stroke-width: 1; }
+.library-art-muted { fill: var(--chart-muted); }
+.library-art-accent { fill: var(--accent-fill); }
+.library-art-soft { fill: var(--accent-fill); fill-opacity: .12; }
+.library-art-stroke { stroke: var(--accent-fill); stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
-.library-chart-preview {
-  padding-inline: var(--spacing-5);
-}
-
-.library-chart-preview > figure { block-size: 100%; }
-
-.library-chart-preview .overview-chart {
-  flex: 1;
-  min-block-size: 0;
-}
-
-.library-chart-preview .overview-chart-mark { cursor: default; }
-
-.library-coming-preview {
-  color: var(--muted);
-}
-
-.library-course-info h2 {
+.library-course-info { flex: 1; }
+.library-course-title {
+  min-inline-size: 0;
   font-family: var(--display-font);
-  font-size: var(--text-heading-3-size);
-  letter-spacing: -.025em;
-  line-height: 1.3;
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: -.026em;
+  line-height: 1.3722;
 }
-
-.library-course-info {
-  min-block-size: 7rem;
-  justify-content: center;
-}
-
-.library-course-meta {
-  min-block-size: calc(var(--spacing-10) + var(--spacing-1));
-}
-
 .library-countdown,
 .library-countdown-message {
   color: var(--ink);
-  font-family: var(--display-font);
-  font-size: clamp(1.75rem, 4.2cqi, 2.5rem);
+  font-family: "SUSE Mono", ui-monospace, monospace;
+  font-size: clamp(1.5rem, 3.4cqi, 2.49rem);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: -.035em;
   line-height: 1.2;
   white-space: nowrap;
 }
-
-.library-course-link {
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.library-course-link::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
-
+.library-course-cover:has(.library-countdown) { container-type: inline-size; }
+.library-course-cover .library-countdown { font-size: clamp(1.25rem, 8cqi, 2.49rem); }
+.library-release-dot { flex-shrink: 0; }
+.library-course-link { color: var(--ink); text-decoration: none; }
+.library-course-link::after { content: ""; position: absolute; inset: 0; }
 .library-course-open {
   position: relative;
   z-index: 1;
@@ -103,26 +97,38 @@
   align-items: center;
   gap: var(--spacing-2);
   min-block-size: calc(var(--spacing-10) + var(--spacing-1));
+  margin-block: calc(-1 * (var(--spacing-2) + var(--spacing-0-5)));
   color: var(--accent);
   font-weight: 500;
   text-decoration: none;
 }
-
 .library-course-link:hover,
-.library-course-open:hover {
-  text-decoration: underline;
-  text-underline-offset: var(--spacing-1);
-}
-
-.library-course-open svg {
-  transition: translate var(--duration-fast) var(--ease-standard);
-}
-
+.library-course-open:hover { text-decoration: underline; text-underline-offset: var(--spacing-1); }
+.library-course-open .library-icon { transition: translate var(--duration-fast) var(--ease-standard); }
+.dark .library-course-open .library-icon { filter: brightness(1.8) saturate(.7); }
 @media (hover: hover) and (pointer: fine) {
-  .library-course-open:hover svg { translate: var(--spacing-1) 0; }
+  .library-course-open:hover .library-icon { translate: var(--spacing-1) 0; }
+  .library-course-tile[data-status="available"]:hover { translate: 0 calc(-1 * var(--spacing-0-5)); border-color: var(--accent); }
 }
 
-.library-credit { padding-block: var(--spacing-2); }
+.library-creator { padding: calc(var(--spacing-6) - var(--border-width)); }
+.library-creator-profile { min-inline-size: 0; }
+.library-creator-profile > .astryx-avatar { flex-shrink: 0; }
+.library-creator-name {
+  font-family: var(--display-font);
+  font-size: 1.4375rem;
+  font-weight: 600;
+  line-height: 2rem;
+}
+.library-creator-pattern { display: block; max-inline-size: 100%; block-size: auto; flex-shrink: 0; }
+.library-creator-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding-block-start: var(--spacing-5);
+  border-block-start: var(--border-width) solid var(--line);
+}
+.library-creator-links > a { inline-size: 100%; }
+.dark .library-creator-links > a:first-child .library-icon { filter: brightness(0); }
 
 .library-skip-link {
   position: absolute;
@@ -134,26 +140,27 @@
   z-index: 10;
   translate: 0 -200%;
 }
-
 .library-skip-link:focus { translate: 0; }
-
-.library-shell :is(a, button):focus-visible {
-  outline: calc(2 * var(--border-width)) solid var(--accent);
-  outline-offset: var(--spacing-1);
+.library-shell :is(a, button):focus-visible { outline: calc(2 * var(--border-width)) solid var(--accent); outline-offset: var(--spacing-1); }
+.library-course-link:focus-visible::after { outline: calc(2 * var(--border-width)) solid var(--accent); outline-offset: calc(-1 * var(--spacing-1)); border-radius: var(--radius-container); }
+@media (max-width: 48rem) {
+  .library-creator-header { flex-direction: column; align-items: start; }
 }
-
 @media (max-width: 42rem) {
-  .library-main {
-    inline-size: calc(100% - 2rem);
-    padding-block-start: var(--spacing-2);
-  }
-
-  .library-intro { padding-block: var(--spacing-4) var(--spacing-5); }
-  .library-wordmark { inline-size: 15rem; }
-  .library-topbar { padding: var(--spacing-3) var(--spacing-4); }
-  .library-course-info { min-block-size: auto; }
+  .library-header-inner,
+  .library-main { inline-size: calc(100% - 2rem); }
+  .library-main { padding-block: var(--spacing-6); }
 }
-
+@media (max-width: 30rem) {
+  .library-request-full { display: none; }
+  .library-request-compact { display: inline-flex; }
+  .library-wordmark { inline-size: 8.75rem; }
+  .library-creator-profile { gap: var(--spacing-4); align-items: start; }
+  .library-creator-profile > .astryx-avatar { inline-size: 4rem; block-size: 4rem; }
+  .library-creator-name { font-size: 1.25rem; line-height: 1.4; }
+  .library-creator-links { grid-template-columns: minmax(0, 1fr); gap: var(--spacing-2); }
+}
 @media (prefers-reduced-motion: reduce) {
-  .library-course-open svg { transition: none; }
+  .library-course-open .library-icon,
+  .library-course-tile { transition: none; }
 }

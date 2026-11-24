@@ -12,12 +12,11 @@ import { ArrowLeft, ArrowRight } from "reicon-react";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { AnswerReview } from "./answer-review";
-import { challengeFor } from "./challenges";
+import { useCurrentCourse } from "./course-context";
+import { dataVisualizationId } from "./catalog";
 import { ChartLab } from "./charts";
-import { lessons, type CourseLesson, type Question } from "./curriculum";
-import { labs } from "./lab-data";
+import { type CourseLesson, type Question } from "./curriculum";
 import { useProgress } from "./progress";
-import { sourceTitle } from "./sources";
 
 function QuizQuestion({ lessonId, question, index }: { lessonId: string; question: Question; index: number }) {
   const { progress, submitAnswer } = useProgress();
@@ -112,6 +111,10 @@ function CapstoneNote() {
 }
 
 export function LessonReader({ lesson }: { lesson: CourseLesson }) {
+  const course = useCurrentCourse();
+  const { lessons, labs, challenges, articles, books } = course.content;
+  const challengeFor = (id: string) => challenges.find((item) => item.lessonId === id);
+  const sourceTitle = (id: string) => [...articles, ...books].find((source) => source.id === id)?.title ?? id;
   const navigate = useNavigate();
   const { progress, canSave, openLesson, completeLesson } = useProgress();
   const index = lessons.findIndex(({ id }) => id === lesson.id);
@@ -124,13 +127,13 @@ export function LessonReader({ lesson }: { lesson: CourseLesson }) {
 
   function continueCourse() {
     if (!completed) completeLesson(lesson.id);
-    if (next) void navigate({ to: "/lesson/$lessonId", params: { lessonId: next.id } });
-    else void navigate({ to: "/course" });
+    if (next) void navigate({ to: "/courses/$courseId/lessons/$lessonId", params: { courseId: course.id, lessonId: next.id } });
+    else void navigate({ to: "/courses/$courseId", params: { courseId: course.id } });
   }
 
   return (
     <VStack className="course-wrap course-lesson" gap={5}>
-      <Link to="/course" className="course-back"><ArrowLeft size={16} aria-hidden="true" /> Course overview</Link>
+      <Link to="/courses/$courseId" params={{ courseId: course.id }} className="course-back"><ArrowLeft size={16} aria-hidden="true" /> Course overview</Link>
       <VStack as="article" className="course-reader" gap={8}>
         <VStack as="header" gap={2} className="course-reader-heading">
           <p className="course-meta">
@@ -172,26 +175,26 @@ export function LessonReader({ lesson }: { lesson: CourseLesson }) {
         <VStack as="section" id="lesson-practice" gap={2} aria-labelledby="practice-heading" data-scroll-reveal>
           <Heading level={2} id="practice-heading">Try it at work</Heading>
           <Text as="p" type="body">{lesson.practice}</Text>
-          {challengeFor(lesson.id) && <Button href={`/challenges?lesson=${lesson.id}`} label={progress.learning.challenges[lesson.id] ? "Revisit the design challenge" : "Try a design challenge"} variant="secondary" />}
-          {lesson.id === "capstone" && <>
+          {course.id === dataVisualizationId && challengeFor(lesson.id) && <Button href={`/challenges?lesson=${lesson.id}`} label={progress.learning.challenges[lesson.id] ? "Revisit the design challenge" : "Try a design challenge"} variant="secondary" />}
+          {course.id === dataVisualizationId && course.content.hasProjects && lesson.id === "capstone" && <>
             <CapstoneNote />
             <Link className="practice-link" to="/capstone">Open the project checklist</Link>
           </>}
         </VStack>
 
-        <details className="course-lesson-sources">
+        {lesson.reading.length > 0 && <details className="course-lesson-sources">
           <summary>Further reading</summary>
           <ul>
             {lesson.reading.map(({ source, locator }) => (
-              <li key={source}><Link to="/sources" hash={source}>{sourceTitle(source)}</Link> · {locator}</li>
+              <li key={source}><Link to="/courses/$courseId/$page" params={{ courseId: course.id, page: "sources" }} hash={source}>{sourceTitle(source)}</Link> · {locator}</li>
             ))}
           </ul>
-        </details>
+        </details>}
 
         <VStack as="footer" className="course-lesson-footer" gap={2}>
           {!canSave && <p role="status">Your browser isn’t saving progress. You can continue in this tab.</p>}
           <HStack gap={2} wrap="wrap" align="center" justify="between">
-            {previous && <Link className="course-back" to="/lesson/$lessonId" params={{ lessonId: previous.id }}><ArrowLeft size={16} aria-hidden="true" /> Previous lesson</Link>}
+            {previous && <Link className="course-back" to="/courses/$courseId/lessons/$lessonId" params={{ courseId: course.id, lessonId: previous.id }}><ArrowLeft size={16} aria-hidden="true" /> Previous lesson</Link>}
             <Button
               label={completed ? (next ? "Next lesson" : "Course overview") : (next ? "Complete & continue" : "Finish lesson")}
               variant="primary"

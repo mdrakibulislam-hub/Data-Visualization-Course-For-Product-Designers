@@ -14,7 +14,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { BookOpen, Check, HelpCircle, Checklist, Database, DocumentCopy, Layers, Grid, Library, ChartLine, Settings, Target } from "reicon-react";
 import { useEffect, useRef, useState, type ComponentPropsWithRef, type CSSProperties, type ReactNode } from "react";
 
-import { lessons, modules } from "@/course/curriculum";
+import { useCurrentCourse } from "@/course/course-context";
+import { courseOverviewHref, courseLessonHref, coursePageHref, dataVisualizationId } from "@/course/catalog";
 import { useProgress } from "@/course/progress";
 import { useCourseMotion } from "@/course/use-course-motion";
 
@@ -51,6 +52,7 @@ function SidebarHeader({ isCollapsed }: { isCollapsed: boolean }) {
 }
 
 function SidebarProgress({ completed, canSave, isCollapsed }: { completed: number; canSave: boolean; isCollapsed: boolean }) {
+  const { content: { lessons } } = useCurrentCourse();
   const details = (
     <Card variant="muted" padding={isCollapsed ? 3 : 4} className={isCollapsed ? "course-progress-tooltip" : undefined}>
       <VStack gap={3}>
@@ -93,6 +95,8 @@ function CourseLink({ href, onClick, ...props }: ComponentPropsWithRef<"a">) {
 }
 
 export function CourseShell({ children }: { children: ReactNode }) {
+  const course = useCurrentCourse();
+  const { lessons, modules } = course.content;
   const [isCollapsed, setIsCollapsed] = useState(false);
   const path = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") || "/" });
   const settledPath = useRouterState({ select: (state) => state.resolvedLocation?.pathname ?? state.location.pathname });
@@ -134,21 +138,21 @@ export function CourseShell({ children }: { children: ReactNode }) {
       cancelAnimationFrame(frame);
     };
   }, [settledPath, contentRef]);
-  const currentLesson = lessons.find(({ id }) => path === `/lesson/${id}`);
+  const currentLesson = lessons.find(({ id }) => path === `/lesson/${id}` || path === courseLessonHref(course, id));
   const activeModule = currentLesson?.moduleTitle;
   const { progress, canSave } = useProgress();
 
   const sections = (
     <>
       <SideNavSection title="Course">
-        <SideNavItem label="Overview" href="/course" icon={Library} isSelected={path === "/course"} />
+        <SideNavItem label="Overview" href={courseOverviewHref(course)} icon={Library} isSelected={path === "/course" || path === courseOverviewHref(course)} />
       </SideNavSection>
       <SideNavSection title="Lessons">
         {modules.map((module, index) => (
           <SideNavItem
             key={`${module.title}:${module.title === activeModule}`}
             label={module.title}
-            icon={moduleIcons[index]}
+            icon={moduleIcons[index % moduleIcons.length]}
             collapsible={{ defaultIsCollapsed: module.title !== activeModule }}
           >
             <VStack gap={0} className="course-lesson-tree">
@@ -157,7 +161,7 @@ export function CourseShell({ children }: { children: ReactNode }) {
                   key={id}
                   className="course-lesson-branch"
                   label={title}
-                  href={`/lesson/${id}`}
+                  href={courseLessonHref(course, id)}
                   size="sm"
                   isSelected={currentLesson?.id === id}
                   endContent={progress.completed.includes(id) ? <Check size={14} aria-label="Completed" role="img" /> : undefined}
@@ -168,15 +172,15 @@ export function CourseShell({ children }: { children: ReactNode }) {
         ))}
       </SideNavSection>
       <SideNavSection title="Practice">
-        <SideNavItem label="Chart lab" href="/lab" icon={ChartLine} isSelected={path === "/lab"} />
-        <SideNavItem label="Design challenges" href="/challenges" icon={Target} isSelected={path === "/challenges"} />
-        <SideNavItem label="Flashcards" href="/review" icon={Layers} isSelected={path === "/review"} />
-        <SideNavItem label="Quizzes" href="/quizzes" icon={HelpCircle} isSelected={path === "/quizzes"} />
-        <SideNavItem label="Capstone project" href="/capstone" icon={Checklist} isSelected={path === "/capstone"} />
+        {course.id === dataVisualizationId && <SideNavItem label="Chart lab" href="/lab" icon={ChartLine} isSelected={path === "/lab"} />}
+        {course.id === dataVisualizationId && <SideNavItem label="Design challenges" href="/challenges" icon={Target} isSelected={path === "/challenges"} />}
+        <SideNavItem label="Flashcards" href={coursePageHref(course, "review")} icon={Layers} isSelected={path === "/review" || path === coursePageHref(course, "review")} />
+        <SideNavItem label="Quizzes" href={coursePageHref(course, "quizzes")} icon={HelpCircle} isSelected={path === "/quizzes" || path === coursePageHref(course, "quizzes")} />
+        {course.id === dataVisualizationId && <SideNavItem label="Capstone project" href="/capstone" icon={Checklist} isSelected={path === "/capstone"} />}
       </SideNavSection>
       <SideNavSection title="Other">
-        <SideNavItem label="Credits" href="/sources" icon={DocumentCopy} isSelected={path === "/sources"} />
-        <SideNavItem label="Preferences" href="/preferences" icon={Settings} isSelected={path === "/preferences"} />
+        <SideNavItem label="Credits" href={coursePageHref(course, "sources")} icon={DocumentCopy} isSelected={path === "/sources" || path === coursePageHref(course, "sources")} />
+        <SideNavItem label="Preferences" href={coursePageHref(course, "preferences")} icon={Settings} isSelected={path === "/preferences" || path === coursePageHref(course, "preferences")} />
       </SideNavSection>
     </>
   );

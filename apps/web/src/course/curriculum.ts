@@ -12,7 +12,8 @@ export type SourceId =
   | "accessibility-first"
   | "stackoverflow-aggregation"
   | "datadog-queries"
-  | "wilke-overlap";
+  | "wilke-overlap"
+  | (string & {});
 
 export type Question = {
   prompt: string;
@@ -29,7 +30,7 @@ type Lesson = {
   sections: readonly { title: string; body: string }[];
   takeaway: string;
   practice: string;
-  questions: readonly [Question, Question];
+  questions: readonly Question[];
   flashcard: { front: string; back: string };
   reading: readonly { source: SourceId; locator: string }[];
 };

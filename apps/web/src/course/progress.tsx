@@ -1,118 +1,14 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 
-import { lessons } from "./curriculum";
-import { challengeFor } from "./challenges";
-import { awardMilestones, completeChallenge, dayKey, emptyLearning, parseLearning, rateReview, recordActivity, scheduleLesson, type LearningState } from "./learning-state";
+import { lessons, type CourseLesson } from "./curriculum";
+import { useCurrentCourse } from "./course-context";
+import { awardMilestones, completeChallenge, dayKey, rateReview, recordActivity, scheduleLesson } from "./learning-state";
 import { projectSteps, type ProjectId, type ProjectStep } from "./project-steps";
-import { isQuizScope, questionById, questionsForScope, quizScore, type QuizSession } from "./quiz-data";
-
-const key = "data-viz-field-guide.progress.v1";
-const lessonIds = new Set(lessons.map(({ id }) => id));
-
-export type Progress = {
-  learning: LearningState;
-  lastLesson: string | null;
-  completed: string[];
-  answers: Record<string, number>;
-  knownCards: string[];
-  reviewCard: string | null;
-  capstone: string;
-  onboardingDraft: string;
-  projectChecks: Record<ProjectId, ProjectStep[]>;
-  quiz: QuizSession | null;
-  quizBests: Record<string, number>;
-};
-
-const emptyProgress: Progress = {
-  learning: emptyLearning(),
-  lastLesson: null,
-  completed: [],
-  answers: {},
-  knownCards: [],
-  reviewCard: null,
-  capstone: "",
-  onboardingDraft: "",
-  projectChecks: { delivery: [], onboarding: [] },
-  quiz: null,
-  quizBests: {},
-};
-
-function isLesson(id: unknown): id is string {
-  return typeof id === "string" && lessonIds.has(id);
-}
-
-function listOfLessons(list: unknown) {
-  return Array.isArray(list) ? [...new Set(list.filter(isLesson))] : [];
-}
-
-function checkedSteps(value: unknown): ProjectStep[] {
-  return Array.isArray(value) ? projectSteps.map(({ id }) => id).filter((id) => value.includes(id)) : [];
-}
-
-function answerIndex(value: unknown): value is number {
-  return value === 0 || value === 1 || value === 2;
-}
-
-function readQuiz(value: unknown): QuizSession | null {
-  if (!value || typeof value !== "object") return null;
-  const { scope, ids, answers, cursor, retry } = value as Record<string, unknown>;
-  if (!isQuizScope(scope) || !Array.isArray(ids) || !ids.length || new Set(ids).size !== ids.length) return null;
-  if (!ids.every((id) => {
-    const entry = typeof id === "string" ? questionById.get(id) : undefined;
-    return entry && (scope === "all" || entry.scope === scope);
-  })) return null;
-  if (typeof cursor !== "number" || !Number.isInteger(cursor) || cursor < 0 || cursor > ids.length) return null;
-  if (!Array.isArray(answers) || !answers.every(answerIndex) || answers.length < cursor || answers.length > Math.min(ids.length, cursor + 1)) return null;
-  return { scope, ids, answers, cursor, retry: retry === true };
-}
-
-function readQuizBests(value: unknown) {
-  if (!value || typeof value !== "object") return {};
-  return Object.fromEntries(Object.entries(value).filter(([scope, score]) =>
-    isQuizScope(scope) && typeof score === "number" && Number.isInteger(score) && score >= 0 && score <= questionsForScope(scope).length));
-}
-
-function parseProgress(raw: string | null): Progress {
-  if (!raw) return emptyProgress;
-  try {
-    const saved = JSON.parse(raw);
-    if (!saved || typeof saved !== "object") return emptyProgress;
-    const answers: Progress["answers"] = {};
-    for (const lesson of lessons) {
-      for (let index = 0; index < lesson.questions.length; index += 1) {
-        const answerKey = `${lesson.id}:${index}`;
-        const answer = saved.answers?.[answerKey];
-        if (answerIndex(answer)) answers[answerKey] = answer;
-      }
-    }
-    return {
-      learning: parseLearning(saved.learning),
-      lastLesson: isLesson(saved.lastLesson) ? saved.lastLesson : null,
-      completed: listOfLessons(saved.completed),
-      answers,
-      knownCards: listOfLessons(saved.knownCards),
-      reviewCard: isLesson(saved.reviewCard) ? saved.reviewCard : null,
-      capstone: typeof saved.capstone === "string" ? saved.capstone.slice(0, 2500) : "",
-      onboardingDraft: typeof saved.onboardingDraft === "string" ? saved.onboardingDraft.slice(0, 2500) : "",
-      projectChecks: {
-        delivery: checkedSteps(saved.projectChecks?.delivery),
-        onboarding: checkedSteps(saved.projectChecks?.onboarding),
-      },
-      quiz: readQuiz(saved.quiz),
-      quizBests: readQuizBests(saved.quizBests),
-    };
-  } catch {
-    return emptyProgress;
-  }
-}
-
-function readProgress() {
-  try {
-    return { progress: parseProgress(window.localStorage.getItem(key)), canSave: true };
-  } catch {
-    return { progress: emptyProgress, canSave: false };
-  }
-}
+import type { QuizSession } from "./quiz-data";
+import { saveCourseProgress } from "./progress-storage";
+import { publishProgress, readSavedProgress, useSavedProgress } from "./use-saved-progress";
+import type { Progress } from "./progress-data";
+export { createProgressBackup, readProgressBackup, type Progress } from "./progress-data";
 
 type ProgressContextValue = {
   progress: Progress;
@@ -133,10 +29,15 @@ type ProgressContextValue = {
 };
 
 const ProgressContext = createContext<ProgressContextValue | null>(null);
+const answerIndex = (value: unknown): value is number => value === 0 || value === 1 || value === 2;
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
-  const [snapshot, setSnapshot] = useState(readProgress);
+  const course = useCurrentCourse();
+  const snapshot = useSavedProgress(course);
+  const { quizScore } = course.content.quiz;
+  const challengeFor = (id: string) => course.content.challenges.find((item) => item.lessonId === id);
   const latest = useRef(snapshot);
+  latest.current = snapshot;
   const [today, setToday] = useState(dayKey);
 
   useEffect(() => {
@@ -151,36 +52,22 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  useEffect(() => {
-    function sync(event: StorageEvent) {
-      if (event.key === key || event.key === null) {
-        latest.current = readProgress();
-        setSnapshot(latest.current);
-      }
-    }
-    window.addEventListener("storage", sync);
-    return () => window.removeEventListener("storage", sync);
-  }, []);
-
   const update = useCallback((change: (previous: Progress) => Progress) => {
     let base = latest.current;
     if (base.canSave) {
-      const stored = readProgress();
+      const stored = readSavedProgress(course);
       if (stored.canSave) base = stored;
     }
     const next = change(base.progress);
     const projectReady = (["delivery", "onboarding"] as const).some((project) =>
       (project === "delivery" ? next.capstone : next.onboardingDraft).trim().length > 0 && next.projectChecks[project].length === projectSteps.length);
-    const progress = { ...next, learning: awardMilestones(next.learning, projectReady, dayKey()) };
-    let canSave = true;
-    try {
-      window.localStorage.setItem(key, JSON.stringify(progress));
-    } catch {
-      canSave = false;
-    }
-    latest.current = { progress, canSave };
-    setSnapshot(latest.current);
-  }, []);
+    const progress = { ...next, learning: awardMilestones(next.learning, projectReady, dayKey(), course.content.lessons) };
+    let saved;
+    try { saved = saveCourseProgress(window.localStorage, course, progress); }
+    catch { saved = { progress, canSave: false }; }
+    latest.current = saved;
+    publishProgress(course.id, saved);
+  }, [course]);
 
   const openLesson = useCallback((id: string) => {
     if (latest.current.progress.lastLesson !== id) update((previous) => ({ ...previous, lastLesson: id }));
@@ -253,19 +140,10 @@ export function useProgress() {
   return context;
 }
 
-export function getResumeLesson({ lastLesson, completed }: Progress) {
+export function getResumeLesson({ lastLesson, completed }: Progress, courseLessons: readonly CourseLesson[] = lessons) {
+  const lessons = courseLessons;
   const lastIndex = lessons.findIndex(({ id }) => id === lastLesson);
   if (lastIndex >= 0 && !completed.includes(lessons[lastIndex].id)) return lessons[lastIndex];
   return lessons.slice(lastIndex + 1).find(({ id }) => !completed.includes(id))
     ?? lessons.find(({ id }) => !completed.includes(id));
-}
-
-export function readProgressBackup(text: string): Progress {
-  const backup = JSON.parse(text);
-  if (backup?.format !== "graphnotes-progress" || backup?.version !== 1 ||
-      !backup.progress || typeof backup.progress !== "object" ||
-      !Array.isArray(backup.progress.completed) || !backup.progress.answers || typeof backup.progress.answers !== "object" || Array.isArray(backup.progress.answers)) {
-    throw new Error("Choose a Graphnotes progress backup exported from Preferences.");
-  }
-  return parseProgress(JSON.stringify(backup.progress));
 }

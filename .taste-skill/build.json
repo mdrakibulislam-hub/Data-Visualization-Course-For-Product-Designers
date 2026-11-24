@@ -1,0 +1,11 @@
+{
+ "page": "apps/web/dist/index.html",
+ "url": null,
+ "root": "apps/web/dist",
+ "kind": "software",
+ "category": "Design learning courses",
+ "primary": "Open a course",
+ "rounds": 3,
+ "start": "2026-11-24T04:06:05.904Z",
+ "by": "gate.mjs --start"
+}

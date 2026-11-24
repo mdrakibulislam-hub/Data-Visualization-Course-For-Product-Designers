@@ -1,10 +1,12 @@
 import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
+import { HStack } from "@astryxdesign/core/HStack";
 import { useEffect, useState } from "react";
 
-import { hciReleaseAt, releaseCountdown } from "@/course/course-releases";
+import { releaseCountdown } from "@/course/course-releases";
+import { libraryAsset } from "./library-assets";
 
-export function HciCountdown() {
+export function CourseCountdown({ releaseAt }: { releaseAt: string }) {
   const [now, setNow] = useState(Date.now);
 
   useEffect(() => {
@@ -17,7 +19,7 @@ export function HciCountdown() {
     };
   }, []);
 
-  const { days, hours, minutes, hasArrived } = releaseCountdown(hciReleaseAt, now);
+  const { days, hours, minutes, hasArrived } = releaseCountdown(releaseAt, now);
 
   return (
     <VStack gap={3} align="center">
@@ -25,11 +27,14 @@ export function HciCountdown() {
       {hasArrived ? (
         <Text as="p" weight="semibold" className="library-countdown-message">Coming soon</Text>
       ) : (
-        <Text as="p" className="library-countdown" aria-label={`${days} days, ${hours} hours, ${minutes} minutes until release`}>
-          {String(days).padStart(2, "0")}d {String(hours).padStart(2, "0")}h {String(minutes).padStart(2, "0")}m
-        </Text>
+        <HStack gap={3} align="center" className="library-countdown-row">
+          <img src={libraryAsset("release-dot.svg")} width={18} height={18} alt="" aria-hidden="true" className="library-release-dot" />
+          <Text as="p" className="library-countdown" aria-label={`${days} days, ${hours} hours, ${minutes} minutes until release`}>
+            {String(days).padStart(2, "0")}d {String(hours).padStart(2, "0")}h {String(minutes).padStart(2, "0")}m
+          </Text>
+        </HStack>
       )}
-      <Text as="p" color="secondary" type="supporting"><time dateTime={hciReleaseAt}>Monday, November 30</time></Text>
+      <Text as="p" color="secondary" type="supporting"><time dateTime={releaseAt}>{new Date(releaseAt).toLocaleDateString(undefined, { timeZone: "Asia/Dhaka", weekday: "long", month: "long", day: "numeric" })}</time></Text>
     </VStack>
   );
 }

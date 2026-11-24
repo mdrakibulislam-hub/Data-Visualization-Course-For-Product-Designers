@@ -14,9 +14,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState, type Ref } from "react";
 import { ArrowLeft, ArrowRight, BookOpen, ClipboardText, Database, Grid, Layers, Library, Repeat } from "reicon-react";
 
+import { useCurrentCourse } from "@/course/course-context";
+import { courseLessonHref, dataVisualizationId } from "@/course/catalog";
 import { AnswerReview } from "@/course/answer-review";
 import { useProgress } from "@/course/progress";
-import { questionById, questionsForScope, quizScopes, quizScore, type QuizSession } from "@/course/quiz-data";
+import { type QuizSession } from "@/course/quiz-data";
 
 export const Route = createFileRoute("/quizzes")({
   head: () => ({ meta: [{ title: "Quizzes · Graphnotes" }] }),
@@ -33,6 +35,8 @@ const topics = [
 ];
 
 function QuizRound({ session, headingRef, onAdvance }: { session: QuizSession; headingRef: Ref<HTMLHeadingElement>; onAdvance: () => void }) {
+  const course = useCurrentCourse();
+  const { questionById } = course.content.quiz;
   const { saveQuiz } = useProgress();
   const [selection, setSelection] = useState("");
   const feedbackRef = useRef<HTMLElement>(null);
@@ -67,7 +71,7 @@ function QuizRound({ session, headingRef, onAdvance }: { session: QuizSession; h
             <VStack as="section" gap={1.5} padding={3} ref={feedbackRef} tabIndex={-1} aria-labelledby="quiz-feedback-title" aria-describedby="quiz-feedback-reason" className="quiz-feedback course-motion-enter">
               <Text as="p" id="quiz-feedback-title" weight="semibold">{correct ? "Correct" : "Here’s why"}</Text>
               <Text as="p" id="quiz-feedback-reason">{entry.explanation}</Text>
-              {entry.lessonId && <Link href={`/lesson/${entry.lessonId}`} type="supporting" weight="semibold" hasUnderline>Review the lesson</Link>}
+              {entry.lessonId && <Link href={courseLessonHref(course, entry.lessonId)} type="supporting" weight="semibold" hasUnderline>Review the lesson</Link>}
             </VStack>
           )}
         </VStack>
@@ -84,7 +88,9 @@ function QuizRound({ session, headingRef, onAdvance }: { session: QuizSession; h
   );
 }
 
-function QuizzesPage() {
+export function QuizzesPage() {
+  const course = useCurrentCourse();
+  const { questionById, questionsForScope, quizScopes, quizScore } = course.content.quiz;
   const { progress, saveQuiz } = useProgress();
   const session = progress.quiz;
   const [showTopics, setShowTopics] = useState(!session);
@@ -127,12 +133,12 @@ function QuizzesPage() {
       <VStack className="course-wrap course-simple-page quiz-library-page" gap={5}>
         <VStack as="header" gap={1.5}>
           <Heading level={1} ref={catalogHeading} tabIndex={-1} className="course-display course-page-title">Quizzes</Heading>
-          <Text as="p" color="secondary">Choose a topic to practice making chart decisions.</Text>
+          <Text as="p" color="secondary">Choose a topic to practice your reasoning.</Text>
         </VStack>
 
         <VStack as="ul" className="quiz-library-grid" gap={0} aria-label="Quiz topics">
           {quizScopes.map(({ value, label }, index) => {
-            const { Icon, description } = topics[index];
+            const { Icon, description } = course.id === dataVisualizationId ? (topics[index] ?? { Icon: BookOpen, description: "Practice this topic." }) : { Icon: index === 0 ? Library : BookOpen, description: course.content.modules.find(({ title }) => title === value)?.description ?? "Mix questions from every topic." };
             const count = questionsForScope(value).length;
             const best = progress.quizBests[value];
             const current = session?.scope === value;
@@ -209,7 +215,7 @@ function QuizzesPage() {
                         <Text as="p" weight="semibold">{question.prompt}</Text>
                         <Text as="p"><strong>Correct answer:</strong> {question.options[question.answer]}</Text>
                         <Text as="p" color="secondary">{question.explanation}</Text>
-                        {question.lessonId && <Link href={`/lesson/${question.lessonId}`} type="supporting" weight="semibold" hasUnderline>Review the lesson</Link>}
+                        {question.lessonId && <Link href={courseLessonHref(course, question.lessonId)} type="supporting" weight="semibold" hasUnderline>Review the lesson</Link>}
                       </VStack>
                     );
                   })}

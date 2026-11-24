@@ -44,13 +44,13 @@ export function weekStart(day: Day): Day {
 export function formatDay(day: Day) {
   return new Date(`${day}T12:00:00`).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
-const ids = new Set(lessons.map(({ id }) => id));
-const list = (value: unknown): string[] => Array.isArray(value) ? [...new Set(value.filter((id): id is string => typeof id === "string" && ids.has(id)))] : [];
 const object = (value: unknown): Record<string, unknown> => value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
 const option = (value: unknown) => value === 0 || value === 1 || value === 2 ? value : null;
 
 /** Additive migration: old lesson, quiz and project progress stays untouched. */
-export function parseLearning(value: unknown): LearningState {
+export function parseLearning(value: unknown, courseLessons: readonly { id: string }[] = lessons): LearningState {
+  const ids = new Set(courseLessons.map(({ id }) => id));
+  const list = (value: unknown): string[] => Array.isArray(value) ? [...new Set(value.filter((id): id is string => typeof id === "string" && ids.has(id)))] : [];
   const saved = object(value);
   const next = emptyLearning();
   next.weeklyGoal = [0, 2, 3, 4, 5].includes(Number(saved.weeklyGoal)) ? Number(saved.weeklyGoal) : 0;
@@ -108,9 +108,9 @@ export function rateReview(state: LearningState, id: string, known: boolean, tod
   }
   return next;
 }
-export function dueLessonIds(state: LearningState, completed: readonly string[], known: readonly string[], today: Day) {
+export function dueLessonIds(state: LearningState, completed: readonly string[], known: readonly string[], today: Day, courseLessons: readonly { id: string }[] = lessons) {
   const learned = new Set([...completed, ...known, ...Object.keys(state.reviews)]);
-  return lessons.filter(({ id }) => learned.has(id) && (!state.reviews[id] || state.reviews[id].dueOn <= today))
+  return courseLessons.filter(({ id }) => learned.has(id) && (!state.reviews[id] || state.reviews[id].dueOn <= today))
     .sort((a, b) => (state.reviews[a.id]?.dueOn ?? "").localeCompare(state.reviews[b.id]?.dueOn ?? "")).map(({ id }) => id);
 }
 export function completeChallenge(state: LearningState, id: string, today: Day): LearningState {
@@ -121,10 +121,10 @@ export function completeChallenge(state: LearningState, id: string, today: Day):
     revisitedOn: previous?.revisitedOn ?? (previous && previous.practicedOn < today ? today : null),
   } } }, today, "challenges", id);
 }
-export function awardMilestones(state: LearningState, projectReady: boolean, today: Day): LearningState {
+export function awardMilestones(state: LearningState, projectReady: boolean, today: Day, courseLessons: readonly { id: string }[] = lessons): LearningState {
   const milestones = { ...state.milestones };
   if (Object.keys(state.challenges).length) milestones["first-decision"] ??= today;
-  if (lessons.slice(0, 3).every(({ id }) => state.challenges[id])) milestones.foundations ??= today;
+  if (courseLessons.length >= 3 && courseLessons.slice(0, 3).every(({ id }) => state.challenges[id])) milestones.foundations ??= today;
   if (projectReady) milestones["project-draft"] ??= today;
   return { ...state, milestones };
 }

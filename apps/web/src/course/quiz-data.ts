@@ -1,13 +1,8 @@
-import { lessons, modules, type Question } from "./curriculum";
+import { lessons, modules, type Question, type CourseLesson } from "./curriculum";
 
 export type QuizEntry = Question & { id: string; scope: string; lessonId?: string };
 
 export const studioScope = "Studio scenarios";
-export const quizScopes = [
-  { value: "all", label: "All topics" },
-  ...modules.map(({ title }) => ({ value: title, label: title })),
-  { value: studioScope, label: studioScope },
-];
 
 const studioQuestions: readonly Question[] = [
   { prompt: "A circle’s radius doubles. How much larger is its area?", options: ["Twice as large", "Four times as large", "The same size"], answer: 1, explanation: "Area grows with the square of the radius. For a value twice as large, multiply the radius by about 1.41." },
@@ -18,18 +13,6 @@ const studioQuestions: readonly Question[] = [
   { prompt: "Mobile activation improved after the rollout began. What can you conclude from the trend?", options: ["The improvement was observed, and its cause needs more evidence", "The rollout caused the entire improvement", "The rollout improved every user’s experience"], answer: 0, explanation: "The annotation marks timing. Attribution requires evidence that accounts for other changes, such as who signed up that week." },
 ];
 
-export const practiceQuestions: readonly QuizEntry[] = [
-  ...lessons.flatMap((lesson) => lesson.questions.map((question, index) => ({
-    ...question,
-    id: `${lesson.id}:${index}`,
-    scope: lesson.moduleTitle,
-    lessonId: lesson.id,
-  }))),
-  ...studioQuestions.map((question, index) => ({ ...question, id: `studio:${index}`, scope: studioScope })),
-];
-
-export const questionById = new Map(practiceQuestions.map((question) => [question.id, question]));
-export const questionsForScope = (scope: string) => practiceQuestions.filter((question) => scope === "all" || question.scope === scope);
 
 export type QuizSession = {
   scope: string;
@@ -39,10 +22,22 @@ export type QuizSession = {
   retry: boolean;
 };
 
-export function quizScore(session: QuizSession) {
-  return session.ids.filter((id, index) => questionById.get(id)?.answer === session.answers[index]).length;
+export function createQuizBank(courseLessons: readonly CourseLesson[], courseModules: readonly { title: string }[], extras: readonly Question[] = []) {
+  const quizScopes = [
+    { value: "all", label: "All topics" },
+    ...courseModules.map(({ title }) => ({ value: title, label: title })),
+    ...(extras.length ? [{ value: studioScope, label: studioScope }] : []),
+  ];
+  const practiceQuestions: readonly QuizEntry[] = [
+    ...courseLessons.flatMap((lesson) => lesson.questions.map((question, index) => ({ ...question, id: `${lesson.id}:${index}`, scope: lesson.moduleTitle, lessonId: lesson.id }))),
+    ...extras.map((question, index) => ({ ...question, id: `studio:${index}`, scope: studioScope })),
+  ];
+  const questionById = new Map(practiceQuestions.map((question) => [question.id, question]));
+  const questionsForScope = (scope: string) => practiceQuestions.filter((question) => scope === "all" || question.scope === scope);
+  const quizScore = (session: QuizSession) => session.ids.filter((id, index) => questionById.get(id)?.answer === session.answers[index]).length;
+  function isQuizScope(value: unknown): value is string { return quizScopes.some(({ value: scope }) => scope === value); }
+  return { quizScopes, practiceQuestions, questionById, questionsForScope, quizScore, isQuizScope };
 }
 
-export function isQuizScope(value: unknown): value is string {
-  return quizScopes.some(({ value: scope }) => scope === value);
-}
+export const dataVisualizationQuiz = createQuizBank(lessons, modules, studioQuestions);
+export const { quizScopes, practiceQuestions, questionById, questionsForScope, quizScore, isQuizScope } = dataVisualizationQuiz;

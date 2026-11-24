@@ -6,7 +6,7 @@ import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute } from "@tanstack/react-router";
 import { AtSign, Briefcase, Envelope, Globe } from "reicon-react";
 
-import { articleSources, bookSources } from "@/course/sources";
+import { useCurrentCourse } from "@/course/course-context";
 import { CreatorPattern } from "@/components/creator-pattern";
 
 export const Route = createFileRoute("/sources")({
@@ -14,7 +14,8 @@ export const Route = createFileRoute("/sources")({
   component: SourcesPage,
 });
 
-function SourcesPage() {
+export function SourcesPage() {
+  const { content: { articles: articleSources, books: bookSources } } = useCurrentCourse();
   return (
     <VStack className="course-wrap course-simple-page" gap={6}>
       <VStack as="header" gap={2}>
@@ -47,10 +48,10 @@ function SourcesPage() {
         </VStack>
       </Card>
       <HStack as="nav" gap={4} wrap="wrap" aria-label="Learning sources">
-        <AstryxLink href="#articles">Articles and guides</AstryxLink>
-        <AstryxLink href="#books">Books and slides</AstryxLink>
+        {articleSources.length > 0 && <AstryxLink href="#articles">Articles and guides</AstryxLink>}
+        {bookSources.length > 0 && <AstryxLink href="#books">Books and slides</AstryxLink>}
       </HStack>
-      <VStack as="section" aria-labelledby="articles" gap={2}>
+      {articleSources.length > 0 && <VStack as="section" aria-labelledby="articles" gap={2}>
         <Heading id="articles" level={2}>Articles and guides</Heading>
         <VStack gap={0}>
           {articleSources.map((source) => (
@@ -61,8 +62,8 @@ function SourcesPage() {
             </VStack>
           ))}
         </VStack>
-      </VStack>
-      <VStack as="section" aria-labelledby="books" gap={2}>
+      </VStack>}
+      {bookSources.length > 0 && <VStack as="section" aria-labelledby="books" gap={2}>
         <Heading id="books" level={2}>Books and slides</Heading>
         <VStack gap={0}>
           {bookSources.map((source) => (
@@ -81,7 +82,7 @@ function SourcesPage() {
             </VStack>
           ))}
         </VStack>
-      </VStack>
+      </VStack>}
     </VStack>
   );
 }

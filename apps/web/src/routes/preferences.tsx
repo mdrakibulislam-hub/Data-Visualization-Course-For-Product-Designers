@@ -10,16 +10,20 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, Download, Upload } from "reicon-react";
 import { useRef, useState } from "react";
 
+import { useCurrentCourse } from "@/course/course-context";
+import { dataVisualizationId } from "@/course/catalog";
 import { AppearanceTabs } from "@/components/mode-toggle";
-import { formatDay, milestoneDefinitions, weeklyDays } from "@/course/learning-state";
-import { readProgressBackup, useProgress, type Progress } from "@/course/progress";
+import { formatDay, weeklyDays } from "@/course/learning-state";
+import { createProgressBackup, readProgressBackup, useProgress, type Progress } from "@/course/progress";
 
 export const Route = createFileRoute("/preferences")({
   head: () => ({ meta: [{ title: "Preferences · Graphnotes" }] }),
   component: PreferencesPage,
 });
 
-function PreferencesPage() {
+export function PreferencesPage() {
+  const course = useCurrentCourse();
+  const milestoneDefinitions = course.content.milestones;
   const { progress, today, canSave, setWeeklyGoal, importProgress } = useProgress();
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
@@ -31,11 +35,11 @@ function PreferencesPage() {
   const next = milestoneDefinitions.find(({ id }) => !progress.learning.milestones[id]);
 
   function exportBackup() {
-    const content = JSON.stringify({ format: "graphnotes-progress", version: 1, savedAt: new Date().toISOString(), progress }, null, 2);
+    const content = JSON.stringify(createProgressBackup(progress, course), null, 2);
     const url = URL.createObjectURL(new Blob([content], { type: "application/json" }));
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = `graphnotes-progress-${today}.json`;
+    anchor.download = `graphnotes-${course.id}-progress-${today}.json`;
     anchor.click();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
@@ -61,7 +65,7 @@ function PreferencesPage() {
             {[2, 3, 4, 5].map((value) => <SegmentedControlItem key={value} label={String(value)} value={String(value)} />)}
           </SegmentedControl>
         </VStack>
-        <Text as="p" type="supporting" color="secondary">Finish a lesson, challenge or quiz, review three different cards, or work on your project. Each day counts once. Missed days don’t erase your progress.</Text>
+        <Text as="p" type="supporting" color="secondary">{course.content.hasProjects ? "Finish a lesson, challenge or quiz, review three different cards, or work on your project." : "Finish a lesson or quiz, or review three different cards."} Each day counts once. Missed days don’t erase your progress.</Text>
         {goal > 0 && <VStack gap={1} className="learning-goal-progress">
           <ProgressBar label="Practice days this week" value={Math.min(days, goal)} max={goal} hasValueLabel formatValueLabel={() => days >= goal ? "Goal reached" : `${days} of ${goal}`} />
           <Text as="p" type="supporting" color="secondary">{days} {days === 1 ? "practice day" : "practice days"} this week.</Text>
@@ -84,7 +88,7 @@ function PreferencesPage() {
         {next && <VStack gap={1}>
           <Text as="p" weight="medium">{earned.length ? "Next milestone" : "Your first milestone"} · {next.title}</Text>
           <Text as="p" type="supporting" color="secondary">{next.description}</Text>
-          {!earned.length && <Link to="/challenges" className="practice-link">Try a design challenge</Link>}
+          {!earned.length && (course.id === dataVisualizationId && next.id === "first-decision" ? <Link to="/challenges" className="practice-link">Try a design challenge</Link> : <Link to="/courses/$courseId/$page" params={{ courseId: course.id, page: "review" }} className="practice-link">Review flashcards</Link>)}
         </VStack>}
       </VStack>
       <VStack as="section" className="learning-setting" gap={3} aria-labelledby="backup-title">
@@ -100,7 +104,7 @@ function PreferencesPage() {
           setError("");
           if (!file) return;
           if (file.size > 1_000_000) { setError("This file is too large for a progress backup. Choose a Graphnotes JSON backup under 1 MB."); return; }
-          try { setPending(readProgressBackup(await file.text())); }
+          try { setPending(readProgressBackup(await file.text(), course)); }
           catch { setError("This backup could not be read. Choose a Graphnotes progress JSON file exported from Preferences."); }
         }} />
         {error && <Text as="p" role="alert">{error}</Text>}

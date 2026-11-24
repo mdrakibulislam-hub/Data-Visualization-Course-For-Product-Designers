@@ -59,6 +59,11 @@ function SidebarEdgeControl({ isCollapsed, onCollapsedChange }: { isCollapsed: b
   );
 }
 
+function LessonNavItem({ isSidebarCollapsed, ...props }: ComponentPropsWithRef<typeof SideNavItem> & { isSidebarCollapsed: boolean }) {
+  const { isMobile } = useAppShellMobile();
+  return <SideNavItem {...props} className={isMobile || !isSidebarCollapsed ? "course-lesson-branch" : undefined} />;
+}
+
 function SidebarProgress({ completed, canSave, isCollapsed }: { completed: number; canSave: boolean; isCollapsed: boolean }) {
   const { content: { lessons } } = useCurrentCourse();
   const details = <CourseProgressCard completed={completed} canSave={canSave} isTooltip={isCollapsed} />;
@@ -159,9 +164,9 @@ export function CourseShell({ children }: { children: ReactNode }) {
           >
             <VStack gap={0} className="course-lesson-tree">
               {module.lessons.map(({ id, title }) => (
-                <SideNavItem
+                <LessonNavItem
                   key={id}
-                  className="course-lesson-branch"
+                  isSidebarCollapsed={isCollapsed}
                   label={title}
                   href={courseLessonHref(course, id)}
                   size="sm"

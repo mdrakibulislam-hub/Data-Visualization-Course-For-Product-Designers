@@ -792,6 +792,17 @@ html { scrollbar-gutter: stable; }
   min-block-size: var(--spacing-8);
   padding-inline: var(--spacing-2);
   border-radius: var(--radius-element);
+  text-decoration: none;
+}
+
+.course-brand-link:focus-visible { outline: calc(2 * var(--border-width)) solid var(--accent); outline-offset: var(--spacing-1); }
+.course-brand-link img,
+.library-brand-link img { transition: scale var(--duration-fast) var(--ease-standard); }
+.course-brand-link:active img,
+.library-brand-link:active img { scale: .97; }
+@media (prefers-reduced-motion: reduce) {
+  .course-brand-link img,
+  .library-brand-link img { transition: none; }
 }
 
 .course-brand-link[data-compact] {

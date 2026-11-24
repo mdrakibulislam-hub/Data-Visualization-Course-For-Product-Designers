@@ -1,5 +1,4 @@
 import { Button } from "@astryxdesign/core/Button";
-import { Dialog, DialogHeader } from "@astryxdesign/core/Dialog";
 import { Grid } from "@astryxdesign/core/Grid";
 import { Heading } from "@astryxdesign/core/Heading";
 import { HStack } from "@astryxdesign/core/HStack";
@@ -10,16 +9,18 @@ import { Text } from "@astryxdesign/core/Text";
 import { TextInput } from "@astryxdesign/core/TextInput";
 import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BookOpen, Envelope, Moon, Search } from "reicon-react";
+import { BookOpen, Moon, Search } from "reicon-react";
 import { useState } from "react";
 
 import { AppearanceTabs } from "@/components/mode-toggle";
 import { CourseCard } from "@/components/course-card";
+import { CourseRequestDialog } from "@/components/course-request-dialog";
 import { LibraryCreator } from "@/components/library-creator";
 import { LibraryIcon, libraryAsset } from "@/components/library-assets";
 import { useAppearance } from "@/components/theme-provider";
 import { courses, requestableTopics, type Course } from "@/course/catalog";
 import { browseCourses, catalogTopics, nearestReleaseId } from "@/course/catalog-browsing";
+import { useLibraryEntrance } from "@/course/use-library-entrance";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [{ title: "Graphnotes · Courses for product designers" }] }),
@@ -28,7 +29,7 @@ export const Route = createFileRoute("/")({
 
 export function CourseLibrary({ catalog = courses }: { catalog?: readonly Course[] }) {
   const [isRequestOpen, setRequestOpen] = useState(false);
-  const [requestedTopic, setRequestedTopic] = useState<string | null>(null);
+  const mainRef = useLibraryEntrance();
   const [query, setQuery] = useState("");
   const [topic, setTopic] = useState("all");
   const { appearance } = useAppearance();
@@ -37,7 +38,6 @@ export function CourseLibrary({ catalog = courses }: { catalog?: readonly Course
   const topics = catalogTopics(catalog);
   const visible = browseCourses(catalog, query, topic);
   const nextRelease = nearestReleaseId(catalog);
-  const mailto = requestedTopic ? `mailto:rakibulislamborkan@gmail.com?subject=${encodeURIComponent(`Graphnotes course request: ${requestedTopic}`)}&body=${encodeURIComponent(`Hi Rakib,\n\nI’d like to learn ${requestedTopic} on Graphnotes.\n\nThanks!`)}` : undefined;
 
   return (
     <>
@@ -56,7 +56,7 @@ export function CourseLibrary({ catalog = courses }: { catalog?: readonly Course
           </HStack>
         </HStack>
       </HStack>
-      <VStack as="main" className="library-main" gap={6}>
+      <VStack as="main" className="library-main" gap={6} ref={mainRef}>
         {hasSearch && <HStack gap={3} wrap="wrap" align="end" className="library-filters">
           <TextInput label="Search courses" isLabelHidden type="search" value={query} onChange={setQuery} placeholder="Search courses" startIcon={<Search size={18} aria-hidden="true" />} hasClear width="100%" containerClassName="library-search" />
           {topics.length > 1 && <Selector label="Topic" isLabelHidden options={[{ value: "all", label: "All topics" }, ...topics]} value={topic} onChange={(value) => setTopic(value ?? "all")} width="13rem" />}
@@ -73,17 +73,7 @@ export function CourseLibrary({ catalog = courses }: { catalog?: readonly Course
         </VStack>
         <LibraryCreator />
       </VStack>
-      <Dialog isOpen={isRequestOpen} onOpenChange={setRequestOpen} width="28rem" purpose="form" padding={5}>
-        <VStack gap={5}>
-          <DialogHeader title="Which course should come next?" subtitle="Choose a topic you’d like to learn." onOpenChange={setRequestOpen} hasDivider={false} />
-          <Selector label="Course topic" options={requestableTopics(catalog)} value={requestedTopic ?? undefined} onChange={setRequestedTopic} placeholder="Choose a topic" width="100%" isRequired />
-          <Text as="p" color="secondary" type="supporting">Continue to your email app to send your request to Rakib.</Text>
-          <HStack gap={2} className="course-action-pair" justify="end">
-            <Button label="Cancel" variant="secondary" onClick={() => setRequestOpen(false)} />
-            <Button label="Continue to email" variant="primary" icon={<Envelope size={16} aria-hidden="true" />} href={mailto} isDisabled={!requestedTopic} />
-          </HStack>
-        </VStack>
-      </Dialog>
+      <CourseRequestDialog isOpen={isRequestOpen} onOpenChange={setRequestOpen} topics={requestableTopics(catalog)} />
     </>
   );
 }

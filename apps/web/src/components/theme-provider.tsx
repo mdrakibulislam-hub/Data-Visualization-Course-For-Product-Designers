@@ -33,6 +33,8 @@ const fieldGuideTheme = defineTheme({
     tab: { base: { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" } },
     "tab-strip": { base: { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" } },
     "text-input": { base: { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" } },
+    selector: { base: { minHeight: "calc(var(--spacing-10) + var(--spacing-1))" } },
+    "side-nav-section": { base: { marginBlockStart: "var(--spacing-4)", paddingBlock: "0" } },
     "radio-list-item": { base: { minHeight: "calc(var(--spacing-10) + var(--spacing-1))", paddingBlock: "var(--spacing-2)" } },
     "side-nav-item": {
       base: {

@@ -48,7 +48,6 @@ html:has(.library-shell) { scrollbar-gutter: auto; }
 .library-course-tile {
   position: relative;
   overflow: hidden;
-  transition: translate var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
 }
 .library-course-tile > article { block-size: 100%; }
 .library-course-cover {
@@ -81,7 +80,7 @@ html:has(.library-shell) { scrollbar-gutter: auto; }
 .library-art-soft { fill: var(--accent-fill); fill-opacity: .12; }
 .library-art-stroke { stroke: var(--accent-fill); stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
-.library-course-info { flex: 1; }
+.library-course-info { flex: 1; transition: background-color var(--duration-fast) var(--ease-standard); }
 .library-course-title {
   min-inline-size: 0;
   font-family: var(--display-font);
@@ -134,13 +133,15 @@ html:has(.library-shell) { scrollbar-gutter: auto; }
   text-decoration: none;
 }
 .library-course-link:hover,
-.library-course-open:hover { text-decoration: underline; text-underline-offset: var(--spacing-1); }
-.library-course-open .library-icon { transition: translate var(--duration-fast) var(--ease-standard); }
+.library-course-open:hover { text-decoration: none; }
 .dark .library-course-open .library-icon { filter: brightness(1.8) saturate(.7); }
 @media (hover: hover) and (pointer: fine) {
-  .library-course-open:hover .library-icon { translate: var(--spacing-1) 0; }
-  .library-course-tile[data-status="available"]:hover { translate: 0 calc(-1 * var(--spacing-0-5)); border-color: var(--accent); }
+  .library-course-tile[data-status="available"]:hover .library-course-info { background: var(--panel); }
 }
+
+.course-request-content .astryx-dialog-header h2 { font-size: 1.4375rem; line-height: 1.4; letter-spacing: -.025em; }
+.course-request-footer { border-block-start: var(--border-width) solid var(--line); padding-block-start: var(--spacing-5); }
+.course-request-footer .course-action-pair { inline-size: 100%; }
 
 .library-creator { padding: calc(var(--spacing-6) - var(--border-width)); }
 .library-creator-profile { min-inline-size: 0; }
@@ -193,6 +194,5 @@ html:has(.library-shell) { scrollbar-gutter: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .library-release-dot { animation: none; }
-  .library-course-open .library-icon,
-  .library-course-tile { transition: none; }
+  .library-course-info { transition: none; }
 }

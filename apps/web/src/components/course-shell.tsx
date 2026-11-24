@@ -2,7 +2,7 @@ import { AppShell, useAppShellMobile } from "@astryxdesign/core/AppShell";
 import { Card } from "@astryxdesign/core/Card";
 import { HStack } from "@astryxdesign/core/HStack";
 import { IconButton } from "@astryxdesign/core/IconButton";
-import { Link as AstryxLink, LinkProvider } from "@astryxdesign/core/Link";
+import { LinkProvider } from "@astryxdesign/core/Link";
 import { MobileNav } from "@astryxdesign/core/MobileNav";
 import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { SideNav, SideNavCollapseButton, SideNavItem, SideNavSection } from "@astryxdesign/core/SideNav";
@@ -26,11 +26,11 @@ const moduleIcons = [BookOpen, Database, Grid, Layers];
 function BrandLink({ isCompact = false }: { isCompact?: boolean }) {
   const baseUrl = import.meta.env.BASE_URL;
   return (
-    <AstryxLink href="/" label="Graphnotes home" className="course-brand-link" data-compact={isCompact || undefined}>
+    <Link to="/" aria-label="Graphnotes course library" className="course-brand-link" data-compact={isCompact || undefined}>
       {isCompact
         ? <img className="course-brand-icon" src={`${baseUrl}graphnotes-icon.svg`} width={48} height={48} alt="" />
         : <img className="course-brand-wordmark" src={`${baseUrl}graphnotes-logo.svg`} width={248} height={49} alt="" />}
-    </AstryxLink>
+    </Link>
   );
 }
 
@@ -181,6 +181,7 @@ export function CourseShell({ children }: { children: ReactNode }) {
       <SideNavSection title="Other">
         <SideNavItem label="Credits" href={coursePageHref(course, "sources")} icon={DocumentCopy} isSelected={path === "/sources" || path === coursePageHref(course, "sources")} />
         <SideNavItem label="Preferences" href={coursePageHref(course, "preferences")} icon={Settings} isSelected={path === "/preferences" || path === coursePageHref(course, "preferences")} />
+        <SideNavItem label="More courses" href="/" icon={Grid} />
       </SideNavSection>
     </>
   );
@@ -195,7 +196,7 @@ export function CourseShell({ children }: { children: ReactNode }) {
           breakpoint: "lg",
           content: (
             <MobileNav side="start" header={<BrandLink />} label="Course navigation">
-              <VStack gap={2} padding={2}>{sections}</VStack>
+              <VStack gap={0} padding={2}>{sections}</VStack>
             </MobileNav>
           ),
         }}

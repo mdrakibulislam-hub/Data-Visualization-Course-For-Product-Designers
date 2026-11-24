@@ -723,15 +723,15 @@ html { scrollbar-gutter: stable; }
 .course-lesson-sources[open] summary { margin-bottom: .65rem; }
 
 .course-takeaway {
-  border-inline-start: 2px solid var(--accent);
-  border-radius: 0 .45rem .45rem 0;
-  background: var(--accent-soft);
-  padding: 1rem 1.15rem;
+  border: var(--border-width) solid var(--line);
+  border-radius: var(--radius-container);
+  background: color-mix(in srgb, var(--surface) 75%, var(--panel));
 }
 
 .course-takeaway h2 {
-  font-size: 1rem;
-  font-weight: 700;
+  font-family: var(--font-family-body);
+  font-size: var(--text-supporting-size);
+  color: var(--muted);
 }
 
 .course-question + .course-question {

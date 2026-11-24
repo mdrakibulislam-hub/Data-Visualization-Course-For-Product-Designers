@@ -160,8 +160,8 @@ export function LessonReader({ lesson }: { lesson: CourseLesson }) {
 
         {lab && <VStack id="lesson-lab" gap={0} data-scroll-reveal><ChartLab lab={lab} /></VStack>}
 
-        <VStack as="aside" className="course-takeaway" gap={1} aria-label="Key idea" data-scroll-reveal>
-          <Heading level={2}>Keep this in mind</Heading>
+        <VStack as="aside" className="course-takeaway" padding={4} gap={1.5} aria-labelledby="lesson-takeaway-title" data-scroll-reveal>
+          <Heading level={2} id="lesson-takeaway-title" weight="medium" color="secondary">Key takeaway</Heading>
           <Text as="p" type="body">{lesson.takeaway}</Text>
         </VStack>
 

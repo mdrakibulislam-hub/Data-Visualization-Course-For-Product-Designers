@@ -162,4 +162,14 @@ describe("migration and backup", () => {
       expect(challenge.reason.options[challenge.reason.answer]).toBeTruthy();
     }
   });
+  test("the baseline challenge compares the completion rates in its brief without changing the data", () => {
+    const challenge = challenges.find(({ lessonId }) => lessonId === "scales-and-baselines")!;
+    const { before, after } = challengeViews(challenge);
+    if (before.chart.kind !== "bars" || after.chart.kind !== "bars") throw new Error("The baseline exercise needs length-encoded bars.");
+    expect(before.chart.values.map(([, value]) => value)).toEqual([95, 100]);
+    expect(after.chart.values).toEqual(before.chart.values);
+    expect(before.chart.unit).toBe("% complete");
+    expect(before.chart.min).toBe(90);
+    expect(after.chart.min).toBe(0);
+  });
 });

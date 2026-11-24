@@ -44,6 +44,13 @@ export const challenges: readonly Challenge[] = [
 ];
 export function challengeFor(id: string) { return challenges.find(({ lessonId }) => lessonId === id); }
 export function challengeViews(challenge: Challenge): { before: Lab["views"][number]; after: Lab["views"][number] } {
+  if (challenge.lessonId === "scales-and-baselines") {
+    const chart: Lab["views"][number]["chart"] = { kind: "bars", values: [["Current", 95], ["New", 100]], unit: "% complete", max: 100 };
+    return {
+      before: { label: "Cropped scale", title: "Setup completion, cropped scale", note: "The scale starts at 90%, so the 95% bar looks half as long as the 100% bar.", chart: { ...chart, min: 90 } },
+      after: { label: "Zero baseline", title: "The same completion rates, from zero", note: "The rates are unchanged. A zero baseline shows the five-percentage-point difference fairly.", chart: { ...chart, min: 0 } },
+    };
+  }
   const lab = labs[challenge.lessonId];
   const before: Lab["views"][number] = challenge.lessonId === "averages-and-distributions"
     ? { label: "Average waits", title: "Both cafés average eight minutes", note: "Averages alone hide the spread.", chart: { kind: "bars", values: [["Café A", 8], ["Café B", 8]], unit: "minutes", max: 10 } }

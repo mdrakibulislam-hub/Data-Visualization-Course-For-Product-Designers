@@ -170,8 +170,8 @@ export function CourseShell({ children }: { children: ReactNode }) {
         {course.id === dataVisualizationId && <SideNavItem label="Capstone project" href="/capstone" icon={Checklist} isSelected={path === "/capstone"} />}
       </SideNavSection>
       <SideNavSection title="Other">
-        <SideNavItem label="Credits" href={coursePageHref(course, "sources")} icon={DocumentCopy} isSelected={path === "/sources" || path === coursePageHref(course, "sources")} />
         <SideNavItem label="Preferences" href={coursePageHref(course, "preferences")} icon={Settings} isSelected={path === "/preferences" || path === coursePageHref(course, "preferences")} />
+        <SideNavItem label="Credits" href={coursePageHref(course, "sources")} icon={DocumentCopy} isSelected={path === "/sources" || path === coursePageHref(course, "sources")} />
         <SideNavItem label="More courses" href="/" icon={Grid} />
       </SideNavSection>
     </>

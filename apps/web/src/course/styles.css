@@ -1,5 +1,21 @@
 html { scrollbar-gutter: stable; }
 
+/* Native scrolling stays available, with a quiet track and thumb in the rail. */
+.astryx-side-nav * { scrollbar-width: inherit; }
+.astryx-side-nav:hover,
+.astryx-side-nav:focus-within { scrollbar-color: color-mix(in srgb, var(--color-text-secondary) 30%, transparent) transparent; }
+.astryx-side-nav::-webkit-scrollbar,
+.astryx-side-nav *::-webkit-scrollbar { width: var(--spacing-1); height: var(--spacing-1); }
+.astryx-side-nav::-webkit-scrollbar-track,
+.astryx-side-nav *::-webkit-scrollbar-track { background: transparent; }
+.astryx-side-nav::-webkit-scrollbar-thumb,
+.astryx-side-nav *::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-text-secondary) 16%, transparent); border-radius: var(--radius-full); }
+.astryx-side-nav:hover::-webkit-scrollbar-thumb,
+.astryx-side-nav:hover *::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-text-secondary) 30%, transparent); }
+@media (forced-colors: active) {
+  .astryx-side-nav { scrollbar-color: auto; }
+}
+
 .course-shell {
   --surface: var(--color-background-surface);
   --panel: var(--color-background-muted);

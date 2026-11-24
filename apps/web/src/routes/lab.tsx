@@ -11,8 +11,9 @@ import { TextInput } from "@astryxdesign/core/TextInput";
 import { VStack } from "@astryxdesign/core/VStack";
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState, type Ref } from "react";
-import { ArrowLeft, Grid as GridIcon, Search } from "reicon-react";
+import { ArrowLeft, ArrowRight, Grid as GridIcon, Search } from "reicon-react";
 
+import { PracticeHeader } from "@/components/practice-header";
 import { chartAtlas } from "@/course/chart-atlas";
 import { ChartThumbnail } from "@/course/chart-thumbnail";
 import { ChartLab } from "@/course/charts";
@@ -101,12 +102,18 @@ function ExperimentCatalog({
           <SegmentedControlItem label="Studio" value="studio" />
           <SegmentedControlItem label="Lessons" value="lessons" />
         </SegmentedControl>
-        <Grid columns={{ minWidth: 240, max: 3 }} gap={3}>
+        <Grid columns={{ minWidth: 280, max: 2 }} gap={4}>
           {options.map(({ id, title, lab }) => (
-            <ClickableCard data-scroll-reveal key={id} label={title} onClick={() => onOpen(id)} padding={4} className="lab-browser-card">
-              <VStack gap={4}>
-                <ChartThumbnail data={lab.views[0].chart} />
-                <Text weight="semibold" as="p">{title}</Text>
+            <ClickableCard data-scroll-reveal key={id} label={title} onClick={() => onOpen(id)} padding={0} className="lab-browser-card">
+              <VStack gap={0}>
+                <VStack gap={0} padding={5} className="lab-browser-preview"><ChartThumbnail data={lab.views[0].chart} /></VStack>
+                <VStack gap={3} padding={5} className="lab-browser-description">
+                  <Text weight="semibold" as="p">{title}</Text>
+                  <HStack justify="between" align="center" gap={2}>
+                    <Text type="supporting" color="secondary">{lab.views.length} views to compare</Text>
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </HStack>
+                </VStack>
               </VStack>
             </ClickableCard>
           ))}
@@ -120,6 +127,7 @@ function ChartLabPage() {
   const { experiment, view } = Route.useSearch();
   const navigate = Route.useNavigate();
   const current = experiments.find(({ id }) => id === experiment) ?? studioLabs[0];
+  const currentIndex = experiments.indexOf(current);
   const destination = useRef<HTMLHeadingElement>(null);
   const isAtlas = view === "atlas";
 
@@ -131,10 +139,7 @@ function ChartLabPage() {
 
   return (
     <VStack className="course-wrap course-simple-page practice-page lab-page" gap={4}>
-      <VStack as="header" gap={2}>
-        <Heading level={1} className="course-display course-page-title">Chart Lab</Heading>
-        <Text as="p" color="secondary">Change how a chart is drawn and see which patterns become easier to read.</Text>
-      </VStack>
+      <PracticeHeader title="Chart Lab" description="Change a chart. See what becomes easier to read." hasDivider={false} />
       <TabList
         role="tablist"
         aria-label="Chart Lab"
@@ -154,12 +159,17 @@ function ChartLabPage() {
             onOpen={(id) => openExperimentView(undefined, id)}
           />
         ) : (
-          <VStack as="section" gap={2} key={current.id} className="course-motion-enter lab-active" aria-labelledby="experiment-title">
-            <HStack justify="between" align="center" wrap="wrap" gap={2}>
+          <VStack as="section" gap={3} key={current.id} className="course-motion-enter lab-active" aria-labelledby="experiment-title">
+            <HStack justify="between" align="center" wrap="wrap" gap={3} className="lab-experiment-heading">
               <Heading level={2} id="experiment-title" ref={destination} tabIndex={-1} className="lab-panel-title">{current.title}</Heading>
-              <Button label="Browse experiments" variant="secondary" icon={<GridIcon size={16} aria-hidden="true" />} className="course-action" onClick={() => openExperimentView("browse")} />
+              <Button label="Browse experiments" variant="ghost" icon={<GridIcon size={16} aria-hidden="true" />} onClick={() => openExperimentView("browse")} />
             </HStack>
-            <ChartLab lab={current.lab} showHeading={false} />
+            <ChartLab lab={current.lab} showHeading={false} isWorkbench />
+            <HStack as="nav" aria-label="Experiment navigation" justify="between" align="center" gap={3} className="lab-experiment-navigation">
+              <Button label="Previous" variant="ghost" icon={<ArrowLeft size={16} aria-hidden="true" />} isDisabled={currentIndex === 0} onClick={() => openExperimentView(undefined, experiments[currentIndex - 1].id)} />
+              <Text type="supporting" color="secondary">{currentIndex + 1} of {experiments.length} experiments</Text>
+              <Button label="Next experiment" variant="ghost" endContent={<ArrowRight size={16} aria-hidden="true" />} isDisabled={currentIndex === experiments.length - 1} onClick={() => openExperimentView(undefined, experiments[currentIndex + 1].id)} />
+            </HStack>
           </VStack>
         )}
       </VStack>

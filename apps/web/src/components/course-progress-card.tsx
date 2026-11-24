@@ -33,13 +33,13 @@ export function CourseProgressCard({ completed, canSave, isTooltip = false }: { 
             {resume ? <BookOpen size={16} /> : <Check size={16} />}
           </HStack>
         </HStack>
-        <VStack gap={1} className="course-progress-card-footer">
+        {(!isTooltip || !canSave) && <VStack gap={1} className="course-progress-card-footer">
           {!isTooltip && <Link to={resume ? courseLessonHref(course, resume.id) : coursePageHref(course, "review")} className="course-progress-action">
             <Text as="span" type="supporting" weight="medium">{resume ? started ? "Continue learning" : "Start learning" : "Review flashcards"}</Text>
             <ArrowRight size={15} aria-hidden="true" />
           </Link>}
-          <Text as="p" type="supporting" color="secondary" role={canSave ? undefined : "status"}>{canSave ? "Saved in this browser" : "Progress is available in this tab only."}</Text>
-        </VStack>
+          {!canSave && <Text as="p" type="supporting" color="secondary" role="status">Progress is available in this tab only.</Text>}
+        </VStack>}
       </VStack>
     </Card>
   );

@@ -2,12 +2,14 @@ import { Card } from "@astryxdesign/core/Card";
 import { Heading } from "@astryxdesign/core/Heading";
 import { HStack } from "@astryxdesign/core/HStack";
 import { SegmentedControl, SegmentedControlItem } from "@astryxdesign/core/SegmentedControl";
+import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
 import { useState, type CSSProperties } from "react";
 
 import type { ChartData, Lab, Values } from "./lab-data";
 
 type DataTable = Extract<ChartData, { kind: "table" }>;
+const shortWeekdays: Record<string, string> = { Mon: "Mo", Tue: "Tu", Wed: "We", Thu: "Th", Fri: "Fr", Sat: "Sa", Sun: "Su" };
 
 function showValue(value: number | null, unit: string) {
   return value === null ? "Missing" : `${value}${unit.startsWith("%") ? "%" : ""}`;
@@ -19,8 +21,8 @@ export function DataGrid({ data, title }: { data: DataTable; title: string }) {
       <caption className="sr-only">{title}</caption>
       <thead><tr>{data.columns.map((column) => <th key={column} scope="col">{column}</th>)}</tr></thead>
       <tbody>
-        {data.rows.map(([label, ...cells]) => (
-          <tr key={label}>
+        {data.rows.map(([label, ...cells], rowIndex) => (
+          <tr key={`${label}:${rowIndex}`}>
             <th scope="row">{label}</th>
             {cells.map((cell, index) => (
               <td
@@ -59,7 +61,10 @@ export function Columns({
             ))}
           </ol>
           <ol className="course-column-labels" style={{ "--columns": values.length } as CSSProperties}>
-            {values.map(([name]) => <li key={name}>{name}</li>)}
+            {values.map(([name]) => <li key={name}>{shortWeekdays[name] ? <>
+              <Text as="span" type="supporting" className="course-column-label-full">{name}</Text>
+              <Text as="span" type="supporting" className="course-column-label-short">{shortWeekdays[name]}</Text>
+            </> : name}</li>)}
           </ol>
         </VStack>
       </HStack>
@@ -225,7 +230,7 @@ export function Chart({ data, title }: { data: ChartData; title: string }) {
   }
 }
 
-export function ChartLab({ lab, showHeading = true }: { lab: Lab; showHeading?: boolean }) {
+export function ChartLab({ lab, showHeading = true, isWorkbench = false }: { lab: Lab; showHeading?: boolean; isWorkbench?: boolean }) {
   const [selected, setSelected] = useState(0);
   const view = lab.views[selected];
   const chart = view.chart;
@@ -233,24 +238,28 @@ export function ChartLab({ lab, showHeading = true }: { lab: Lab; showHeading?: 
   return (
     <VStack as="section" gap={3} aria-labelledby={showHeading ? "lab-title" : undefined} aria-label={showHeading ? undefined : "Experiment"}>
       {showHeading && <Heading level={2} id="lab-title">Try it</Heading>}
-      <p>{lab.prompt}</p>
-      <Card className="course-lab" padding={4}>
-        <VStack gap={3}>
-          <SegmentedControl label="Chart view" size="md" className="course-lab-controls" value={String(selected)} onChange={(value) => setSelected(Number(value))}>
-            {lab.views.map(({ label }, index) => <SegmentedControlItem key={label} label={label} value={String(index)} />)}
-          </SegmentedControl>
-          <VStack as="figure" gap={3} aria-label={view.title}>
-            <VStack key={selected} className="course-motion-enter" gap={3}>
+      <Text as="p" color="secondary">{lab.prompt}</Text>
+      <Card className={`course-lab${isWorkbench ? " lab-workbench" : ""}`} padding={isWorkbench ? 0 : 4}>
+        <VStack gap={isWorkbench ? 0 : 3}>
+          <HStack gap={0} className={isWorkbench ? "lab-workbench-tools" : undefined}>
+            <SegmentedControl label="Chart view" size="md" className="course-lab-controls" value={String(selected)} onChange={(value) => setSelected(Number(value))}>
+              {lab.views.map(({ label }, index) => <SegmentedControlItem key={label} label={label} value={String(index)} />)}
+            </SegmentedControl>
+          </HStack>
+          <VStack as="figure" gap={isWorkbench ? 0 : 3} aria-label={view.title}>
+            <VStack key={selected} className={`course-motion-enter${isWorkbench ? " lab-workbench-plot" : ""}`} gap={4}>
               <Heading level={3}>{view.title}</Heading>
-              <Chart data={chart} title={view.title} />
+              <VStack gap={0} className={isWorkbench ? "lab-chart-canvas" : undefined}><Chart data={chart} title={view.title} /></VStack>
             </VStack>
-            <figcaption className="course-chart-note" aria-live="polite">{view.note}</figcaption>
-            {table && <details className="course-value-details">
-              <summary>View values</summary>
-              <VStack className="course-data-scroll" gap={0} tabIndex={0} role="region" aria-label={`${view.title} values`}>
-                <DataGrid data={table} title={view.title} />
-              </VStack>
-            </details>}
+            <VStack gap={2} className={isWorkbench ? "lab-workbench-reading" : undefined}>
+              <VStack as="figcaption" gap={0} className="course-chart-note" aria-live="polite"><Text as="p" type="supporting" color="secondary">{view.note}</Text></VStack>
+              {table && <details className="course-value-details">
+                <summary>View values</summary>
+                <VStack className="course-data-scroll" gap={0} tabIndex={0} role="region" aria-label={`${view.title} values`}>
+                  <DataGrid data={table} title={view.title} />
+                </VStack>
+              </details>}
+            </VStack>
           </VStack>
         </VStack>
       </Card>

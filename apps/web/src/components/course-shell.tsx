@@ -7,7 +7,7 @@ import { SideNav, SideNavCollapseButton, SideNavItem, SideNavSection } from "@as
 import { Tooltip } from "@astryxdesign/core/Tooltip";
 import { VStack } from "@astryxdesign/core/VStack";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ArrowsLeft, ArrowsRight, BookOpen, Check, HelpCircle, Checklist, Database, DocumentCopy, Layers, Grid, Library, ChartLine, Settings, Target } from "reicon-react";
+import { ChevronLeft, ChevronRight, BookOpen, Check, HelpCircle, Checklist, Database, DocumentCopy, Layers, Grid, Library, ChartLine, Settings, Target } from "reicon-react";
 import { useEffect, useRef, useState, type ComponentPropsWithRef, type CSSProperties, type ReactNode } from "react";
 
 import { useCurrentCourse } from "@/course/course-context";
@@ -53,7 +53,7 @@ function SidebarEdgeControl({ isCollapsed, onCollapsedChange }: { isCollapsed: b
   return (
     <HStack gap={0} align="center" justify="center" className="course-sidebar-edge-control">
       <SideNavCollapseButton collapsible={{ isCollapsed, onCollapsedChange }} size="sm">
-        {isCollapsed ? <ArrowsRight size={16} aria-hidden="true" /> : <ArrowsLeft size={16} aria-hidden="true" />}
+        {isCollapsed ? <ChevronRight size={16} aria-hidden="true" /> : <ChevronLeft size={16} aria-hidden="true" />}
       </SideNavCollapseButton>
     </HStack>
   );

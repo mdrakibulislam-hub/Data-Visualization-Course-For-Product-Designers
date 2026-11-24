@@ -1,6 +1,7 @@
 import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
 import { HStack } from "@astryxdesign/core/HStack";
+import { IconButton } from "@astryxdesign/core/IconButton";
 import { useEffect, useState } from "react";
 
 import { releaseCountdown } from "@/course/course-releases";
@@ -8,6 +9,7 @@ import { libraryAsset } from "./library-assets";
 
 export function CourseCountdown({ releaseAt }: { releaseAt: string }) {
   const [now, setNow] = useState(Date.now);
+  const [isPulsePaused, setPulsePaused] = useState(false);
 
   useEffect(() => {
     const update = () => setNow(Date.now());
@@ -28,7 +30,14 @@ export function CourseCountdown({ releaseAt }: { releaseAt: string }) {
         <Text as="p" weight="semibold" className="library-countdown-message">Coming soon</Text>
       ) : (
         <HStack gap={3} align="center" className="library-countdown-row">
-          <img src={libraryAsset("release-dot.svg")} width={18} height={18} alt="" aria-hidden="true" className="library-release-dot" />
+          <IconButton
+            label={isPulsePaused ? "Resume countdown animation" : "Pause countdown animation"}
+            tooltip={isPulsePaused ? "Resume animation" : "Pause animation"}
+            variant="ghost"
+            className="library-release-indicator"
+            onClick={() => setPulsePaused((paused) => !paused)}
+            icon={<img src={libraryAsset("release-dot.svg")} width={18} height={18} alt="" aria-hidden="true" className="library-release-dot" data-paused={isPulsePaused || undefined} />}
+          />
           <Text as="p" className="library-countdown" aria-label={`${days} days, ${hours} hours, ${minutes} minutes until release`}>
             {String(days).padStart(2, "0")}d {String(hours).padStart(2, "0")}h {String(minutes).padStart(2, "0")}m
           </Text>

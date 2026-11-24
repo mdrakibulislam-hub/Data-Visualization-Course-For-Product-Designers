@@ -87,7 +87,22 @@ html:has(.library-shell) { scrollbar-gutter: auto; }
 }
 .library-course-cover:has(.library-countdown) { container-type: inline-size; }
 .library-course-cover .library-countdown { font-size: clamp(1.25rem, 8cqi, 2.49rem); }
-.library-release-dot { flex-shrink: 0; }
+.library-course-duration { white-space: nowrap; }
+.library-release-indicator {
+  margin-inline: calc(-1 * (var(--spacing-3) + var(--border-width)));
+}
+.library-release-dot {
+  flex-shrink: 0;
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  max-inline-size: none;
+  animation: library-release-pulse 2.4s ease-in-out infinite;
+}
+.library-release-dot[data-paused] { animation-play-state: paused; }
+@keyframes library-release-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .4; }
+}
 .library-course-link { color: var(--ink); text-decoration: none; }
 .library-course-link::after { content: ""; position: absolute; inset: 0; }
 .library-course-open {
@@ -161,6 +176,7 @@ html:has(.library-shell) { scrollbar-gutter: auto; }
   .library-creator-links { grid-template-columns: minmax(0, 1fr); gap: var(--spacing-2); }
 }
 @media (prefers-reduced-motion: reduce) {
+  .library-release-dot { animation: none; }
   .library-course-open .library-icon,
   .library-course-tile { transition: none; }
 }

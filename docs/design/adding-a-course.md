@@ -60,7 +60,7 @@ Appearance remains a separate global preference. Other tabs receive course-scope
 
 ## Catalog growth
 
-The library renders `courses` through `CourseCard` rather than one-off page markup. It uses a shared 16:9 cover and compact title row; published entries appear first. Continue appears beside the title for started courses, and completed courses offer Review. The Figma layout omits lesson metadata and progress bars from this page; course progress remains saved and visible inside the course. A creator panel sits below the catalog.
+The library renders `courses` through `CourseCard` rather than one-off page markup. It uses a shared 16:9 cover and compact title row; published entries appear first. New courses show their curriculum-derived duration, Continue appears beside the title for started courses, and completed courses offer Review. The Figma layout omits lesson counts and progress bars from this page; course progress remains saved and visible inside the course. A creator panel sits below the catalog.
 
 With the current two entries there are no search/filter controls. Search appears at six entries. Topic filtering appears with search only when at least two topics each have two or more courses. The grid allows three columns once the catalog contains more than two entries, then reflows according to available width. Unpublished courses stay non-interactive until content is available.
 

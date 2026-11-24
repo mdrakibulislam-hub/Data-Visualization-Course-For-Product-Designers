@@ -2,6 +2,8 @@
 
 Reference: [Graphnotes library, node 52:1271](https://www.figma.com/design/jVpDNYnQz5CSTHXOggHE0Y/Untitled?node-id=52-1271).
 
+Follow-up concept: [Course list states, page 0:1](https://www.figma.com/design/tGFpPtcYyuDZvJI2urUFLv/Untitled?node-id=0-1), frames 1:291 (not started) and 1:2 (started). New courses show their curriculum-derived duration as `01h 45m`; this becomes Continue after a learner starts. Comments 2020338427 and 2020338376 both request a smoothly blinking countdown indicator. The dot uses a gentle 2.4-second opacity cycle, can be paused with mouse or keyboard, and stays still under reduced motion. Pausing the decorative pulse does not stop the actual release countdown. All eleven exported assets were downloaded and confirmed byte-identical to the existing local assets.
+
 The index follows the reference's centered 1024-wide composition, 24-unit gap, compact course footers, live SUSE Mono countdown with release dot, and full creator panel. Its shared catalog, conditional search/filter controls, course routes, local progress, and email-draft request flow remain functional. The previous library metadata/progress line and minimal creator footer were replaced by the supplied design.
 
 On smaller screens the catalog becomes one column, titles/secondary details wrap, the creator pattern moves below the profile, and the three equal-width links stack. The page grows naturally when its content exceeds the viewport.

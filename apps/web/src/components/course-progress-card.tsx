@@ -18,9 +18,9 @@ export function CourseProgressCard({ completed, canSave, isTooltip = false }: { 
   const percentage = completed / Math.max(1, lessons.length) * 100;
 
   return (
-    <Card padding={4} className={`course-progress-card${isTooltip ? " course-progress-tooltip" : ""}`}>
-      <VStack gap={3}>
-        <HStack gap={3} justify="between" align="center" role="progressbar" aria-label="Course progress" aria-valuemin={0} aria-valuemax={lessons.length} aria-valuenow={completed} aria-valuetext={`${completed} of ${lessons.length} lessons complete`}>
+    <Card padding={0} className={`course-progress-card${isTooltip ? " course-progress-tooltip" : ""}`}>
+      <VStack gap={0}>
+        <HStack padding={4} gap={3} justify="between" align="center" role="progressbar" aria-label="Course progress" aria-valuemin={0} aria-valuemax={lessons.length} aria-valuenow={completed} aria-valuetext={`${completed} of ${lessons.length} lessons complete`}>
           <VStack gap={1}>
             <Text as="p" type="supporting" color="secondary">Course progress</Text>
             <Text as="p" className="course-progress-count"><strong>{completed}</strong> of {lessons.length} lessons</Text>
@@ -33,7 +33,7 @@ export function CourseProgressCard({ completed, canSave, isTooltip = false }: { 
             {resume ? <BookOpen size={16} /> : <Check size={16} />}
           </HStack>
         </HStack>
-        {(!isTooltip || !canSave) && <VStack gap={1} className="course-progress-card-footer">
+        {(!isTooltip || !canSave) && <VStack paddingInline={4} paddingBlock={1} gap={1} className="course-progress-card-footer">
           {!isTooltip && <Link to={resume ? courseLessonHref(course, resume.id) : coursePageHref(course, "review")} className="course-progress-action">
             <Text as="span" type="supporting" weight="medium">{resume ? started ? "Continue learning" : "Start learning" : "Review flashcards"}</Text>
             <ArrowRight size={15} aria-hidden="true" />

@@ -1,6 +1,5 @@
 .learning-next {
   padding-block: var(--spacing-5);
-  border-block-end: var(--border-width) solid var(--line);
 }
 .learning-next h2 { font-size: var(--text-heading-3-size); }
 .learning-quiet-link {

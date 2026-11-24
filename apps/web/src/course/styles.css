@@ -55,8 +55,8 @@ html { scrollbar-gutter: stable; }
 .course-progress-ring-track, .course-progress-ring-fill { fill: none; stroke-width: 3; }
 .course-progress-ring-track { stroke: var(--line); }
 .course-progress-ring-fill { stroke: var(--accent-fill); stroke-linecap: round; transform: rotate(-90deg); transform-origin: center; }
-.course-progress-card-footer { border-block-start: var(--border-width) solid var(--line); padding-block-start: var(--spacing-2); }
-.course-progress-action { min-block-size: calc(var(--spacing-10) + var(--spacing-1)); display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-2); margin-block: calc(-1 * var(--spacing-1)); color: var(--accent); text-decoration: none; }
+.course-progress-card-footer { border-block-start: var(--border-width) solid var(--line); }
+.course-progress-action { min-block-size: calc(var(--spacing-10) + var(--spacing-1)); display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-2); color: var(--accent); text-decoration: none; }
 .course-progress-action svg { flex-shrink: 0; transition: translate var(--duration-fast) var(--ease-standard); }
 .course-progress-action:hover { text-decoration: underline; text-underline-offset: var(--spacing-1); }
 .course-progress-action:focus-visible { outline: calc(2 * var(--border-width)) solid var(--accent); outline-offset: var(--spacing-1); border-radius: var(--radius-inner); }

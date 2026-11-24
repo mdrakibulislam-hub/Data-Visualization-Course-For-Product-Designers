@@ -1,5 +1,29 @@
 html { scrollbar-gutter: stable; }
 
+/* Let the edge control cross the sidebar boundary without being clipped. */
+.course-shell .astryx-layout-panel:has(> .course-sidebar-edge-control) { overflow: visible; }
+.course-shell :has(> .astryx-layout-panel > .course-sidebar-edge-control) { overflow: visible; z-index: 4; }
+
+.course-sidebar-edge-control {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: calc(-1 * (var(--spacing-5) + var(--spacing-0-5)));
+  inline-size: calc(var(--spacing-10) + var(--spacing-1));
+  block-size: calc(var(--spacing-10) + var(--spacing-1));
+  translate: 0 -50%;
+  z-index: 3;
+}
+.course-sidebar-edge-control::before {
+  content: "";
+  position: absolute;
+  inset: var(--spacing-1) var(--spacing-2);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-element);
+  background: var(--color-background-surface);
+  pointer-events: none;
+}
+.course-sidebar-edge-control > button { position: relative; inline-size: 100%; block-size: 100%; }
+
 /* Native scrolling stays available, with a quiet track and thumb in the rail. */
 .astryx-side-nav * { scrollbar-width: inherit; }
 .astryx-side-nav:hover,

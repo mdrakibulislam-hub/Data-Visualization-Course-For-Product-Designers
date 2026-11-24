@@ -4,11 +4,10 @@ import { IconButton } from "@astryxdesign/core/IconButton";
 import { LinkProvider } from "@astryxdesign/core/Link";
 import { MobileNav } from "@astryxdesign/core/MobileNav";
 import { SideNav, SideNavCollapseButton, SideNavItem, SideNavSection } from "@astryxdesign/core/SideNav";
-import { Stack } from "@astryxdesign/core/Stack";
 import { Tooltip } from "@astryxdesign/core/Tooltip";
 import { VStack } from "@astryxdesign/core/VStack";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { BookOpen, Check, HelpCircle, Checklist, Database, DocumentCopy, Layers, Grid, Library, ChartLine, Settings, Target } from "reicon-react";
+import { ArrowsLeft, ArrowsRight, BookOpen, Check, HelpCircle, Checklist, Database, DocumentCopy, Layers, Grid, Library, ChartLine, Settings, Target } from "reicon-react";
 import { useEffect, useRef, useState, type ComponentPropsWithRef, type CSSProperties, type ReactNode } from "react";
 
 import { useCurrentCourse } from "@/course/course-context";
@@ -36,16 +35,14 @@ function SidebarHeader({ isCollapsed }: { isCollapsed: boolean }) {
   const { isMobile } = useAppShellMobile();
   const isCompact = isCollapsed && !isMobile;
   return (
-    <Stack
-      direction={isCompact ? "vertical" : "horizontal"}
+    <HStack
       align="center"
-      justify="between"
-      gap={isCompact ? 1.5 : 2}
+      justify={isCompact ? "center" : "start"}
+      gap={0}
       paddingBlockStart={isMobile ? 0 : 2}
     >
       <BrandLink isCompact={isCompact} />
-      {!isMobile && <SideNavCollapseButton size="sm" />}
-    </Stack>
+    </HStack>
   );
 }
 
@@ -89,6 +86,7 @@ export function CourseShell({ children }: { children: ReactNode }) {
   const course = useCurrentCourse();
   const { lessons, modules } = course.content;
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const sidebarCollapse = { isCollapsed, onCollapsedChange: setIsCollapsed, hasButton: false };
   const path = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") || "/" });
   const settledPath = useRouterState({ select: (state) => state.resolvedLocation?.pathname ?? state.location.pathname });
   const contentRef = useCourseMotion(settledPath.replace(/\/$/, "") || "/");
@@ -192,15 +190,22 @@ export function CourseShell({ children }: { children: ReactNode }) {
           ),
         }}
         sideNav={
+          <>
           <SideNav
             aria-label="Course navigation"
-            collapsible={{ isCollapsed, onCollapsedChange: setIsCollapsed, hasButton: false }}
+            collapsible={sidebarCollapse}
             header={<SidebarHeader isCollapsed={isCollapsed} />}
             footer={<SidebarProgress completed={progress.completed.length} canSave={canSave} isCollapsed={isCollapsed} />}
             footerIcons={<HStack gap={0} width="100%"><ModeToggle isCollapsed={isCollapsed} /></HStack>}
           >
             {sections}
           </SideNav>
+          <HStack gap={0} align="center" justify="center" className="course-sidebar-edge-control">
+            <SideNavCollapseButton collapsible={sidebarCollapse} size="sm">
+              {isCollapsed ? <ArrowsRight size={16} aria-hidden="true" /> : <ArrowsLeft size={16} aria-hidden="true" />}
+            </SideNavCollapseButton>
+          </HStack>
+          </>
         }
       >
         <VStack className="course-frame" gap={0} ref={contentRef}>{children}</VStack>

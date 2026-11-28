@@ -1,6 +1,6 @@
 import type { SourceId } from "./curriculum";
 
-type Source = {
+export type Source = {
   id: SourceId;
   title: string;
   credit: string;
@@ -78,7 +78,7 @@ export const bookSources: readonly Source[] = [
   },
 ];
 
-type ArticleSource = Pick<Source, "id" | "title" | "credit"> & {
+export type ArticleSource = Pick<Source, "id" | "title" | "credit"> & {
   url: string;
   note: string;
 };

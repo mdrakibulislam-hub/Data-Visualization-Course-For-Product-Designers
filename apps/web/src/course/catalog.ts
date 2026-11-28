@@ -2,7 +2,10 @@ import { modules as dataVisualizationModules, lessons as dataVisualizationLesson
 import type { CourseLesson } from "./curriculum";
 import { challenges as dataVisualizationChallenges } from "./challenges";
 import { labs as dataVisualizationLabs } from "./lab-data";
-import { hciReleaseAt } from "./course-releases";
+import { hciModules } from "./hci/curriculum";
+import { hciInteraction } from "./hci/data";
+import { hciBooks, hciArticles } from "./hci/sources";
+import { hciCourseId, type InteractionContent } from "./hci/types";
 import { createQuizBank, dataVisualizationQuiz } from "./quiz-data";
 import { articleSources, bookSources } from "./sources";
 import { milestoneDefinitions, type MilestoneId } from "./learning-state";
@@ -20,6 +23,7 @@ export type CourseContent = {
   books: typeof bookSources;
   hasProjects: boolean;
   milestones: readonly { id: MilestoneId; title: string; description: string }[];
+  interaction?: InteractionContent;
 };
 
 type CourseDetails = {
@@ -59,18 +63,22 @@ export const dataVisualizationCourse: AvailableCourse = {
   },
 };
 
+export const hciCourse: AvailableCourse = {
+  id: hciCourseId,
+  title: "Human–computer interaction",
+  description: "Understand people, design clear interactions, and improve them with evidence.",
+  topic: "Design foundations",
+  cover: "perception",
+  status: "available",
+  content: defineCourseContent(hciModules, {
+    articles: hciArticles, books: hciBooks, interaction: hciInteraction, hasProjects: true,
+  }),
+};
+
 /** Add course content and one entry here; every catalog card uses the same template. */
 export const courses: readonly Course[] = [
   dataVisualizationCourse,
-  {
-    id: "human-computer-interaction",
-    title: "Human–computer interaction",
-    description: "Understand how people perceive, learn, and use interfaces.",
-    topic: "Design foundations",
-    cover: "perception",
-    status: "scheduled",
-    releaseAt: hciReleaseAt,
-  },
+  hciCourse,
 ];
 
 export function findCourse(id: string) { return courses.find((course) => course.id === id); }

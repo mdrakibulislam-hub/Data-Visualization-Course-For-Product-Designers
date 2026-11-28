@@ -8,6 +8,7 @@ import type { QuizSession } from "./quiz-data";
 import { saveCourseProgress } from "./progress-storage";
 import { publishProgress, readSavedProgress, useSavedProgress } from "./use-saved-progress";
 import type { Progress } from "./progress-data";
+import { hciProjectIds, hciStepIds, hciRubricIds, type HciProject, type HciProjectId } from "./hci/state";
 export { createProgressBackup, readProgressBackup, type Progress } from "./progress-data";
 
 type ProgressContextValue = {
@@ -26,6 +27,8 @@ type ProgressContextValue = {
   checkProjectStep: (project: ProjectId, step: ProjectStep, checked: boolean) => void;
   saveQuiz: (session: QuizSession) => void;
   rateCard: (id: string, known: boolean, next: string | null) => void;
+  saveHciNote: (id: string, note: string) => void;
+  updateHciProject: (id: HciProjectId, change: (project: HciProject) => HciProject) => void;
 };
 
 const ProgressContext = createContext<ProgressContextValue | null>(null);
@@ -80,6 +83,23 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       if ([0, 2, 3, 4, 5].includes(goal)) update((previous) => ({ ...previous, learning: { ...previous.learning, weeklyGoal: goal } }));
     },
     importProgress: (progress) => update(() => progress),
+    saveHciNote: (id, note) => {
+      if (!course.content.interaction?.guides[id]) return;
+      update((previous) => ({ ...previous, hci: { ...previous.hci, notes: { ...previous.hci.notes, [id]: note.slice(0, 1200) } } }));
+    },
+    updateHciProject: (id, change) => {
+      if (!course.content.interaction || !hciProjectIds.includes(id)) return;
+      update((previous) => {
+        const proposed = change(previous.hci.projects[id]);
+        const project: HciProject = {
+          path: proposed.path === "field" ? "field" : "case",
+          entries: Object.fromEntries(hciStepIds.filter((step) => typeof proposed.entries[step] === "string").map((step) => [step, proposed.entries[step]!.slice(0, 4000)])),
+          checks: hciStepIds.filter((step) => proposed.checks.includes(step)),
+          ratings: Object.fromEntries(hciRubricIds.filter((key) => Number.isInteger(proposed.ratings[key]) && proposed.ratings[key]! >= 0 && proposed.ratings[key]! <= 3).map((key) => [key, proposed.ratings[key]])),
+        };
+        return { ...previous, hci: { ...previous.hci, projects: { ...previous.hci.projects, [id]: project } }, learning: recordActivity(previous.learning, dayKey(), "projects", id) };
+      });
+    },
     answerChallenge: (id, step, answer) => {
       const challenge = challengeFor(id);
       if (!challenge || (answer !== null && !answerIndex(answer))) return;

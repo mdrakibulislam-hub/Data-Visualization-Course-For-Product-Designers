@@ -139,7 +139,7 @@ export function QuizzesPage() {
 
     return (
       <VStack className="course-wrap course-simple-page quiz-library-page" gap={5}>
-        <PracticeHeader title="Quizzes" titleRef={catalogHeading} description="Choose a topic. Practice the reasoning behind your chart decisions." />
+        <PracticeHeader title="Quizzes" titleRef={catalogHeading} description={course.content.interaction ? "Choose a topic. Practice the reasoning behind your interaction decisions." : "Choose a topic. Practice the reasoning behind your chart decisions."} />
         {!canSave && <Text as="p" type="supporting" color="secondary" role="status">Your answers are available in this tab only.</Text>}
 
         <VStack as="ul" className="quiz-library-grid" gap={0} aria-label="Quiz topics">

@@ -1,0 +1,42 @@
+.hci-perception-figure { position: relative; min-inline-size: 0; }
+.hci-perception-heading { min-block-size: calc(var(--spacing-10) + var(--spacing-1)); }
+.hci-perception-drawing { display: block; inline-size: 100%; block-size: auto; overflow: visible; }
+.hci-perception-neighbor {
+  fill: var(--accent-fill);
+  fill-opacity: .12;
+  transition: transform 600ms var(--ease-standard);
+}
+.hci-perception-center {
+  fill: var(--accent-fill);
+  transition: transform 600ms var(--ease-standard);
+}
+.hci-perception-context { transition: opacity 300ms var(--ease-standard); }
+.hci-perception-figure[data-compared] .hci-perception-context { opacity: 0; }
+.hci-perception-guides {
+  opacity: 0;
+  transition: opacity 300ms var(--ease-standard);
+}
+.hci-perception-figure[data-compared] .hci-perception-guides { opacity: 1; }
+.hci-perception-guides path {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.hci-perception-actions { min-inline-size: 0; }
+.hci-perception-actions > button { flex-shrink: 0; }
+.hci-perception-result { display: grid; min-inline-size: 0; text-wrap: balance; }
+/* Both messages measure the same grid cell, including when the footer wraps. */
+.hci-perception-message { grid-area: 1 / 1; visibility: hidden; }
+.hci-perception-message[data-active] { visibility: visible; }
+
+.hci-perception-preview,
+.hci-perception-preview > figure { inline-size: 100%; block-size: 100%; }
+.hci-perception-preview .hci-perception-drawing { flex: 1; min-block-size: 0; block-size: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hci-perception-neighbor,
+  .hci-perception-center,
+  .hci-perception-context,
+  .hci-perception-guides { transition: none; }
+}

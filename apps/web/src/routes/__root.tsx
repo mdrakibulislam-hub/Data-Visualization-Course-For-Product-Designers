@@ -27,7 +27,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({
     meta: [
       { title: "Graphnotes · Courses for product designers" },
-      { name: "description", content: "Practical courses for product designers. Learn data visualization with interactive charts, quizzes, and flashcards. More design courses are on the way." },
+      { name: "description", content: "Practical courses for product designers. Learn data visualization and human–computer interaction through lessons, experiments, quizzes, flashcards, and projects." },
     ],
   }),
 });

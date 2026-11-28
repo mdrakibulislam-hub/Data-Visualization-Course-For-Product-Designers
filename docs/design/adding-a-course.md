@@ -1,6 +1,6 @@
 # Adding a course to Graphnotes
 
-The library, course overview, lesson reader, quizzes, flashcards, preferences, and reading sources share templates. Data Visualization remains the only published course. HCI remains scheduled for November 30, 2026 at midnight in Dhaka.
+The library, course overview, lesson reader, quizzes, flashcards, preferences, and reading sources share templates. Data Visualization and Human–Computer Interaction are available in the local catalog. HCI now has a complete curriculum and course-specific interaction practice; its former scheduled countdown has been replaced by the available course card. Publishing these workspace changes to a hosted environment is separate.
 
 ## Add a planned or scheduled course
 
@@ -33,9 +33,9 @@ Write its modules in a content file. `CourseModule` is exported from `course/cat
 
 Use `defineCourseContent(modules, extras)` from the catalog, then set the registry entry to `status: "available"` with that `content`. Lesson count, total duration, quiz bank, review queue, and the course outline derive from the modules. The same lesson ID can safely occur in two different courses, but IDs must be unique within one course. Do not reuse an old ID for unrelated material after publishing.
 
-Optional `extras` include article/book sources, lesson chart labs, a quiz bank with additional scenario questions, and meaningful milestones. `defineCourseContent` supplies an ordinary recall milestone; add only milestones supported by the course’s actual practice activities.
+Optional `extras` include article/book sources, lesson chart labs, a quiz bank with additional scenario questions, meaningful milestones, and `interaction` content (lesson guides, experiments, glossary, and module outputs). `defineCourseContent` supplies an ordinary recall milestone; add only milestones supported by the course’s actual practice activities.
 
-Data Visualization’s Chart Lab, design challenges, and capstone are subject-specific extensions. They remain intact on their existing routes and are shown only inside Data Visualization. A new course gets the shared lesson/quiz/flashcard tools automatically. A new kind of interactive exercise or project requires its own content/renderer integration; do not enable the Data Visualization extensions for another subject by copying its flags.
+Data Visualization’s Chart Lab, design challenges, and capstone are subject-specific extensions. They remain intact on their existing routes and are shown only inside Data Visualization. A new course gets the shared lesson/quiz/flashcard tools automatically. HCI supplies its own interaction renderer and course-scoped practice/project pages. A new kind of interactive exercise or project requires its own content/renderer integration; do not enable the Data Visualization extensions for another subject by copying its flags.
 
 ## URLs and navigation
 
@@ -55,6 +55,8 @@ The root chooses the active course by URL and keys its provider by course ID. Sh
 Each available course uses its own `graphnotes.course-progress.v2.<course-id>` record. Data Visualization reads and migrates `data-viz-field-guide.progress.v1` only when its new record is absent. The original key stays untouched. Existing lesson completion, answers, quiz sessions, project drafts, checklists, goals, reviews, and milestones are preserved.
 
 Version 2 exports include `courseId`; a backup is imported only into its matching course. Version 1 backups are accepted for Data Visualization. Unknown future or malformed storage envelopes are not overwritten by opening a lesson. Storage failures retain progress in the current tab, show the existing persistence warning, and allow export.
+
+HCI adds a validated `hci` record inside its course progress: lesson predictions, independent appointment/permissions projects, module notes, evidence paths, self-checks, and rubric ratings. Existing version 2 backups remain valid; missing HCI fields receive empty defaults. HCI project activity is retained in weekly-goal history.
 
 Appearance remains a separate global preference. Other tabs receive course-scoped updates through browser storage events; same-tab library cards update immediately.
 

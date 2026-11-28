@@ -28,12 +28,13 @@ describe("a growing course catalog", () => {
     }
   });
   test("available courses lead; only the next scheduled course gets a countdown", () => {
+    const next: Course = { id: "next-release", title: "Next release", description: "A scheduled fixture", topic: "Foundations", cover: "perception", status: "scheduled", releaseAt: "2026-11-30T00:00:00+06:00" };
     const catalog: Course[] = [
-      { ...courses[1], id: "later", status: "scheduled", releaseAt: "2027-01-01T00:00:00+06:00" },
-      courses[1], dataVisualizationCourse,
+      { ...next, id: "later", releaseAt: "2027-01-01T00:00:00+06:00" },
+      next, dataVisualizationCourse,
     ];
     expect(browseCourses(catalog)[0].id).toBe(dataVisualizationCourse.id);
-    expect(nearestReleaseId(catalog)).toBe(courses[1].id);
+    expect(nearestReleaseId(catalog)).toBe(next.id);
   });
   test("single-item topics are withheld and already available topics are not requests", () => {
     expect(catalogTopics(courses)).toEqual([]);

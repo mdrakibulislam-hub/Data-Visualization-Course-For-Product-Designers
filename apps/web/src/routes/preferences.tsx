@@ -65,7 +65,7 @@ export function PreferencesPage() {
             {[2, 3, 4, 5].map((value) => <SegmentedControlItem key={value} label={String(value)} value={String(value)} />)}
           </SegmentedControl>
         </VStack>
-        <Text as="p" type="supporting" color="secondary">{course.content.hasProjects ? "Finish a lesson, challenge or quiz, review three different cards, or work on your project." : "Finish a lesson or quiz, or review three different cards."} Each day counts once. Missed days don’t erase your progress.</Text>
+        <Text as="p" type="supporting" color="secondary">{course.content.interaction ? "Finish a lesson or quiz, review three different cards, or work on your capstone." : course.content.hasProjects ? "Finish a lesson, challenge or quiz, review three different cards, or work on your project." : "Finish a lesson or quiz, or review three different cards."} Each day counts once. Missed days don’t erase your progress.</Text>
         {goal > 0 && <VStack gap={1} className="learning-goal-progress">
           <ProgressBar label="Practice days this week" value={Math.min(days, goal)} max={goal} hasValueLabel formatValueLabel={() => days >= goal ? "Goal reached" : `${days} of ${goal}`} />
           <Text as="p" type="supporting" color="secondary">{days} {days === 1 ? "practice day" : "practice days"} this week.</Text>
@@ -113,7 +113,7 @@ export function PreferencesPage() {
       {pending && <Dialog isOpen onOpenChange={(open) => { if (!open) setPending(null); }}>
         <VStack gap={4}>
           <DialogHeader title="Replace this browser’s progress?" hasDivider={false} />
-          <Text as="p">This backup contains {pending.completed.length} completed lessons and {Object.keys(pending.learning.challenges).length} practiced challenges. Importing replaces the progress and project notes currently saved here.</Text>
+          <Text as="p">This backup contains {pending.completed.length} completed lessons{course.content.interaction ? " and its saved predictions and capstone work" : ` and ${Object.keys(pending.learning.challenges).length} practiced challenges`}. Importing replaces the progress and project notes currently saved here.</Text>
           <Text as="p" type="supporting" color="secondary">Export your current progress first if you’d like to keep both copies. Appearance stays as it is.</Text>
           <HStack gap={2} wrap="wrap" justify="end" className="learning-actions course-action-pair">
             <Button label="Keep current progress" variant="secondary" onClick={() => setPending(null)} />

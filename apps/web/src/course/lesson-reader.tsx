@@ -17,6 +17,7 @@ import { dataVisualizationId } from "./catalog";
 import { ChartLab } from "./charts";
 import { type CourseLesson, type Question } from "./curriculum";
 import { useProgress } from "./progress";
+import { LessonActivity } from "./hci/lesson-activity";
 
 function QuizQuestion({ lessonId, question, index }: { lessonId: string; question: Question; index: number }) {
   const { progress, submitAnswer } = useProgress();
@@ -122,6 +123,8 @@ export function LessonReader({ lesson }: { lesson: CourseLesson }) {
   const previous = lessons[index - 1];
   const completed = progress.completed.includes(lesson.id);
   const lab = labs[lesson.id];
+  const interaction = course.content.interaction;
+  const guide = interaction?.guides[lesson.id];
 
   useEffect(() => openLesson(lesson.id), [lesson.id, openLesson]);
 
@@ -143,7 +146,7 @@ export function LessonReader({ lesson }: { lesson: CourseLesson }) {
           <Heading className="course-display course-lesson-title" level={1}>{lesson.title}</Heading>
           <p className="course-deck">{lesson.description}</p>
           <HStack as="nav" gap={3} wrap="wrap" aria-label="On this page">
-            <AstryxLink href="#lesson-lab">Try the chart</AstryxLink>
+            {(lab || guide) && <AstryxLink href="#lesson-lab">{guide ? "Practise the idea" : "Try the chart"}</AstryxLink>}
             <AstryxLink href="#lesson-quiz">Quiz</AstryxLink>
             <AstryxLink href="#lesson-practice">Apply it</AstryxLink>
           </HStack>
@@ -159,6 +162,7 @@ export function LessonReader({ lesson }: { lesson: CourseLesson }) {
         </VStack>
 
         {lab && <VStack id="lesson-lab" gap={0} data-scroll-reveal><ChartLab lab={lab} /></VStack>}
+        {guide && interaction && <LessonActivity key={lesson.id} lessonId={lesson.id} guide={guide} content={interaction} />}
 
         <VStack as="aside" className="course-takeaway" padding={4} gap={1.5} aria-labelledby="lesson-takeaway-title" data-scroll-reveal>
           <Heading level={2} id="lesson-takeaway-title" weight="medium" color="secondary">Key takeaway</Heading>
@@ -175,6 +179,7 @@ export function LessonReader({ lesson }: { lesson: CourseLesson }) {
         <VStack as="section" id="lesson-practice" gap={2} aria-labelledby="practice-heading" data-scroll-reveal>
           <Heading level={2} id="practice-heading">Try it at work</Heading>
           <Text as="p" type="body">{lesson.practice}</Text>
+          {interaction && <Button label="Open your capstone workspace" href={`/courses/${course.id}/project`} variant="secondary" />}
           {course.id === dataVisualizationId && challengeFor(lesson.id) && <Button href={`/challenges?lesson=${lesson.id}`} label={progress.learning.challenges[lesson.id] ? "Revisit the design challenge" : "Try a design challenge"} variant="secondary" />}
           {course.id === dataVisualizationId && course.content.hasProjects && lesson.id === "capstone" && <>
             <CapstoneNote />

@@ -28,7 +28,7 @@
   },
   "type": "module",
   "scripts": {
-    "test:learning": "bun test tests/learning-state.test.ts tests/progress-storage.test.ts tests/catalog.test.ts tests/course-releases.test.ts apps/web/tests/catalog-render.test.tsx",
+    "test:learning": "bun test tests/learning-state.test.ts tests/progress-storage.test.ts tests/catalog.test.ts tests/course-releases.test.ts tests/hci-course.test.ts apps/web/tests/catalog-render.test.tsx apps/web/tests/hci-render.test.tsx",
     "astryx": "bun run --cwd apps/web astryx",
     "dev": "turbo run dev",
     "build": "turbo run build",

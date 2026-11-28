@@ -179,13 +179,16 @@ export function CourseShell({ children }: { children: ReactNode }) {
         ))}
       </SideNavSection>
       <SideNavSection title="Practice">
+        {course.content.interaction && <SideNavItem label="Interaction lab" href={coursePageHref(course, "practice")} icon={Target} isSelected={path === coursePageHref(course, "practice")} />}
         {course.id === dataVisualizationId && <SideNavItem label="Chart lab" href="/lab" icon={ChartLine} isSelected={path === "/lab"} />}
         {course.id === dataVisualizationId && <SideNavItem label="Design challenges" href="/challenges" icon={Target} isSelected={path === "/challenges"} />}
         <SideNavItem label="Flashcards" href={coursePageHref(course, "review")} icon={Layers} isSelected={path === "/review" || path === coursePageHref(course, "review")} />
         <SideNavItem label="Quizzes" href={coursePageHref(course, "quizzes")} icon={HelpCircle} isSelected={path === "/quizzes" || path === coursePageHref(course, "quizzes")} />
         {course.id === dataVisualizationId && <SideNavItem label="Capstone project" href="/capstone" icon={Checklist} isSelected={path === "/capstone"} />}
+        {course.content.interaction && <SideNavItem label="Capstone project" href={coursePageHref(course, "project")} icon={Checklist} isSelected={path === coursePageHref(course, "project")} />}
       </SideNavSection>
       <SideNavSection title="Other">
+        {course.content.interaction && <SideNavItem label="HCI in plain words" href={coursePageHref(course, "glossary")} icon={HelpCircle} isSelected={path === coursePageHref(course, "glossary")} />}
         <SideNavItem label="Preferences" href={coursePageHref(course, "preferences")} icon={Settings} isSelected={path === "/preferences" || path === coursePageHref(course, "preferences")} />
         <SideNavItem label="Credits" href={coursePageHref(course, "sources")} icon={DocumentCopy} isSelected={path === "/sources" || path === coursePageHref(course, "sources")} />
         <SideNavItem label="More courses" href="/" icon={Grid} />

@@ -2,8 +2,10 @@ import { dataVisualizationCourse, dataVisualizationId, type AvailableCourse } fr
 import { emptyLearning, parseLearning, type LearningState } from "./learning-state";
 import { projectSteps, type ProjectId, type ProjectStep } from "./project-steps";
 import type { QuizSession } from "./quiz-data";
+import { emptyHciProgress, parseHciProgress, hciProjectIds, type HciProgress } from "./hci/state";
 
 export type Progress = {
+  hci: HciProgress;
   learning: LearningState;
   lastLesson: string | null;
   completed: string[];
@@ -19,7 +21,7 @@ export type Progress = {
 
 export function emptyProgress(): Progress {
   return {
-    learning: emptyLearning(), lastLesson: null, completed: [], answers: {}, knownCards: [], reviewCard: null,
+    hci: emptyHciProgress(), learning: emptyLearning(), lastLesson: null, completed: [], answers: {}, knownCards: [], reviewCard: null,
     capstone: "", onboardingDraft: "", projectChecks: { delivery: [], onboarding: [] }, quiz: null, quizBests: {},
   };
 }
@@ -58,7 +60,8 @@ export function parseCourseProgress(value: unknown, course: AvailableCourse = da
     return bank.isQuizScope(scope) && typeof score === "number" && Number.isInteger(score) && score >= 0 && score <= bank.questionsForScope(scope).length;
   }));
   return {
-    learning: parseLearning(saved.learning, lessons),
+    hci: course.content.interaction ? parseHciProgress(saved.hci, lessonIds) : emptyHciProgress(),
+    learning: parseLearning(saved.learning, lessons, course.content.interaction ? hciProjectIds : ["delivery", "onboarding"]),
     lastLesson: isLesson(saved.lastLesson) ? saved.lastLesson : null,
     completed: list(saved.completed), answers, knownCards: list(saved.knownCards),
     reviewCard: isLesson(saved.reviewCard) ? saved.reviewCard : null,

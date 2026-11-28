@@ -1,6 +1,6 @@
 # ![Graphnotes](apps/web/public/graphnotes-logo.svg)
 
-Graphnotes is a self-paced data visualization course for product designers. Each lesson includes a chart exercise, two questions with feedback, and a way to apply the idea at work. The Practice section brings together the Chart Lab and its 49-entry chart atlas, flashcards, scored quiz rounds, and two capstone cases. The Studio examples contribute experiments and the fictional onboarding data.
+Graphnotes offers self-paced Data Visualization and Human–Computer Interaction courses for product designers. Both include lessons, questions with feedback, flashcards, quizzes, reading sources, and browser-saved progress. Data Visualization includes Chart Lab, its 49-entry atlas, and chart capstones. HCI includes 40 lessons in ten modules, 16 interface experiments, a plain-language glossary, saved predictions, and two independent capstone workspaces. All teaching observations and lab transactions are clearly fictional.
 
 ## Local development
 
@@ -28,7 +28,7 @@ The [Hono API](http://localhost:3000) uses SQLite at `local.db` in the project r
 
 ## Course content
 
-Lesson copy and questions live in `apps/web/src/course/curriculum.ts`. The original learning datasets and chart variants live in `apps/web/src/course/lab-data.ts`. Reading notes live in `apps/web/src/course/sources.ts` and appear on the Sources page. Lesson IDs also key browser progress, so keep them stable when revising content.
+Data Visualization lesson copy and questions live in `apps/web/src/course/curriculum.ts`. HCI content, sources, activities, glossary, and project state live in `apps/web/src/course/hci/`. See `docs/hci-course-implementation.md` for HCI routes, learning behavior, and validation. The original learning datasets and chart variants live in `apps/web/src/course/lab-data.ts`. Reading notes live in `apps/web/src/course/sources.ts` and appear on the Sources page. Lesson IDs also key browser progress, so keep them stable when revising content.
 
 ## Project layout
 

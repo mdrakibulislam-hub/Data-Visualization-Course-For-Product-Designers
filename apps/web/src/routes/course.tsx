@@ -14,6 +14,7 @@ import { CourseArtwork } from "@/components/course-artwork";
 import { courseDuration, courseLessonHref, coursePageHref, dataVisualizationId } from "@/course/catalog";
 import { LearningSummary } from "@/course/learning-summary";
 import { OverviewChart } from "@/course/overview-chart";
+import { OverviewPerception } from "@/course/overview-perception";
 import { getResumeLesson, useProgress } from "@/course/progress";
 
 export const Route = createFileRoute("/course")({
@@ -44,6 +45,7 @@ export function CourseOverview() {
               <Button href={coursePageHref(course, "review")} label="Review flashcards" variant="primary" size="lg" className="course-action" endContent={<ArrowRight size={17} aria-hidden="true" />} />
             )}
             {course.id === dataVisualizationId && <Button href="/lab" label="Chart lab" variant="secondary" size="lg" className="course-action" />}
+            {course.content.interaction && <Button href={coursePageHref(course, "practice")} label="Interaction lab" variant="secondary" size="lg" className="course-action" />}
           </HStack>
           <p className="course-meta course-hero-pace" id="course-pace">
             {progress.lastLesson && resume
@@ -51,7 +53,7 @@ export function CourseOverview() {
               : <>{lessons.length} lessons <Text as="span" aria-hidden="true">·</Text> {courseDuration(course)}</>}
           </p>
         </VStack>
-        {course.id === dataVisualizationId ? <OverviewChart /> : <Card padding={0} className="course-hero-figure"><CourseArtwork kind={course.cover} /></Card>}
+        {course.id === dataVisualizationId ? <OverviewChart /> : course.cover === "perception" ? <OverviewPerception /> : <Card padding={0} className="course-hero-figure"><CourseArtwork kind={course.cover} /></Card>}
       </HStack>
 
       {isMobile && (
@@ -64,6 +66,11 @@ export function CourseOverview() {
       )}
 
       <LearningSummary />
+
+      {course.content.interaction && <VStack as="section" gap={4} paddingBlock={6} aria-labelledby="hci-course-approach">
+        <VStack gap={2}><Heading level={2} id="hci-course-approach">Learn an idea. Try it. Explain a decision.</Heading><Text as="p">Start with everyday situations, then build an appointment or team-access redesign through ten modules. Each lesson has a worked explanation, two questions, and a recall card. No coding, psychology course, or advanced mathematics is required.</Text><Text as="p" color="secondary">The lesson time includes reading, a short activity, and questions. Allow another 4–6 hours for project work and review. Deeper reading is optional.</Text></VStack>
+        <HStack gap={2} wrap="wrap"><Button label="Choose your capstone" href={coursePageHref(course, "project")} /><Button label="HCI in plain words" href={coursePageHref(course, "glossary")} /></HStack>
+      </VStack>}
 
       <VStack as="section" id="curriculum" className="course-curriculum" gap={0} aria-label="Course outline">
         {modules.map((module) => (

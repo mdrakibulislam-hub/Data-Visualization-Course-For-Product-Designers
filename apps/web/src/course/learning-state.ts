@@ -48,7 +48,7 @@ const object = (value: unknown): Record<string, unknown> => value && typeof valu
 const option = (value: unknown) => value === 0 || value === 1 || value === 2 ? value : null;
 
 /** Additive migration: old lesson, quiz and project progress stays untouched. */
-export function parseLearning(value: unknown, courseLessons: readonly { id: string }[] = lessons): LearningState {
+export function parseLearning(value: unknown, courseLessons: readonly { id: string }[] = lessons, projectIds: readonly string[] = ["delivery", "onboarding"]): LearningState {
   const ids = new Set(courseLessons.map(({ id }) => id));
   const list = (value: unknown): string[] => Array.isArray(value) ? [...new Set(value.filter((id): id is string => typeof id === "string" && ids.has(id)))] : [];
   const saved = object(value);
@@ -56,7 +56,7 @@ export function parseLearning(value: unknown, courseLessons: readonly { id: stri
   next.weeklyGoal = [0, 2, 3, 4, 5].includes(Number(saved.weeklyGoal)) ? Number(saved.weeklyGoal) : 0;
   for (const [day, raw] of Object.entries(object(saved.activity)).filter(([day]) => validDay(day)).sort().slice(-400)) {
     const activity = object(raw);
-    next.activity[day] = { lessons: list(activity.lessons), cards: list(activity.cards), challenges: list(activity.challenges), projects: ["delivery", "onboarding"].filter((id) => Array.isArray(activity.projects) && activity.projects.includes(id)), quiz: activity.quiz === true };
+    next.activity[day] = { lessons: list(activity.lessons), cards: list(activity.cards), challenges: list(activity.challenges), projects: projectIds.filter((id) => Array.isArray(activity.projects) && activity.projects.includes(id)), quiz: activity.quiz === true };
   }
   for (const [id, raw] of Object.entries(object(saved.reviews))) {
     const review = object(raw);

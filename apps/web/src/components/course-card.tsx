@@ -10,12 +10,13 @@ import { courseMinutes, type Course, type AvailableCourse } from "@/course/catal
 import { getResumeLesson } from "@/course/progress";
 import { useSavedProgress } from "@/course/use-saved-progress";
 import { OverviewChart } from "@/course/overview-chart";
+import { OverviewPerception } from "@/course/overview-perception";
 import { CourseCountdown } from "./course-countdown";
 import { CourseArtwork } from "./course-artwork";
 import { LibraryIcon, libraryAsset } from "./library-assets";
 
 function CourseCover({ course }: { course: Course }) {
-  return course.cover === "data" ? <OverviewChart isPreview /> : <CourseArtwork kind={course.cover} />;
+  return course.cover === "data" ? <OverviewChart isPreview /> : course.cover === "perception" ? <OverviewPerception isPreview /> : <CourseArtwork kind={course.cover} />;
 }
 
 export function CourseCard({ course, hasCountdown = false }: { course: Course; hasCountdown?: boolean }) {
